@@ -4,6 +4,7 @@ import (
 	"log"
 	"signin-go/global/config"
 	"signin-go/global/logger"
+	"signin-go/global/mysql"
 	"signin-go/global/time"
 )
 
@@ -20,5 +21,8 @@ func Init() {
 	log.Println("-----------------------------")
 
 	logger.Init()
+	log.Println("-----------------------------")
+
+	mysql.Init()
 	log.Println("-----------------------------")
 }
