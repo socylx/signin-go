@@ -7,20 +7,37 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-func initConfig() {
-	log.Println("initConfig start...")
-
-	c, err := ini.Load("config.ini")
+func PreInit() {
+	log.Println("global.PreInit Start...")
+	file, err := ini.Load("config.ini")
 	if err != nil {
-		log.Fatalf("initConfig Error: %v", err)
+		log.Fatalf("global.PreInit Load config.ini Error: %v", err)
 	}
-
-	err = c.Section("Server").MapTo(config.Server)
+	err = file.Section("Server").MapTo(config.Server)
 	if err != nil {
-		log.Fatalf("MapTo(config.MapTo): [%s]: %v", "Server", err)
+		log.Fatalf("global.PreInit file.Section(%s).MapTo(object).Error: %v", "Server", err)
 	}
 }
 
+func initConfig() {
+	log.Println("global.initConfig Start...")
+
+	objectMap := map[string]interface{}{
+		"Server": config.Server,
+	}
+
+	file, err := ini.Load("config.ini")
+	if err != nil {
+		log.Fatalf("global.initConfig Load config.ini Error: %v", err)
+	}
+
+	for section, object := range objectMap {
+		err = file.Section(section).MapTo(object)
+		if err != nil {
+			log.Fatalf("global.initConfig Section(%s).MapTo(object).Error: %v", "Server", err)
+		}
+	}
+}
 func Init() {
 	initConfig()
 }

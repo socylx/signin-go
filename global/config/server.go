@@ -4,7 +4,7 @@ import "fmt"
 
 type ServerConfig struct {
 	Mode  string
-	Port  int
+	Port  string
 	Token string
 }
 
