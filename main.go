@@ -1,20 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/jpillora/overseer"
 )
 
 // prog(state) runs in a child process
 func prog(state overseer.State) {
-	log.Printf("app (%s) listening...", state.ID)
-	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "app (%s) says hello\n", state.ID)
-	}))
-	http.Serve(state.Listener, nil)
+	engine := gin.New()
+	engine.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "Gin Server")
+	})
+	http.Serve(state.Listener, engine)
 }
 
 // create another main() to run the overseer process
@@ -23,5 +22,6 @@ func main() {
 	overseer.Run(overseer.Config{
 		Program: prog,
 		Address: ":3000",
+		Debug:   true,
 	})
 }
