@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"signin-go/global"
 	"signin-go/global/config"
+	"signin-go/global/logger"
 	"signin-go/router"
 
 	"github.com/gin-gonic/gin"
@@ -12,14 +13,13 @@ import (
 )
 
 func main() {
-	global.PreInit()
+	config.PreInit()
 
 	overseer.Run(overseer.Config{
 		Program: func(state overseer.State) { // prog(state) runs in a child process
 			defer func() {
-				config.Server = nil
-				log.Println("config.Server: ", config.Server)
-				// TODO: 关闭一些东西
+				_ = logger.Logger.Sync()
+				log.Println("关闭一些东西2: ")
 			}()
 			global.Init()
 			http.Serve(state.Listener, router.HTTPServer())

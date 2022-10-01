@@ -3,9 +3,10 @@ package config
 import "fmt"
 
 type ServerConfig struct {
-	Mode  string
-	Port  string
-	Token string
+	Mode          string
+	Port          string
+	Token         string
+	ServerLogFile string
 }
 
 var Server *ServerConfig = &ServerConfig{}
