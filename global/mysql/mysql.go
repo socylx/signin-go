@@ -39,13 +39,13 @@ func Init() {
 			QueryFields: true,
 		})
 	if err != nil {
-		log.Fatalf("global.mysql.Init.gorm.Open() Error: %v", errors.Wrap(err, fmt.Sprintf("[db connection failed] Database name: %s", config.Mysql.Database)))
+		log.Fatalf("global.mysql.Init.gorm.Open() Error: %v", errors.Wrap(err, fmt.Sprintf("[DB connection failed] Database name: %s", config.Mysql.Database)))
 	}
 	DB.Set("gorm:table_options", "CHARSET=utf8mb4")
 
 	sqlDB, err := DB.DB()
 	if err != nil {
-		log.Fatalf("global.mysql.Init.db.DB() Error: %v", err)
+		log.Fatalf("global.mysql.Init.DB.DB() Error: %v", err)
 	}
 
 	// 设置连接池 用于设置最大打开的连接数，默认值为0表示不限制.设置最大的连接数，可以避免并发太高导致连接mysql出现too many connections的错误。
@@ -56,4 +56,16 @@ func Init() {
 
 	// 设置最大连接超时
 	sqlDB.SetConnMaxLifetime(time.Minute * 60)
+}
+
+func Close() {
+	sqlDB, err := DB.DB()
+	if err != nil {
+		log.Printf("global.mysql.Close.DB.DB() Error: %v", err)
+		return
+	}
+	err = sqlDB.Close()
+	if err != nil {
+		log.Printf("global.mysql.Close.sqlDB.Close() Error: %v", err)
+	}
 }

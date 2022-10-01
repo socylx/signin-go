@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	glogger "signin-go/global/logger"
 	"time"
 
 	"go.uber.org/zap"
@@ -52,6 +53,7 @@ func newLogger(c loggerConfig) logger.Interface {
 		traceStr:     traceStr,
 		traceWarnStr: traceWarnStr,
 		traceErrStr:  traceErrStr,
+		logger:       glogger.GORMLogger,
 	}
 }
 

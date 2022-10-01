@@ -96,7 +96,7 @@ func withDisableConsole() Option {
 }
 
 // NewJSONLogger return a json-encoder zap logger,
-func newJSONLogger(opts ...Option) (*zap.Logger, error) {
+func NewJSONLogger(opts ...Option) (*zap.Logger, error) {
 	opt := &option{level: defaultLevel, fields: make(map[string]string)}
 	for _, f := range opts {
 		f(opt)

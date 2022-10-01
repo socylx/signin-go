@@ -26,3 +26,8 @@ func Init() {
 	mysql.Init()
 	log.Println("-----------------------------")
 }
+
+func Close() {
+	mysql.Close()
+	logger.Close()
+}

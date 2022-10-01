@@ -10,17 +10,34 @@ import (
 
 var Logger *zap.Logger
 
+var GORMLogger *zap.Logger
+
 func Init() {
 	log.Println("global.logger.Init Start...")
 
 	var err error
-	Logger, err = newJSONLogger(
+	Logger, err = NewJSONLogger(
 		// withDisableConsole(),
 		withField("domain", "signin-go"),
 		withTimeLayout(time.CSTLayout),
 		withFileP(config.Server.ServerLogFile),
 	)
 	if err != nil {
-		log.Fatalf("global.logger.Init Error: %v", err)
+		log.Fatalf("global.logger.Init.Logger Error: %v", err)
 	}
+
+	GORMLogger, err = NewJSONLogger(
+		// withDisableConsole(),
+		withField("domain", "mysql"),
+		withTimeLayout(time.CSTLayout),
+		withFileP(config.Server.ServerLogFile),
+	)
+	if err != nil {
+		log.Fatalf("global.logger.Init.GORMLogger Error: %v", err)
+	}
+}
+
+func Close() {
+	_ = Logger.Sync()
+	_ = GORMLogger.Sync()
 }
