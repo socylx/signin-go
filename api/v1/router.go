@@ -7,5 +7,5 @@ import (
 
 func Init(mux core.Mux) {
 	routerGroup := mux.Group("/v1")
-	users.Init(routerGroup)
+	users.Router(routerGroup)
 }

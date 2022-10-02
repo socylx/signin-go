@@ -1,10 +1,26 @@
 package users
 
-import "signin-go/internal/core"
+import (
+	"signin-go/internal/core"
+	"signin-go/service/users"
+)
 
-func Init(routerGroup core.RouterGroup) {
+var _ Handler = (*handler)(nil)
+
+type Handler interface {
+	detail(c core.Context)
+}
+
+type handler struct {
+	userService users.Service
+}
+
+func Router(routerGroup core.RouterGroup) {
+	h := &handler{
+		userService: users.New(),
+	}
 	rg := routerGroup.Group("/users")
 	{
-		rg.GET("/detail", detail)
+		rg.GET("/detail", h.detail)
 	}
 }

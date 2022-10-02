@@ -3,6 +3,7 @@ package users
 import (
 	"signin-go/global"
 	"signin-go/global/mysql"
+	"signin-go/internal/core"
 	"time"
 
 	"gorm.io/gorm"
@@ -42,12 +43,12 @@ type Users struct {
 	ManagerUserID   uint32    `gorm:"column:manager_user_id" json:"manager_user_id"`     // 会员负责人，顾问
 }
 
-type UsersInterface interface {
+type UsersRepo interface {
 	i()
 	TableName() string
 
 	// dao.go
-	Detail(userID uint32) (user *Users, err error)
+	List(ctx core.Context, userID uint32) (user []*Users, err error)
 }
 
 type users struct {
@@ -65,7 +66,7 @@ func New() *users {
 }
 
 var u *users
-var _ UsersInterface = (*users)(nil)
+var _ UsersRepo = (*users)(nil)
 
 func (u *users) i() {}
 

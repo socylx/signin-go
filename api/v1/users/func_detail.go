@@ -5,12 +5,11 @@ import (
 	"log"
 	"signin-go/global/logger"
 	"signin-go/internal/core"
-	"signin-go/repository/users"
 
 	"go.uber.org/zap"
 )
 
-func detail(c core.Context) {
+func (h *handler) detail(c core.Context) {
 	log.Println("detail")
 
 	var err error = errors.New("sss")
@@ -24,9 +23,9 @@ func detail(c core.Context) {
 		// 	logger.NewMeta("para2", "value2"),
 		// )...,
 	)
+	// detail, _ := h.userService.List(c, 3352)
 
-	users := users.New()
-	detail, _ := users.Detail(3352)
+	log.Println("sssssss.detail")
 
-	c.Payload(detail)
+	c.Payload("detail")
 }

@@ -57,6 +57,9 @@ func Init() {
 
 	// 设置最大连接超时
 	sqlDB.SetConnMaxLifetime(time.Minute * 60)
+
+	// 使用插件
+	DB.Use(&TracePlugin{})
 }
 
 func Close() {
