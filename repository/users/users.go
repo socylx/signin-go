@@ -48,7 +48,9 @@ type UsersRepo interface {
 	TableName() string
 
 	// dao.go
-	List(ctx core.Context, userID uint32) (user []*Users, err error)
+	Detail(ctx core.Context, userID uint32) (user *Users, err error)
+	List(ctx core.Context, filter *Filter) (users []*Users, err error)
+	Update(ctx core.Context, filter *Filter, data map[string]interface{}) (err error)
 }
 
 type users struct {

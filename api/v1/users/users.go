@@ -9,6 +9,7 @@ var _ Handler = (*handler)(nil)
 
 type Handler interface {
 	detail(c core.Context)
+	update(c core.Context)
 }
 
 type handler struct {
@@ -22,5 +23,7 @@ func Router(routerGroup core.RouterGroup) {
 	rg := routerGroup.Group("/users")
 	{
 		rg.GET("/detail", h.detail)
+		rg.GET("/update", h.update)
+		rg.GET("/list", h.list)
 	}
 }

@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"log"
 	"signin-go/global/time"
 	"signin-go/internal/core"
 	"signin-go/internal/trace"
@@ -45,34 +44,27 @@ var _ gorm.Plugin = &TracePlugin{}
 
 func before(db *gorm.DB) {
 	db.InstanceSet(startTime, time.Now())
-	return
 }
 
 func after(db *gorm.DB) {
 	_ctx := db.Statement.Context
 
-	log.Println("after._ctx: ", _ctx)
 	ctx, ok := _ctx.(core.StdContext)
 	if !ok {
 		return
 	}
-	log.Println("after.ctx: ", ctx)
 
 	_ts, isExist := db.InstanceGet(startTime)
 	if !isExist {
 		return
 	}
-	log.Println("after._ts: ", _ts)
 
 	ts, ok := _ts.(time.Time)
 	if !ok {
 		return
 	}
-	log.Println("after.ts: ", ts)
 
 	sql := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
-
-	log.Println("after.sql: ", sql)
 
 	sqlInfo := new(trace.SQL)
 	sqlInfo.Timestamp = time.CSTLayoutString()
@@ -84,5 +76,4 @@ func after(db *gorm.DB) {
 	if ctx.Trace != nil {
 		ctx.Trace.AppendSQL(sqlInfo)
 	}
-	return
 }

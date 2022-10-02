@@ -1,17 +1,17 @@
 package users
 
 import (
-	"errors"
 	"signin-go/global/logger"
 	"signin-go/internal/core"
 
 	"go.uber.org/zap"
 )
 
-func (h *handler) detail(c core.Context) {
-	var err error = errors.New("sss")
+func (h *handler) list(c core.Context) {
+	list, err := h.userService.List(c, 3352)
+
 	logger.Logger.Error(
-		"err occurs",
+		"users.list",
 		zap.Any("method", "sss"),
 		zap.Error(err),
 		// logger.WrapMeta(
@@ -20,7 +20,5 @@ func (h *handler) detail(c core.Context) {
 		// 	logger.NewMeta("para2", "value2"),
 		// )...,
 	)
-	list, _ := h.userService.Detail(c, 3352)
-
 	c.Payload(list)
 }
