@@ -25,6 +25,7 @@ func Init() {
 	objectMap := map[string]interface{}{
 		"Server": Server,
 		"Mysql":  Mysql,
+		"Notify": Notify,
 	}
 
 	file, err := ini.Load("config.ini")
