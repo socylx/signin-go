@@ -25,15 +25,16 @@ func Init() {
 		config.Mysql.Database,
 	)
 
-	DB, err := gorm.Open(
+	var err error
+	DB, err = gorm.Open(
 		mysql.Open(dsn),
 		&gorm.Config{
 			Logger: newLogger(
 				loggerConfig{
 					SlowThreshold:             200 * time.Millisecond, // 慢 SQL 阈值
-					LogLevel:                  logger.Warn,            // 日志级别
+					LogLevel:                  logger.Info,            // 日志级别
 					IgnoreRecordNotFoundError: true,                   // 忽略ErrRecordNotFound（记录未找到）错误
-					Colorful:                  true,                   // 禁用彩色打印
+					Colorful:                  false,                  // 禁用彩色打印
 				},
 			),
 			QueryFields: true,

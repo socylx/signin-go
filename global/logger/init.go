@@ -30,7 +30,7 @@ func Init() {
 		// withDisableConsole(),
 		withField("domain", "mysql"),
 		withTimeLayout(time.CSTLayout),
-		withFileP(config.Server.ServerLogFile),
+		withFileP(config.Server.SQLLogFile),
 	)
 	if err != nil {
 		log.Fatalf("global.logger.Init.GORMLogger Error: %v", err)

@@ -7,6 +7,7 @@ type ServerConfig struct {
 	Port          string
 	Token         string
 	ServerLogFile string
+	SQLLogFile    string
 }
 
 var Server *ServerConfig = &ServerConfig{}

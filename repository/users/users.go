@@ -1,7 +1,11 @@
 package users
 
 import (
+	"signin-go/global"
+	"signin-go/global/mysql"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 // Users 用户信息表
@@ -38,7 +42,34 @@ type Users struct {
 	ManagerUserID   uint32    `gorm:"column:manager_user_id" json:"manager_user_id"`     // 会员负责人，顾问
 }
 
+type UsersInterface interface {
+	i()
+	TableName() string
+
+	// dao.go
+	Detail(userID uint32) *Users
+}
+
+type users struct {
+	db *gorm.DB
+	// redis *redis.Client
+}
+
+func New() *users {
+	global.Once.Do(func() {
+		u = &users{
+			db: mysql.DB,
+		}
+	})
+	return u
+}
+
+var u *users
+var _ UsersInterface = (*users)(nil)
+
+func (u *users) i() {}
+
 // TableName get sql table name.获取数据库表名
-func (m *Users) TableName() string {
+func (u *users) TableName() string {
 	return "users"
 }
