@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"gopkg.in/ini.v1"
 )
 
@@ -37,4 +38,5 @@ func Init() {
 			log.Fatalf("global.config.Init file.Section(%s).MapTo(object).Error: %v", "Server", err)
 		}
 	}
+	Server.IsRelease = Server.Mode == gin.ReleaseMode
 }

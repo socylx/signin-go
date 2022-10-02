@@ -3,11 +3,15 @@ package config
 import "fmt"
 
 type ServerConfig struct {
-	Mode          string
-	Port          string
-	Token         string
-	ServerLogFile string
-	SQLLogFile    string
+	Name                 string
+	Mode                 string
+	Port                 string
+	MaxRequestsPerSecond int
+	Token                string
+	ServerLogFile        string
+	SQLLogFile           string
+
+	IsRelease bool
 }
 
 var Server *ServerConfig = &ServerConfig{}
