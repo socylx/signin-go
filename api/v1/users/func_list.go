@@ -2,23 +2,39 @@ package users
 
 import (
 	"signin-go/global/logger"
+	"signin-go/internal/code"
 	"signin-go/internal/core"
+	"signin-go/internal/validation"
 
 	"go.uber.org/zap"
 )
 
-func (h *handler) list(c core.Context) {
-	list, err := h.userService.List(c, 3352)
+type listRequest struct {
+	ID uint32 `form:"id" binding:"required"`
+}
 
-	logger.Logger.Error(
-		"users.list",
-		zap.Any("method", "sss"),
-		zap.Error(err),
-		// logger.WrapMeta(
-		// 	nil,
-		// 	logger.NewMeta("para1", "value1"),
-		// 	logger.NewMeta("para2", "value2"),
-		// )...,
-	)
+func (h *handler) list(c core.Context) {
+	request := new(listRequest)
+	if err := c.ShouldBindForm(request); err != nil {
+		c.AbortWithError(core.Error(
+			code.ParamBindError,
+			validation.Error(err)).WithError(err),
+		)
+		return
+	}
+
+	list, err := h.userService.List(c, request.ID)
+	if err != nil {
+		c.AbortWithError(core.Error(
+			code.UsersDetailError,
+			code.Text(code.UsersDetailError)).WithError(err),
+		)
+		logger.Logger.Error(
+			"users.list",
+			zap.Uint32("ID", request.ID),
+		)
+		return
+	}
+
 	c.Payload(list)
 }

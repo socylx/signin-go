@@ -1,9 +1,9 @@
 package users
 
 import (
-	"signin-go/global"
 	"signin-go/global/mysql"
 	"signin-go/internal/core"
+	"sync"
 	"time"
 
 	"gorm.io/gorm"
@@ -59,7 +59,7 @@ type users struct {
 }
 
 func New() *users {
-	global.Once.Do(func() {
+	once.Do(func() {
 		u = &users{
 			db: mysql.DB,
 		}
@@ -68,6 +68,7 @@ func New() *users {
 }
 
 var u *users
+var once sync.Once
 var _ UsersRepo = (*users)(nil)
 
 func (u *users) i() {}

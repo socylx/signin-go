@@ -36,43 +36,12 @@ const (
 	SocketConnectError = 10120
 	SocketSendError    = 10121
 
-	AuthorizedCreateError    = 20101
-	AuthorizedListError      = 20102
-	AuthorizedDeleteError    = 20103
-	AuthorizedUpdateError    = 20104
-	AuthorizedDetailError    = 20105
-	AuthorizedCreateAPIError = 20106
-	AuthorizedListAPIError   = 20107
-	AuthorizedDeleteAPIError = 20108
-
-	AdminCreateError             = 20201
-	AdminListError               = 20202
-	AdminDeleteError             = 20203
-	AdminUpdateError             = 20204
-	AdminResetPasswordError      = 20205
-	AdminLoginError              = 20206
-	AdminLogOutError             = 20207
-	AdminModifyPasswordError     = 20208
-	AdminModifyPersonalInfoError = 20209
-	AdminMenuListError           = 20210
-	AdminMenuCreateError         = 20211
-	AdminOfflineError            = 20212
-	AdminDetailError             = 20213
-
-	MenuCreateError       = 20301
-	MenuUpdateError       = 20302
-	MenuListError         = 20303
-	MenuDeleteError       = 20304
-	MenuDetailError       = 20305
-	MenuCreateActionError = 20306
-	MenuListActionError   = 20307
-	MenuDeleteActionError = 20308
-
-	CronCreateError  = 20401
-	CronUpdateError  = 20402
-	CronListError    = 20403
-	CronDetailError  = 20404
-	CronExecuteError = 20405
+	UsersCreateError             = 20101
+	UsersListError               = 20102
+	UsersDeleteError             = 20103
+	UsersUpdateError             = 20104
+	UsersModifyPersonalInfoError = 20105
+	UsersDetailError             = 20106
 )
 
 func Text(code int) string {

@@ -6,10 +6,7 @@ import (
 	"signin-go/global/logger"
 	"signin-go/global/mysql"
 	"signin-go/global/time"
-	"sync"
 )
-
-var Once sync.Once
 
 func Init() {
 	// todo

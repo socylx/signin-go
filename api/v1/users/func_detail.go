@@ -1,26 +1,40 @@
 package users
 
 import (
-	"errors"
 	"signin-go/global/logger"
+	"signin-go/internal/code"
 	"signin-go/internal/core"
+	"signin-go/internal/validation"
 
 	"go.uber.org/zap"
 )
 
-func (h *handler) detail(c core.Context) {
-	var err error = errors.New("sss")
-	logger.Logger.Error(
-		"err occurs",
-		zap.Any("method", "sss"),
-		zap.Error(err),
-		// logger.WrapMeta(
-		// 	nil,
-		// 	logger.NewMeta("para1", "value1"),
-		// 	logger.NewMeta("para2", "value2"),
-		// )...,
-	)
-	list, _ := h.userService.Detail(c, 3352)
+type detailRequest struct {
+	ID uint32 `form:"id" binding:"required"`
+}
 
-	c.Payload(list)
+func (h *handler) detail(c core.Context) {
+	request := new(detailRequest)
+	if err := c.ShouldBindForm(request); err != nil {
+		c.AbortWithError(core.Error(
+			code.ParamBindError,
+			validation.Error(err)).WithError(err),
+		)
+		return
+	}
+
+	detail, err := h.userService.Detail(c, request.ID)
+	if err != nil {
+		c.AbortWithError(core.Error(
+			code.UsersDetailError,
+			code.Text(code.UsersDetailError)).WithError(err),
+		)
+		logger.Logger.Error(
+			"users.detail",
+			zap.Uint32("ID", request.ID),
+		)
+		return
+	}
+
+	c.Payload(detail)
 }

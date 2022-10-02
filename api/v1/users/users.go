@@ -9,6 +9,7 @@ var _ Handler = (*handler)(nil)
 
 type Handler interface {
 	detail(c core.Context)
+	list(c core.Context)
 	update(c core.Context)
 }
 
