@@ -18,9 +18,9 @@ func Init() {
 	var err error
 	Logger, err = NewJSONLogger(
 		// withDisableConsole(),
-		withField("domain", "signin-go"),
-		withTimeLayout(time.CSTLayout),
-		withFileP(config.Server.ServerLogFile),
+		WithField("domain", "signin-go"),
+		WithTimeLayout(time.CSTLayout),
+		WithFileP(config.Server.ServerLogFile),
 	)
 	if err != nil {
 		log.Fatalf("global.logger.Init.Logger Error: %v", err)
@@ -28,9 +28,9 @@ func Init() {
 
 	GORMLogger, err = NewJSONLogger(
 		// withDisableConsole(),
-		withField("domain", "mysql"),
-		withTimeLayout(time.CSTLayout),
-		withFileP(config.Server.SQLLogFile),
+		WithField("domain", "mysql"),
+		WithTimeLayout(time.CSTLayout),
+		WithFileP(config.Server.SQLLogFile),
 	)
 	if err != nil {
 		log.Fatalf("global.logger.Init.GORMLogger Error: %v", err)

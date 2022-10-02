@@ -12,10 +12,10 @@ import (
 
 const (
 	// DefaultLevel the default log level
-	defaultLevel = zapcore.InfoLevel
+	DefaultLevel = zapcore.InfoLevel
 
 	// DefaultTimeLayout the default time layout;
-	defaultTimeLayout = time.RFC3339
+	DefaultTimeLayout = time.RFC3339
 )
 
 // Option custom setup config
@@ -30,42 +30,42 @@ type option struct {
 }
 
 // WithDebugLevel only greater than 'level' will output
-func withDebugLevel() Option {
+func WithDebugLevel() Option {
 	return func(opt *option) {
 		opt.level = zapcore.DebugLevel
 	}
 }
 
 // WithInfoLevel only greater than 'level' will output
-func withInfoLevel() Option {
+func WithInfoLevel() Option {
 	return func(opt *option) {
 		opt.level = zapcore.InfoLevel
 	}
 }
 
 // WithWarnLevel only greater than 'level' will output
-func withWarnLevel() Option {
+func WithWarnLevel() Option {
 	return func(opt *option) {
 		opt.level = zapcore.WarnLevel
 	}
 }
 
 // WithErrorLevel only greater than 'level' will output
-func withErrorLevel() Option {
+func WithErrorLevel() Option {
 	return func(opt *option) {
 		opt.level = zapcore.ErrorLevel
 	}
 }
 
 // WithField add some field(s) to log
-func withField(key, value string) Option {
+func WithField(key, value string) Option {
 	return func(opt *option) {
 		opt.fields[key] = value
 	}
 }
 
 // WithFileP write log to some file
-func withFileP(file string) Option {
+func WithFileP(file string) Option {
 	dir := filepath.Dir(file)
 	if err := os.MkdirAll(dir, 0766); err != nil {
 		panic(err)
@@ -82,14 +82,14 @@ func withFileP(file string) Option {
 }
 
 // WithTimeLayout custom time format
-func withTimeLayout(timeLayout string) Option {
+func WithTimeLayout(timeLayout string) Option {
 	return func(opt *option) {
 		opt.timeLayout = timeLayout
 	}
 }
 
 // WithDisableConsole WithEnableConsole write log to os.Stdout or os.Stderr
-func withDisableConsole() Option {
+func WithDisableConsole() Option {
 	return func(opt *option) {
 		opt.disableConsole = true
 	}
@@ -97,12 +97,12 @@ func withDisableConsole() Option {
 
 // NewJSONLogger return a json-encoder zap logger,
 func NewJSONLogger(opts ...Option) (*zap.Logger, error) {
-	opt := &option{level: defaultLevel, fields: make(map[string]string)}
+	opt := &option{level: DefaultLevel, fields: make(map[string]string)}
 	for _, f := range opts {
 		f(opt)
 	}
 
-	timeLayout := defaultTimeLayout
+	timeLayout := DefaultTimeLayout
 	if opt.timeLayout != "" {
 		timeLayout = opt.timeLayout
 	}

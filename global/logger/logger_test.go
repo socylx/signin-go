@@ -8,7 +8,7 @@ import (
 
 func TestJSONLogger(t *testing.T) {
 	logger, err := NewJSONLogger(
-		withField("defined_key", "defined_value"),
+		WithField("defined_key", "defined_value"),
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -24,7 +24,7 @@ func TestJSONLogger(t *testing.T) {
 func BenchmarkJsonLogger(b *testing.B) {
 	b.ResetTimer()
 	logger, err := NewJSONLogger(
-		withField("defined_key", "defined_value"),
+		WithField("defined_key", "defined_value"),
 	)
 	if err != nil {
 		b.Fatal(err)
