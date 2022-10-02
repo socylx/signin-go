@@ -33,7 +33,7 @@ func HTTPServer() *gin.Engine {
 		)
 
 		users := users.New()
-		detail := users.Detail(3352)
+		detail, _ := users.Detail(3352)
 
 		c.JSON(
 			http.StatusOK,

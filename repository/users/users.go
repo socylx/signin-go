@@ -47,7 +47,7 @@ type UsersInterface interface {
 	TableName() string
 
 	// dao.go
-	Detail(userID uint32) *Users
+	Detail(userID uint32) (user *Users, err error)
 }
 
 type users struct {
