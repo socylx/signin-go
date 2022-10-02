@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"signin-go/global/config"
+	"signin-go/global/logger"
 	"signin-go/internal/code"
 	"signin-go/internal/proposal"
 	"signin-go/internal/trace"
@@ -212,11 +213,9 @@ func (m *mux) Group(relativePath string, handlers ...HandlerFunc) RouterGroup {
 	}
 }
 
-func New(logger *zap.Logger, options ...Option) (Mux, error) {
+func New(options ...Option) Mux {
+	gin.SetMode(config.Server.Mode)
 
-	gin.SetMode(gin.ReleaseMode)
-
-	gin.IsDebugging()
 	mux := &mux{
 		engine: gin.New(),
 	}
@@ -270,9 +269,6 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 				http.MethodHead,
 				http.MethodGet,
 				http.MethodPost,
-				http.MethodPut,
-				http.MethodPatch,
-				http.MethodDelete,
 			},
 			AllowedHeaders:     []string{"*"},
 			AllowCredentials:   true,
@@ -284,7 +280,18 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 	mux.engine.Use(func(ctx *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				logger.Error("got panic", zap.String("panic", fmt.Sprintf("%+v", err)), zap.String("stack", string(debug.Stack())))
+				logger.Logger.Error(
+					"signin-go panic",
+					zap.String("panic", fmt.Sprintf("%+v", err)),
+					zap.String("stack", string(debug.Stack())),
+				)
+				ctx.JSON(
+					http.StatusOK,
+					&Response{
+						Code:    code.ServerError,
+						Message: fmt.Sprintf("%v", err),
+					},
+				)
 			}
 		}()
 
@@ -303,7 +310,7 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 		defer releaseContext(context)
 
 		context.init()
-		context.setLogger(logger)
+		context.setLogger(logger.Logger)
 		context.ableRecordMetrics()
 
 		if !withoutTracePaths[ctx.Request.URL.Path] {
@@ -332,9 +339,12 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 			// region 发生 Panic 异常发送告警提醒
 			if err := recover(); err != nil {
 				stackInfo := string(debug.Stack())
-				logger.Error("got panic", zap.String("panic", fmt.Sprintf("%+v", err)), zap.String("stack", stackInfo))
+				logger.Logger.Error(
+					"signin-go panic",
+					zap.String("panic", fmt.Sprintf("%+v", err)),
+					zap.String("stack", stackInfo),
+				)
 				context.AbortWithError(Error(
-					http.StatusInternalServerError,
 					code.ServerError,
 					code.Text(code.ServerError)),
 				)
@@ -380,13 +390,13 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 					}
 
 					multierr.AppendInto(&abortErr, err.StackError())
-					businessCode = err.BusinessCode()
-					businessCodeMsg = err.Message()
-					response = &code.Failure{
-						Code:    businessCode,
-						Message: businessCodeMsg,
-					}
-					ctx.JSON(err.HTTPCode(), response)
+					ctx.JSON(
+						http.StatusOK,
+						&Response{
+							Code:    err.BusinessCode(),
+							Message: err.Message(),
+						},
+					)
 				}
 			}
 			// endregion
@@ -394,7 +404,13 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 			// region 正确返回
 			response = context.getPayload()
 			if response != nil {
-				ctx.JSON(http.StatusOK, response)
+				ctx.JSON(
+					http.StatusOK,
+					&Response{
+						Code: 0,
+						Res:  response,
+					},
+				)
 			}
 			// endregion
 
@@ -470,7 +486,7 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 			t.Success = !ctx.IsAborted() && (ctx.Writer.Status() == http.StatusOK)
 			t.CostSeconds = time.Since(ts).Seconds()
 
-			logger.Info("trace-log",
+			logger.Logger.Info("trace-log",
 				zap.Any("method", ctx.Request.Method),
 				zap.Any("path", decodedURL),
 				zap.Any("http_code", ctx.Writer.Status()),
@@ -495,7 +511,6 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 
 			if !limiter.Allow() {
 				context.AbortWithError(Error(
-					http.StatusTooManyRequests,
 					code.TooManyRequests,
 					code.Text(code.TooManyRequests)),
 				)
@@ -528,5 +543,5 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 		})
 	}
 
-	return mux, nil
+	return mux
 }

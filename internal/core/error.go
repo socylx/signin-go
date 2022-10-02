@@ -17,9 +17,6 @@ type BusinessError interface {
 	// BusinessCode 获取业务码
 	BusinessCode() int
 
-	// HTTPCode 获取 HTTP 状态码
-	HTTPCode() int
-
 	// Message 获取错误描述
 	Message() string
 
@@ -31,16 +28,14 @@ type BusinessError interface {
 }
 
 type businessError struct {
-	httpCode     int    // HTTP 状态码
 	businessCode int    // 业务码
 	message      string // 错误描述
 	stackError   error  // 含有堆栈信息的错误
 	isAlert      bool   // 是否告警通知
 }
 
-func Error(httpCode, businessCode int, message string) BusinessError {
+func Error(businessCode int, message string) BusinessError {
 	return &businessError{
-		httpCode:     httpCode,
 		businessCode: businessCode,
 		message:      message,
 		isAlert:      false,
@@ -57,10 +52,6 @@ func (e *businessError) WithError(err error) BusinessError {
 func (e *businessError) WithAlert() BusinessError {
 	e.isAlert = true
 	return e
-}
-
-func (e *businessError) HTTPCode() int {
-	return e.httpCode
 }
 
 func (e *businessError) BusinessCode() int {

@@ -3,7 +3,7 @@ package core
 import (
 	"bytes"
 	stdctx "context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"signin-go/internal/trace"
@@ -164,8 +164,8 @@ func (c *context) init() {
 		panic(err)
 	}
 
-	c.ctx.Set(_BodyName, body)                                   // cache body是为了trace使用
-	c.ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body)) // re-construct req body
+	c.ctx.Set(_BodyName, body)                               // cache body是为了trace使用
+	c.ctx.Request.Body = io.NopCloser(bytes.NewBuffer(body)) // re-construct req body
 }
 
 // ShouldBindQuery 反序列化querystring
@@ -235,7 +235,7 @@ func (c *context) setLogger(logger *zap.Logger) {
 }
 
 func (c *context) getPayload() interface{} {
-	if payload, ok := c.ctx.Get(_PayloadName); ok != false {
+	if payload, ok := c.ctx.Get(_PayloadName); ok {
 		return payload
 	}
 	return nil
@@ -246,7 +246,7 @@ func (c *context) Payload(payload interface{}) {
 }
 
 func (c *context) getGraphPayload() interface{} {
-	if payload, ok := c.ctx.Get(_GraphPayloadName); ok != false {
+	if payload, ok := c.ctx.Get(_GraphPayloadName); ok {
 		return payload
 	}
 	return nil
@@ -296,12 +296,7 @@ func (c *context) setSessionUserInfo(info proposal.SessionUserInfo) {
 
 func (c *context) AbortWithError(err BusinessError) {
 	if err != nil {
-		httpCode := err.HTTPCode()
-		if httpCode == 0 {
-			httpCode = http.StatusInternalServerError
-		}
-
-		c.ctx.AbortWithStatus(httpCode)
+		c.ctx.AbortWithStatus(http.StatusOK)
 		c.ctx.Set(_AbortErrorName, err)
 	}
 }
