@@ -5,6 +5,7 @@ import (
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	"signin-go/internal/validation"
+	"signin-go/repository/users"
 
 	"go.uber.org/zap"
 )
@@ -13,7 +14,7 @@ type detailRequest struct {
 	ID uint32 `form:"id" binding:"required"`
 }
 
-func (h *handler) detail(c core.Context) {
+func detail(c core.Context) {
 	request := new(detailRequest)
 	if err := c.ShouldBindForm(request); err != nil {
 		c.AbortWithError(core.Error(
@@ -23,7 +24,7 @@ func (h *handler) detail(c core.Context) {
 		return
 	}
 
-	detail, err := h.userService.Detail(c, request.ID)
+	detail, err := users.Detail(c, request.ID)
 	if err != nil {
 		c.AbortWithError(core.Error(
 			code.UsersDetailError,

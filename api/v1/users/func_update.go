@@ -5,6 +5,7 @@ import (
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	"signin-go/internal/validation"
+	"signin-go/repository/users"
 
 	"go.uber.org/zap"
 )
@@ -13,7 +14,7 @@ type updateRequest struct {
 	ID uint32 `form:"id" binding:"required"`
 }
 
-func (h *handler) update(c core.Context) {
+func update(c core.Context) {
 	request := new(updateRequest)
 	if err := c.ShouldBindForm(request); err != nil {
 		c.AbortWithError(core.Error(
@@ -23,7 +24,7 @@ func (h *handler) update(c core.Context) {
 		return
 	}
 
-	err := h.userService.Update(c, request.ID)
+	err := users.Update(c, &users.Filter{ID: request.ID}, map[string]interface{}{"users.name": "NewName"})
 	if err != nil {
 		c.AbortWithError(core.Error(
 			code.UsersDetailError,

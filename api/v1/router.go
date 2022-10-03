@@ -6,7 +6,7 @@ import (
 )
 
 func Router(routerGroup core.RouterGroup) {
-
-	usersRG := routerGroup.Group("/users")
-	users.Router(usersRG)
+	users.Router(
+		routerGroup.Group("/users"),
+	)
 }

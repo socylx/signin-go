@@ -1,15 +1,16 @@
 package users
 
 import (
+	"signin-go/global/mysql"
 	"signin-go/internal/core"
 )
 
-func (u *users) Detail(ctx core.Context, userID uint32) (user *Users, err error) {
-	db := u.db.WithContext(ctx.RequestContext())
+func Detail(ctx core.Context, userID uint32) (user *Users, err error) {
+	db := mysql.DB.WithContext(ctx.RequestContext())
 
 	user = &Users{}
 	err = db.Table(
-		u.TableName(),
+		tableName(),
 	).Where(
 		"users.is_del = 0 AND users.id = ?", userID,
 	).First(&user).Error
@@ -22,11 +23,11 @@ type Filter struct {
 	Size int
 }
 
-func (u *users) List(ctx core.Context, filter *Filter) (users []*Users, err error) {
-	db := u.db.WithContext(ctx.RequestContext())
+func List(ctx core.Context, filter *Filter) (users []*Users, err error) {
+	db := mysql.DB.WithContext(ctx.RequestContext())
 
 	sql := db.Table(
-		u.TableName(),
+		tableName(),
 	).Where(
 		"users.is_del = 0",
 	)
@@ -45,10 +46,10 @@ func (u *users) List(ctx core.Context, filter *Filter) (users []*Users, err erro
 	return
 }
 
-func (u *users) Update(ctx core.Context, filter *Filter, data map[string]interface{}) (err error) {
-	db := u.db.WithContext(ctx.RequestContext())
+func Update(ctx core.Context, filter *Filter, data map[string]interface{}) (err error) {
+	db := mysql.DB.WithContext(ctx.RequestContext())
 	err = db.Table(
-		u.TableName(),
+		tableName(),
 	).Where(
 		"users.is_del = 0 AND users.id = ?", filter.ID,
 	).Updates(data).Error

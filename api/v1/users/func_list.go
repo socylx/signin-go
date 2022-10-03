@@ -5,6 +5,7 @@ import (
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	"signin-go/internal/validation"
+	"signin-go/repository/users"
 
 	"go.uber.org/zap"
 )
@@ -13,7 +14,7 @@ type listRequest struct {
 	ID uint32 `form:"id" binding:"required"`
 }
 
-func (h *handler) list(c core.Context) {
+func list(c core.Context) {
 	request := new(listRequest)
 	if err := c.ShouldBindForm(request); err != nil {
 		c.AbortWithError(core.Error(
@@ -23,7 +24,7 @@ func (h *handler) list(c core.Context) {
 		return
 	}
 
-	list, err := h.userService.List(c, request.ID)
+	list, err := users.List(c, &users.Filter{ID: request.ID})
 	if err != nil {
 		c.AbortWithError(core.Error(
 			code.UsersDetailError,

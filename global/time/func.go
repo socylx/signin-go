@@ -6,9 +6,6 @@ import (
 	"time"
 )
 
-var Now func() Time = time.Now
-var Since func(t Time) time.Duration = time.Since
-
 // RFC3339ToCSTLayout convert rfc3339 value to china standard time layout
 // 2020-11-08T08:18:46+08:00 => 2020-11-08 08:18:46
 func RFC3339ToCSTLayout(value string) (string, error) {

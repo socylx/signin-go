@@ -1,13 +1,7 @@
 package users
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/global/redis"
-	"signin-go/internal/core"
-	"sync"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 // Users 用户信息表
@@ -44,38 +38,7 @@ type Users struct {
 	ManagerUserID   uint32    `gorm:"column:manager_user_id" json:"manager_user_id"`     // 会员负责人，顾问
 }
 
-type UsersRepo interface {
-	i()
-	TableName() string
-
-	// dao.go
-	Detail(ctx core.Context, userID uint32) (user *Users, err error)
-	List(ctx core.Context, filter *Filter) (users []*Users, err error)
-	Update(ctx core.Context, filter *Filter, data map[string]interface{}) (err error)
-}
-
-type users struct {
-	db    *gorm.DB
-	redis *redis.Client
-}
-
-func New() *users {
-	once.Do(func() {
-		u = &users{
-			db:    mysql.DB,
-			redis: redis.Redis,
-		}
-	})
-	return u
-}
-
-var u *users
-var once sync.Once
-var _ UsersRepo = (*users)(nil)
-
-func (u *users) i() {}
-
 // TableName get sql table name.获取数据库表名
-func (u *users) TableName() string {
+func tableName() string {
 	return "users"
 }

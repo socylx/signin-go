@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"net/url"
 	"runtime/debug"
-	"time"
 
 	"signin-go/global/config"
 	"signin-go/global/logger"
+	"signin-go/global/time"
 	"signin-go/internal/code"
 	"signin-go/internal/proposal"
 	"signin-go/internal/trace"
