@@ -5,6 +5,7 @@ import (
 	"signin-go/internal/alert"
 	"signin-go/internal/core"
 	"signin-go/internal/metrics"
+	"signin-go/router/middleware"
 )
 
 type Response struct {
@@ -23,7 +24,7 @@ func HTTPServer() core.Mux {
 		core.WithEnableCors(),
 	)
 
-	routerGroup := mux.Group("/v1")
+	routerGroup := mux.Group("/v1", middleware.SetSessionUserInfo)
 	v1.Router(routerGroup)
 
 	return mux

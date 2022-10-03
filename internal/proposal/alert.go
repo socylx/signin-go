@@ -1,7 +1,7 @@
 package proposal
 
 import (
-	"encoding/json"
+	"signin-go/global/utils"
 	"time"
 )
 
@@ -20,7 +20,7 @@ type AlertMessage struct {
 
 // Marshal 序列化到JSON
 func (a *AlertMessage) Marshal() (jsonRaw []byte) {
-	jsonRaw, _ = json.Marshal(a)
+	jsonRaw, _ = utils.Json.Marshal(a)
 	return
 }
 

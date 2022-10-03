@@ -1,7 +1,7 @@
 package proposal
 
 import (
-	"encoding/json"
+	"signin-go/global/utils"
 )
 
 // MetricsMessage 指标信息
@@ -20,7 +20,7 @@ type MetricsMessage struct {
 
 // Marshal 序列化到JSON
 func (m *MetricsMessage) Marshal() (jsonRaw []byte) {
-	jsonRaw, _ = json.Marshal(m)
+	jsonRaw, _ = utils.Json.Marshal(m)
 	return
 }
 

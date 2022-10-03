@@ -114,7 +114,7 @@ type Context interface {
 
 	// SessionUserInfo 当前用户信息
 	SessionUserInfo() proposal.SessionUserInfo
-	setSessionUserInfo(info proposal.SessionUserInfo)
+	SetSessionUserInfo(info proposal.SessionUserInfo)
 
 	// Alias 设置路由别名 for metrics path
 	Alias() string
@@ -146,6 +146,8 @@ type Context interface {
 
 	// ResponseWriter 获取 ResponseWriter 对象
 	ResponseWriter() gin.ResponseWriter
+
+	GetCookie(key string) (string, error)
 }
 
 type context struct {
@@ -290,7 +292,7 @@ func (c *context) SessionUserInfo() proposal.SessionUserInfo {
 	return val.(proposal.SessionUserInfo)
 }
 
-func (c *context) setSessionUserInfo(info proposal.SessionUserInfo) {
+func (c *context) SetSessionUserInfo(info proposal.SessionUserInfo) {
 	c.ctx.Set(_SessionUserInfo, info)
 }
 
@@ -398,4 +400,8 @@ func (c *context) RequestContext() StdContext {
 // ResponseWriter 获取 ResponseWriter
 func (c *context) ResponseWriter() gin.ResponseWriter {
 	return c.ctx.Writer
+}
+
+func (c *context) GetCookie(key string) (string, error) {
+	return c.ctx.Cookie(key)
 }
