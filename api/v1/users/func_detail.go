@@ -24,7 +24,7 @@ func detail(c core.Context) {
 		return
 	}
 
-	detail, err := users.Detail(c, request.ID)
+	detail, err := users.Detail(c.RequestContext(), request.ID)
 	if err != nil {
 		c.AbortWithError(core.Error(
 			code.UsersDetailError,

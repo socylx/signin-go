@@ -16,8 +16,8 @@ type StaffRolePage struct {
 }
 
 // 员工的角色和队友的SystemPagePageKey
-func StaffRolePageData(ctx core.Context, userID uint32) (data *StaffRolePage, err error) {
-	db := mysql.DB.WithContext(ctx.RequestContext())
+func StaffRolePageData(ctx core.StdContext, userID uint32) (data *StaffRolePage, err error) {
+	db := mysql.DB.WithContext(ctx)
 
 	data = &StaffRolePage{}
 	err = db.Table(
@@ -37,8 +37,8 @@ func StaffRolePageData(ctx core.Context, userID uint32) (data *StaffRolePage, er
 }
 
 // 获取某个门店的店长和课程顾问对应的ID
-func StudioConsultantOnlyID(ctx core.Context, studioID uint32) (data []*types.StudioConsultantOnlyID, err error) {
-	db := mysql.DB.WithContext(ctx.RequestContext())
+func StudioConsultantOnlyID(ctx core.StdContext, studioID uint32) (data []*types.StudioConsultantOnlyID, err error) {
+	db := mysql.DB.WithContext(ctx)
 
 	err = db.Table(tableName()).
 		Select("staff.id, staff.user_id as staff_user_id").

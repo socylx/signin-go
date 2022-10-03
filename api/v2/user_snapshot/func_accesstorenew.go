@@ -41,10 +41,10 @@ func accesstorenew(c core.Context) {
 	// nearly30EndDate := today.AddDate(0, 0, 1)
 
 	renewTargeValueRedisKey := redis.GetRenewTargeValueRedisKey(request.StudioID, request.StaffUserID)
-	renewTargeValue, _ := redis.GetRenewTargeValue(c, renewTargeValueRedisKey)
+	renewTargeValue, _ := redis.GetRenewTargeValue(c.RequestContext(), renewTargeValueRedisKey)
 	if request.IsSet != 0 { // 设置
 		renewTargeValue[weekKey] = uint64(request.TargetValue)
-		redis.SetRenewTargeValue(c, renewTargeValueRedisKey, renewTargeValue)
+		redis.SetRenewTargeValue(c.RequestContext(), renewTargeValueRedisKey, renewTargeValue)
 	}
 
 	// consultantRenewData :=

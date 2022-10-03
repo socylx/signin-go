@@ -25,7 +25,7 @@ func update(c core.Context) {
 	}
 
 	err := users.Update(
-		c,
+		c.RequestContext(),
 		&users.Filter{ID: request.ID},
 		users.Users{Name: "NewName"},
 	)

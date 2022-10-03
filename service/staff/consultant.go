@@ -6,7 +6,7 @@ import (
 	"signin-go/repository/staff"
 )
 
-func GetConsultantRenewData(ctx core.Context, studioID, staffUserID uint32) (datas []*types.ConsultantRenewData, err error) {
+func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (datas []*types.ConsultantRenewData, err error) {
 	datas = []*types.ConsultantRenewData{}
 	if staffUserID != 0 {
 		return

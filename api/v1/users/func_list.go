@@ -24,7 +24,7 @@ func list(c core.Context) {
 		return
 	}
 
-	list, err := users.List(c, &users.Filter{ID: request.ID})
+	list, err := users.List(c.RequestContext(), &users.Filter{ID: request.ID})
 	if err != nil {
 		c.AbortWithError(core.Error(
 			code.UsersDetailError,

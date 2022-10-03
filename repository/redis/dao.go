@@ -12,10 +12,10 @@ func GetRenewTargeValueRedisKey(studioID, staffUserID uint32) string {
 	return fmt.Sprintf("HistoricalRenewTargeValue_%v_%v", studioID, staffUserID)
 }
 
-func GetRenewTargeValue(ctx core.Context, redisKey string) (data RenewTargeValue, err error) {
+func GetRenewTargeValue(ctx core.StdContext, redisKey string) (data RenewTargeValue, err error) {
 	data = RenewTargeValue{}
 
-	redisData, err := redis.Redis.Get(ctx.RequestContext(), redisKey).Result()
+	redisData, err := redis.Redis.Get(ctx, redisKey).Result()
 	if err != nil {
 		return
 	}
@@ -24,9 +24,9 @@ func GetRenewTargeValue(ctx core.Context, redisKey string) (data RenewTargeValue
 	return
 }
 
-func SetRenewTargeValue(ctx core.Context, redisKey string, redisData RenewTargeValue) {
+func SetRenewTargeValue(ctx core.StdContext, redisKey string, redisData RenewTargeValue) {
 	dataByte, err := utils.Json.Marshal(redisData)
 	if err == nil {
-		redis.Redis.Set(ctx.RequestContext(), redisKey, string(dataByte), 1*365*24*time.Hour)
+		redis.Redis.Set(ctx, redisKey, string(dataByte), 1*365*24*time.Hour)
 	}
 }

@@ -5,8 +5,8 @@ import (
 	"signin-go/internal/core"
 )
 
-func Detail(ctx core.Context, userID uint32) (user *Users, err error) {
-	db := mysql.DB.WithContext(ctx.RequestContext())
+func Detail(ctx core.StdContext, userID uint32) (user *Users, err error) {
+	db := mysql.DB.WithContext(ctx)
 
 	user = &Users{}
 	err = db.Table(
@@ -23,8 +23,8 @@ type Filter struct {
 	Size int
 }
 
-func List(ctx core.Context, filter *Filter) (users []*Users, err error) {
-	db := mysql.DB.WithContext(ctx.RequestContext())
+func List(ctx core.StdContext, filter *Filter) (users []*Users, err error) {
+	db := mysql.DB.WithContext(ctx)
 
 	sql := db.Table(
 		tableName(),
@@ -46,8 +46,8 @@ func List(ctx core.Context, filter *Filter) (users []*Users, err error) {
 	return
 }
 
-func Update(ctx core.Context, filter *Filter, user Users) (err error) {
-	db := mysql.DB.WithContext(ctx.RequestContext())
+func Update(ctx core.StdContext, filter *Filter, user Users) (err error) {
+	db := mysql.DB.WithContext(ctx)
 	err = db.Table(
 		tableName(),
 	).Where(

@@ -5,8 +5,8 @@ import (
 	"signin-go/internal/core"
 )
 
-func Detail(ctx core.Context, activityID uint32) (activity *Activity, err error) {
-	db := mysql.DB.WithContext(ctx.RequestContext())
+func Detail(ctx core.StdContext, activityID uint32) (activity *Activity, err error) {
+	db := mysql.DB.WithContext(ctx)
 
 	activity = &Activity{}
 	err = db.Table(
