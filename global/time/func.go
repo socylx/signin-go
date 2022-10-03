@@ -54,3 +54,9 @@ func ParseGMTInLocation(date string) (time.Time, error) {
 func SubInLocation(ts time.Time) float64 {
 	return math.Abs(time.Now().In(cst).Sub(ts).Seconds())
 }
+
+func TodayDate() time.Time {
+	t := time.Now()
+	d := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, cst)
+	return d
+}
