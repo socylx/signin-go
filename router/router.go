@@ -23,7 +23,8 @@ func HTTPServer() core.Mux {
 		core.WithEnableCors(),
 	)
 
-	v1.Init(mux)
+	routerGroup := mux.Group("/v1")
+	v1.Router(routerGroup)
 
 	return mux
 }

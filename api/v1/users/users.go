@@ -21,10 +21,10 @@ func Router(routerGroup core.RouterGroup) {
 	h := &handler{
 		userService: users.New(),
 	}
-	rg := routerGroup.Group("/users")
+
 	{
-		rg.GET("/detail", h.detail)
-		rg.GET("/update", h.update)
-		rg.GET("/list", h.list)
+		routerGroup.GET("/detail", h.detail)
+		routerGroup.GET("/update", h.update)
+		routerGroup.GET("/list", h.list)
 	}
 }

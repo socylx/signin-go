@@ -5,7 +5,8 @@ import (
 	"signin-go/internal/core"
 )
 
-func Init(mux core.Mux) {
-	routerGroup := mux.Group("/v1")
-	users.Router(routerGroup)
+func Router(routerGroup core.RouterGroup) {
+
+	usersRG := routerGroup.Group("/users")
+	users.Router(usersRG)
 }
