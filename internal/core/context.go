@@ -298,7 +298,7 @@ func (c *context) SetSessionUserInfo(info proposal.SessionUserInfo) {
 
 func (c *context) AbortWithError(err BusinessError) {
 	if err != nil {
-		c.ctx.AbortWithStatus(http.StatusOK)
+		c.ctx.Abort()
 		c.ctx.Set(_AbortErrorName, err)
 	}
 }

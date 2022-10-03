@@ -360,21 +360,21 @@ func New(options ...Option) Mux {
 
 				if err := context.abortError(); err != nil { // customer err
 					// 判断是否需要发送告警通知
-					if err.IsAlert() {
-						if notifyHandler := opt.alertNotify; notifyHandler != nil {
-							notifyHandler(&proposal.AlertMessage{
-								ProjectName:  config.Server.Mode,
-								Env:          config.Server.Mode,
-								TraceID:      traceId,
-								HOST:         context.Host(),
-								URI:          context.URI(),
-								Method:       context.Method(),
-								ErrorMessage: err.Message(),
-								ErrorStack:   fmt.Sprintf("%+v", err.StackError()),
-								Timestamp:    time.Now(),
-							})
-						}
-					}
+					// if err.IsAlert() {
+					// 	if notifyHandler := opt.alertNotify; notifyHandler != nil {
+					// 		notifyHandler(&proposal.AlertMessage{
+					// 			ProjectName:  config.Server.Mode,
+					// 			Env:          config.Server.Mode,
+					// 			TraceID:      traceId,
+					// 			HOST:         context.Host(),
+					// 			URI:          context.URI(),
+					// 			Method:       context.Method(),
+					// 			ErrorMessage: err.Message(),
+					// 			ErrorStack:   fmt.Sprintf("%+v", err.StackError()),
+					// 			Timestamp:    time.Now(),
+					// 		})
+					// 	}
+					// }
 
 					multierr.AppendInto(&abortErr, err.StackError())
 					ctx.JSON(
