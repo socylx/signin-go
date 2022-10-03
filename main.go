@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"signin-go/global"
 	"signin-go/global/config"
+	"signin-go/global/time"
 	"signin-go/router"
 
 	"github.com/gin-gonic/gin"
@@ -21,8 +22,9 @@ func main() {
 			global.Init()
 			http.Serve(state.Listener, router.HTTPServer())
 		},
-		Address: config.Server.Port,
-		Debug:   config.Server.Mode != gin.ReleaseMode,
+		Address:          config.Server.Port,
+		TerminateTimeout: 10 * time.Second,
+		Debug:            config.Server.Mode != gin.ReleaseMode,
 	})
 
 }
