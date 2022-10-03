@@ -3,9 +3,7 @@ package router
 import (
 	v1 "signin-go/api/v1"
 	v2 "signin-go/api/v2"
-	"signin-go/internal/alert"
 	"signin-go/internal/core"
-	"signin-go/internal/metrics"
 	"signin-go/router/middleware"
 )
 
@@ -20,8 +18,8 @@ func HTTPServer() core.Mux {
 		core.WithDisablePProf(),
 		core.WithDisableSwagger(),
 		core.WithDisablePrometheus(),
-		core.WithAlertNotify(alert.NotifyHandler()),
-		core.WithRecordMetrics(metrics.RecordHandler()),
+		// core.WithAlertNotify(alert.NotifyHandler()),
+		// core.WithRecordMetrics(metrics.RecordHandler()),
 		core.WithEnableCors(),
 	)
 
