@@ -17,7 +17,7 @@ func Init() {
 
 	var err error
 	Logger, err = NewJSONLogger(
-		// withDisableConsole(),
+		WithDisableConsole(),
 		WithField("domain", "signin-go"),
 		WithTimeLayout(time.CSTLayout),
 		WithFileP(config.Server.ServerLogFile),
@@ -27,7 +27,7 @@ func Init() {
 	}
 
 	GORMLogger, err = NewJSONLogger(
-		// withDisableConsole(),
+		WithDisableConsole(),
 		WithField("domain", "mysql"),
 		WithTimeLayout(time.CSTLayout),
 		WithFileP(config.Server.SQLLogFile),

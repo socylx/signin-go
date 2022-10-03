@@ -13,7 +13,7 @@ func Detail(ctx core.Context, userID uint32) (user *Users, err error) {
 		tableName(),
 	).Where(
 		"users.is_del = 0 AND users.id = ?", userID,
-	).First(&user).Error
+	).First(user).Error
 	return
 }
 

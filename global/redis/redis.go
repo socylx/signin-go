@@ -16,7 +16,7 @@ var Redis *Client
 
 func Init() {
 	log.Println("global.redis.Init Start...")
-	Redis := redis.NewClient(&redis.Options{
+	Redis = redis.NewClient(&redis.Options{
 		Addr:         fmt.Sprintf("%v:%v", config.Redis.Host, config.Redis.Port),
 		Password:     config.Redis.Password,
 		DB:           config.Redis.DB,

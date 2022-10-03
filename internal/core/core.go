@@ -336,19 +336,19 @@ func New(options ...Option) Mux {
 					code.Text(code.ServerError)),
 				)
 
-				if notifyHandler := opt.alertNotify; notifyHandler != nil {
-					notifyHandler(&proposal.AlertMessage{
-						ProjectName:  config.Server.Name,
-						Env:          config.Server.Mode,
-						TraceID:      traceId,
-						HOST:         context.Host(),
-						URI:          context.URI(),
-						Method:       context.Method(),
-						ErrorMessage: err,
-						ErrorStack:   stackInfo,
-						Timestamp:    time.Now(),
-					})
-				}
+				// if notifyHandler := opt.alertNotify; notifyHandler != nil {
+				// 	notifyHandler(&proposal.AlertMessage{
+				// 		ProjectName:  config.Server.Name,
+				// 		Env:          config.Server.Mode,
+				// 		TraceID:      traceId,
+				// 		HOST:         context.Host(),
+				// 		URI:          context.URI(),
+				// 		Method:       context.Method(),
+				// 		ErrorMessage: err,
+				// 		ErrorStack:   stackInfo,
+				// 		Timestamp:    time.Now(),
+				// 	})
+				// }
 			}
 			// endregion
 

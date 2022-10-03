@@ -5,8 +5,8 @@ import (
 	"signin-go/internal/core"
 )
 
-func PermissionApplyStudioIDs(ctx core.Context, userID uint32) (applyStudioIDs []uint32, err error) {
-	db := mysql.DB.WithContext(ctx.RequestContext())
+func PermissionApplyStudioIDs(c core.Context, userID uint32) (applyStudioIDs []uint32, err error) {
+	db := mysql.DB.WithContext(c.RequestContext())
 
 	applyStudioIDs = []uint32{}
 	err = db.Table(tableName()).

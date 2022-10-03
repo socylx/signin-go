@@ -18,15 +18,15 @@ type sesssion struct {
 	UnionID      string `json:"union_id"`     //唯一id
 }
 
-func SetSessionUserInfo(ctx core.Context) {
+func SetSessionUserInfo(c core.Context) {
 	sessionUserInfo := proposal.SessionUserInfo{
 		UserID:           0,
 		SystemPage:       map[string]bool{},
 		StudioPermission: map[uint32]bool{},
 	}
-	defer ctx.SetSessionUserInfo(sessionUserInfo)
+	defer c.SetSessionUserInfo(sessionUserInfo)
 
-	cookie, cookidErr := ctx.GetCookie("session_id")
+	cookie, cookidErr := c.GetCookie("session_id")
 	if cookidErr != nil {
 		return
 	}
@@ -42,7 +42,7 @@ func SetSessionUserInfo(ctx core.Context) {
 		return
 	}
 
-	redisDataStr, redisErr := redis.Redis.Get(ctx.RequestContext(), string(byteRedisKey)).Result()
+	redisDataStr, redisErr := redis.Redis.Get(c.RequestContext(), string(byteRedisKey)).Result()
 	if redisErr != nil {
 		return
 	}
@@ -57,7 +57,7 @@ func SetSessionUserInfo(ctx core.Context) {
 	}
 	sessionUserInfo.UserID = redisData.UserID
 
-	userStaffRolePageData, err := staff.StaffRolePageData(ctx, redisData.UserID)
+	userStaffRolePageData, err := staff.StaffRolePageData(c, redisData.UserID)
 	if err != nil {
 		return
 	}
@@ -66,7 +66,7 @@ func SetSessionUserInfo(ctx core.Context) {
 		sessionUserInfo.SystemPage[userStaffRolePageData.SystemPagePageKey] = true
 	}
 
-	permissionApplyStudioIDs, err := permission.PermissionApplyStudioIDs(ctx, redisData.UserID)
+	permissionApplyStudioIDs, err := permission.PermissionApplyStudioIDs(c, redisData.UserID)
 	if err != nil || len(permissionApplyStudioIDs) <= 0 {
 		return
 	}
