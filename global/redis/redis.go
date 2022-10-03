@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"signin-go/global/config"
+	"signin-go/global/time"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -23,7 +24,9 @@ func Init() {
 		PoolSize:     10,
 		MinIdleConns: 5,
 	})
-	if err := Redis.Ping(context.TODO()).Err(); err != nil {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	if err := Redis.Ping(ctx).Err(); err != nil {
 		log.Fatalf("global.redis.Init.Ping() Error: %v", err)
 	}
 }
