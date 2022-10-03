@@ -1,4 +1,4 @@
-package todo
+package follow
 
 import (
 	"time"
@@ -26,6 +26,6 @@ type Follow struct {
 }
 
 // TableName get sql table name.获取数据库表名
-func (m *Follow) TableName() string {
+func tableName() string {
 	return "follow"
 }

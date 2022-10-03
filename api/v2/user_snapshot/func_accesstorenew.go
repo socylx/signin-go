@@ -7,6 +7,7 @@ import (
 	"signin-go/internal/core"
 	"signin-go/internal/validation"
 	"signin-go/repository/redis"
+	"signin-go/service/staff"
 )
 
 type accesstorenewRequest struct {
@@ -33,12 +34,6 @@ func accesstorenew(c core.Context) {
 	today := time.TodayDate()
 	year, week := today.ISOWeek()
 	weekKey := fmt.Sprintf("%v_%v", year, week)
-	// thisWeekStartDate := today.AddDate(0, 0, -int(today.Weekday()-1))
-	// thisWeekEndDate := thisWeekStartDate.AddDate(0, 0, 7)
-	// lastWeekStart := thisWeekStartDate.AddDate(0, 0, -7)
-	// lastWeekEnd := thisWeekStartDate
-	// nearly30StartDate := today.AddDate(0, 0, -30)
-	// nearly30EndDate := today.AddDate(0, 0, 1)
 
 	renewTargeValueRedisKey := redis.GetRenewTargeValueRedisKey(request.StudioID, request.StaffUserID)
 	renewTargeValue, _ := redis.GetRenewTargeValue(c.RequestContext(), renewTargeValueRedisKey)
@@ -47,6 +42,7 @@ func accesstorenew(c core.Context) {
 		redis.SetRenewTargeValue(c.RequestContext(), renewTargeValueRedisKey, renewTargeValue)
 	}
 
-	// consultantRenewData :=
-
+	response, _ := staff.GetConsultantRenewData(c.RequestContext(), request.StudioID, request.StaffUserID)
+	response.TargetValue = renewTargeValue[weekKey]
+	c.Payload(response)
 }

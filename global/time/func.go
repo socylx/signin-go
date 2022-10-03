@@ -19,9 +19,8 @@ func RFC3339ToCSTLayout(value string) (string, error) {
 
 // CSTLayoutString 格式化时间
 // 返回 "2006-01-02 15:04:05" 格式的时间
-func CSTLayoutString() string {
-	ts := time.Now()
-	return ts.In(cst).Format(CSTLayout)
+func CSTLayoutString(t Time, layout Format) string {
+	return t.In(cst).Format(layout)
 }
 
 // ParseCSTInLocation 格式化时间

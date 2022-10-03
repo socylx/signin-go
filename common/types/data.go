@@ -1,5 +1,14 @@
 package types
 
+/*
+课程顾问
+
+	续卡目标值
+	上周续卡率
+	近三十天续卡率
+	已完成的续卡金额
+	已跟进的UserIDs
+*/
 type ConsultantRenewData struct {
 	UserID            uint32   `json:"user_id"`
 	TargetValue       uint64   `json:"target_value"`
@@ -9,6 +18,12 @@ type ConsultantRenewData struct {
 	FollowUserIDs     []uint64 `json:"follow_user_ids"`
 }
 
+/*
+员工ID
+
+	StaffID
+	StaffUserID
+*/
 type StudioConsultantOnlyID struct {
 	ID     uint32
 	UserID uint32

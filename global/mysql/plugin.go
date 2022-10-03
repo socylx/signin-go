@@ -67,7 +67,7 @@ func after(db *gorm.DB) {
 	sql := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
 
 	sqlInfo := new(trace.SQL)
-	sqlInfo.Timestamp = time.CSTLayoutString()
+	sqlInfo.Timestamp = time.CSTLayoutString(time.Now(), time.CSTLayout)
 	sqlInfo.SQL = sql
 	sqlInfo.Stack = utils.FileWithLineNum()
 	sqlInfo.Rows = db.Statement.RowsAffected

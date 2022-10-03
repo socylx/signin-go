@@ -5,12 +5,10 @@ import (
 	"signin-go/global/redis"
 	"signin-go/global/utils"
 	"signin-go/internal/core"
+	"signin-go/internal/errors"
+
 	"time"
 )
-
-func GetRenewTargeValueRedisKey(studioID, staffUserID uint32) string {
-	return fmt.Sprintf("HistoricalRenewTargeValue_%v_%v", studioID, staffUserID)
-}
 
 func GetRenewTargeValue(ctx core.StdContext, redisKey string) (data RenewTargeValue, err error) {
 	data = RenewTargeValue{}
@@ -29,4 +27,18 @@ func SetRenewTargeValue(ctx core.StdContext, redisKey string, redisData RenewTar
 	if err == nil {
 		redis.Redis.Set(ctx, redisKey, string(dataByte), 1*365*24*time.Hour)
 	}
+}
+
+func GetUint64Slice(ctx core.StdContext, redisKey string, redisType RedisType) (data []string, err error) {
+	switch redisType {
+	case List:
+		err = errors.New("GetUint64Slice From Redis No【List】Func")
+	case Set:
+		data, err = redis.Redis.SMembers(ctx, redisKey).Result()
+	case SortSet:
+		err = errors.New("GetUint64Slice From Redis No【SortSet】Func")
+	default:
+		err = errors.New(fmt.Sprintf("GetUint64Slice From Redis No【%s】Func", redisType))
+	}
+	return
 }
