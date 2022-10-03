@@ -2,6 +2,7 @@ package router
 
 import (
 	v1 "signin-go/api/v1"
+	v2 "signin-go/api/v2"
 	"signin-go/internal/alert"
 	"signin-go/internal/core"
 	"signin-go/internal/metrics"
@@ -24,8 +25,11 @@ func HTTPServer() core.Mux {
 		core.WithEnableCors(),
 	)
 
-	routerGroup := mux.Group("/v1", middleware.SetSessionUserInfo)
-	v1.Router(routerGroup)
+	v1RouterGroup := mux.Group("/v1", middleware.SetSessionUserInfo)
+	v1.Router(v1RouterGroup)
+
+	v2RouterGroup := mux.Group("/v2", middleware.SetSessionUserInfo)
+	v2.Router(v2RouterGroup)
 
 	return mux
 }
