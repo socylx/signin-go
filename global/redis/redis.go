@@ -33,5 +33,7 @@ func Init() {
 
 func Close() {
 	err := Redis.Close()
-	log.Printf("global.redis.Close Error: %v", err)
+	if err != nil {
+		log.Printf("global.redis.Close Error: %v", err)
+	}
 }

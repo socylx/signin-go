@@ -4,6 +4,7 @@ import (
 	"log"
 	"signin-go/global/config"
 	"signin-go/global/logger"
+	"signin-go/global/mongo"
 	"signin-go/global/mysql"
 	"signin-go/global/redis"
 	"signin-go/global/time"
@@ -29,9 +30,13 @@ func Init() {
 
 	redis.Init()
 	log.Println("-----------------------------")
+
+	mongo.Init()
+	log.Println("-----------------------------")
 }
 
 func Close() {
+	mongo.Close()
 	redis.Close()
 	mysql.Close()
 	logger.Close()

@@ -26,6 +26,7 @@ func Init() {
 		"Server": Server,
 		"Mysql":  Mysql,
 		"Redis":  Redis,
+		"Mongo":  Mongo,
 		"Notify": Notify,
 	}
 
