@@ -4,16 +4,16 @@ import (
 	"time"
 )
 
-var cst *time.Location
-
-// CSTLayout China Standard Time Layout
-const CSTLayout = "2006-01-02 15:04:05"
-
+type Format = string
 type Duration = time.Duration
 type Time = time.Time
 
-var Now func() Time = time.Now
-var Since func(t Time) time.Duration = time.Since
+var (
+	cst              *time.Location
+	DateTimeZeroTime Time                       = time.Time{}
+	Now              func() Time                = time.Now
+	Since            func(t Time) time.Duration = time.Since
+)
 
 const (
 	Nanosecond  Duration = 1
@@ -22,4 +22,9 @@ const (
 	Second               = 1000 * Millisecond
 	Minute               = 60 * Second
 	Hour                 = 60 * Minute
+
+	CSTLayout Format = "2006-01-02 15:04:05" // CSTLayout China Standard Time Layout
+	YYYYMMDD  Format = "2006-01-02"
+
+	DateTimeZeroString string = "0000-00-00 00:00:00"
 )
