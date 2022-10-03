@@ -46,12 +46,12 @@ func List(ctx core.Context, filter *Filter) (users []*Users, err error) {
 	return
 }
 
-func Update(ctx core.Context, filter *Filter, data map[string]interface{}) (err error) {
+func Update(ctx core.Context, filter *Filter, user Users) (err error) {
 	db := mysql.DB.WithContext(ctx.RequestContext())
 	err = db.Table(
 		tableName(),
 	).Where(
 		"users.is_del = 0 AND users.id = ?", filter.ID,
-	).Updates(data).Error
+	).Updates(user).Error
 	return
 }

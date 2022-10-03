@@ -24,7 +24,11 @@ func update(c core.Context) {
 		return
 	}
 
-	err := users.Update(c, &users.Filter{ID: request.ID}, map[string]interface{}{"users.name": "NewName"})
+	err := users.Update(
+		c,
+		&users.Filter{ID: request.ID},
+		users.Users{Name: "NewName"},
+	)
 	if err != nil {
 		c.AbortWithError(core.Error(
 			code.UsersDetailError,
