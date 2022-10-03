@@ -25,6 +25,7 @@ func Init() {
 	objectMap := map[string]interface{}{
 		"Server": Server,
 		"Mysql":  Mysql,
+		"Redis":  Redis,
 		"Notify": Notify,
 	}
 

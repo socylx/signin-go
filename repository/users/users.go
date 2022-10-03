@@ -2,6 +2,7 @@ package users
 
 import (
 	"signin-go/global/mysql"
+	"signin-go/global/redis"
 	"signin-go/internal/core"
 	"sync"
 	"time"
@@ -54,14 +55,15 @@ type UsersRepo interface {
 }
 
 type users struct {
-	db *gorm.DB
-	// redis *redis.Client
+	db    *gorm.DB
+	redis *redis.Client
 }
 
 func New() *users {
 	once.Do(func() {
 		u = &users{
-			db: mysql.DB,
+			db:    mysql.DB,
+			redis: redis.Redis,
 		}
 	})
 	return u
