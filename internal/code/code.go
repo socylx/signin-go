@@ -26,7 +26,7 @@ const (
 	ResubmitError      = 10110
 	HashIdsEncodeError = 10111
 	HashIdsDecodeError = 10112
-	RBACError          = 10113
+	PermissionError    = 10113
 	RedisConnectError  = 10114
 	MySQLConnectError  = 10115
 	WriteConfigError   = 10116

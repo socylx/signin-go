@@ -13,7 +13,7 @@ var text = map[int]string{
 	ResubmitError:      "请勿重复提交",
 	HashIdsEncodeError: "HashID 加密失败",
 	HashIdsDecodeError: "HashID 解密失败",
-	RBACError:          "暂无访问权限",
+	PermissionError:    "无权限",
 	RedisConnectError:  "Redis 连接失败",
 	MySQLConnectError:  "MySQL 连接失败",
 	WriteConfigError:   "写入配置文件失败",

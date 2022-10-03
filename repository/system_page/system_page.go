@@ -1,4 +1,4 @@
-package todo
+package system_page
 
 import (
 	"time"
@@ -15,6 +15,6 @@ type SystemPage struct {
 }
 
 // TableName get sql table name.获取数据库表名
-func (m *SystemPage) TableName() string {
+func tableName() string {
 	return "system_page"
 }

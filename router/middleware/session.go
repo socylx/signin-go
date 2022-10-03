@@ -20,9 +20,9 @@ type sesssion struct {
 
 func SetSessionUserInfo(ctx core.Context) {
 	sessionUserInfo := proposal.SessionUserInfo{
-		UserID:     0,
-		SystemPage: map[string]bool{},
-		Permission: map[uint32]bool{},
+		UserID:           0,
+		SystemPage:       map[string]bool{},
+		StudioPermission: map[uint32]bool{},
 	}
 	defer ctx.SetSessionUserInfo(sessionUserInfo)
 
@@ -71,7 +71,8 @@ func SetSessionUserInfo(ctx core.Context) {
 		return
 	}
 
+	sessionUserInfo.SystemPage[permission.Admin] = true
 	for _, permissionApplyStudioID := range permissionApplyStudioIDs {
-		sessionUserInfo.Permission[permissionApplyStudioID] = true
+		sessionUserInfo.StudioPermission[permissionApplyStudioID] = true
 	}
 }
