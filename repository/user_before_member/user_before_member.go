@@ -1,4 +1,4 @@
-package todo
+package user_before_member
 
 import (
 	"time"
@@ -29,9 +29,4 @@ type UserBeforeMember struct {
 	CustomerType    uint32    `gorm:"column:customer_type" json:"customer_type"` // 客户类型，1成人客户，2少儿客户
 	CustomerCity    uint32    `gorm:"column:customer_city" json:"customer_city"` // 客户区域，1北京，2非北京
 	TransferTime    time.Time `gorm:"column:transfer_time" json:"transfer_time"` // 转移到门店的时间
-}
-
-// TableName get sql table name.获取数据库表名
-func (m *UserBeforeMember) TableName() string {
-	return "user_before_member"
 }

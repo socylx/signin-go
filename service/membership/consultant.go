@@ -22,7 +22,7 @@ func GetConsultantRenewAmount(ctx core.StdContext, startTime, endTime time.Time,
 	memberships, _ := membership.GetMembershipDatas(ctx, &membership.MembershipFilter{
 		CreateTimeGE: startTime,
 		CreateTimeLT: endTime,
-		CardID:       card.AdultCard,
+		CardIDs:      []card.CardID{card.AdultCard},
 	})
 
 	userIDs := []uint32{}
@@ -32,7 +32,7 @@ func GetConsultantRenewAmount(ctx core.StdContext, startTime, endTime time.Time,
 
 	beforeMemberships, _ := membership.GetMembershipDatas(ctx, &membership.MembershipFilter{
 		CreateTimeLT:   startTime,
-		CardID:         card.AdultCard,
+		CardIDs:        []card.CardID{card.AdultCard},
 		IncludeUserIDs: userIDs,
 	})
 

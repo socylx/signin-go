@@ -35,4 +35,8 @@ var text = map[int]string{
 	StrategyDeleteError: "删除策略失败",
 
 	StrategyIndicatorQueryError: "获取策略指标失败",
+
+	StudioQueryError: "查询门店失败",
+
+	UserBeforeMemberQueryError: "查询线索失败",
 }

@@ -1,4 +1,4 @@
-package todo
+package studio
 
 import (
 	"time"
@@ -22,9 +22,4 @@ type Studio struct {
 	Latitude   string    `gorm:"column:latitude" json:"latitude"`       // 门店位置纬度
 	Longitude  string    `gorm:"column:longitude" json:"longitude"`     // 门店位置经度
 	StudioType uint32    `gorm:"column:studio_type" json:"studio_type"` // 门店类型，1线下门店，2虚拟门店
-}
-
-// TableName get sql table name.获取数据库表名
-func (m *Studio) TableName() string {
-	return "studio"
 }

@@ -61,3 +61,11 @@ func GetUserLastFollowConsultantIDMap(ctx core.StdContext, userIDs []uint32) (ID
 
 	return
 }
+
+func GetFollows(ctx core.StdContext, forID uint32) (data []*Follow, err error) {
+	db := mysql.DB.WithContext(ctx)
+	err = db.Table("follow").
+		Where("follow.is_del = 0 AND follow.user_id = ? AND follow.for_type = ?", forID, UserBeforeMember).
+		Find(&data).Error
+	return
+}

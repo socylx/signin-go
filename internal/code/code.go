@@ -48,6 +48,10 @@ const (
 	StrategyDeleteError = 20203
 
 	StrategyIndicatorQueryError = 20301
+
+	StudioQueryError = 20401
+
+	UserBeforeMemberQueryError = 20501
 )
 
 func Text(code int) string {

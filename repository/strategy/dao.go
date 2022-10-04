@@ -28,6 +28,7 @@ func Detail(ctx core.StdContext, strategyID uint32) (strategy *Strategy, err err
 
 	strategy = &Strategy{}
 	err = db.Table("strategy").
+		Select("strategy.*").
 		Where("strategy.is_del = 0 AND strategy.id = ?", strategyID).
 		First(strategy).Error
 	return

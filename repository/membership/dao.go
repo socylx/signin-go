@@ -8,18 +8,24 @@ import (
 )
 
 type MembershipFilter struct {
+	UserID         uint32
 	CreateTimeGE   time.Time
 	CreateTimeLT   time.Time
-	CardID         card.CardID
+	CardIDs        []card.CardID
+	RemainsGT      float32
 	IncludeUserIDs []uint32
+	Status         uint // 0-不限制, 1-有效期未过
 }
 
 type MembershipData struct {
-	ID              uint32
-	UserID          uint32
-	BelongsStudioID uint32
-	Amount          float32
-	SalesUserID     uint32
+	ID              uint32    `bson:"id"`
+	UserID          uint32    `bson:"user_id"`
+	BelongsStudioID uint32    `bson:"belongs_studio_id"`
+	Amount          float32   `bson:"amount"`
+	SalesUserID     uint32    `bson:"sales_user_id"`
+	CreateTime      time.Time `bson:"create_time"`
+	Deadline        time.Time `bson:"deadline"`
+	Remains         float32   `bson:"remains"`
 }
 
 /*
@@ -29,19 +35,28 @@ func GetMembershipDatas(ctx core.StdContext, filter *MembershipFilter) (data []*
 	db := mysql.DB.WithContext(ctx)
 
 	query := db.Table("membership").
-		Select("membership.id,membership.user_id,membership.belongs_studio_id,membership.amount,membership.sales_user_id").
+		Select("membership.id,membership.user_id,membership.belongs_studio_id,membership.amount,membership.sales_user_id,membership.create_time,membership.deadline,membership.remains").
 		Where("membership.is_del = 0")
+	if filter.UserID > 0 {
+		query = query.Where("membership.user_id = ?", filter.UserID)
+	}
 	if filter.CreateTimeGE != time.TimeZeroTime {
 		query = query.Where("membership.create_time >= ?", filter.CreateTimeGE)
 	}
 	if filter.CreateTimeLT != time.TimeZeroTime {
 		query = query.Where("membership.create_time < ?", filter.CreateTimeLT)
 	}
-	if filter.CardID > 0 {
-		query = query.Where("membership.card_id = ?", filter.CardID)
+	if len(filter.CardIDs) > 0 {
+		query = query.Where("membership.card_id IN ?", filter.CardIDs)
+	}
+	if filter.RemainsGT > 0 {
+		query = query.Where("membership.remains > ?", filter.RemainsGT)
 	}
 	if len(filter.IncludeUserIDs) > 0 {
 		query = query.Where("membership.user_id IN ?", filter.IncludeUserIDs)
+	}
+	if filter.Status == 1 {
+		query = query.Where("membership.deadline = ? OR membership.deadline > ?", time.TimeZeroString, time.Now)
 	}
 
 	err = query.Find(&data).Error

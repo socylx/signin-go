@@ -13,3 +13,9 @@ type StudioStrategyMap struct {
 	UpdateTime time.Time `gorm:"column:update_time" json:"update_time"`
 	IsDel      bool      `gorm:"column:is_del" json:"is_del"`
 }
+
+type StudioStrategyMapData struct {
+	StudioStrategyMap
+	StrategyType   uint32 `json:"strategy_type"`
+	StrategyStatus bool   `json:"strategy_status"`
+}
