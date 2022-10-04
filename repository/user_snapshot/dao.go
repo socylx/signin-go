@@ -25,7 +25,7 @@ type UserSnapshotFilter struct {
 */
 func GetUserSnapshotData(ctx core.StdContext, filter *UserSnapshotFilter) (data []*UserSnapshotData, err error) {
 	db := mysql.DB.WithContext(ctx)
-	query := db.Table(tableName()).
+	query := db.Table("user_snapshot").
 		Select("user_snapshot.id,user_snapshot.membership_remains,user_snapshot.coupon_remains,user_snapshot.renew_membership_id,users.id as user_id").
 		Joins("JOIN users on user_snapshot.user_id = users.id").
 		Where("user_snapshot.is_del = 0 AND user_snapshot.user_type = 1 AND users.is_del = 0")
@@ -58,7 +58,7 @@ type LastUserSnapshotIDsFilter struct {
 func GetLastUserSnapshotIDs(ctx core.StdContext, filter *LastUserSnapshotIDsFilter) (data []uint32, err error) {
 	db := mysql.DB.WithContext(ctx)
 
-	query := db.Table(tableName()).
+	query := db.Table("user_snapshot").
 		Select("max(user_snapshot.id) as last_user_snapshot_id").
 		Joins("JOIN users on user_snapshot.user_id = users.id").
 		Where("user_snapshot.is_del = 0 AND user_snapshot.create_time < ? AND user_snapshot.user_type = 1 AND users.is_del = 0 AND users.belongs_studio_id = ?", filter.Time, filter.StudioID)

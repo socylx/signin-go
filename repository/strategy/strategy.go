@@ -21,11 +21,6 @@ type Strategy struct {
 	IsDel        bool      `gorm:"column:is_del" json:"is_del"`
 }
 
-// TableName get sql table name.获取数据库表名
-func tableName() string {
-	return "strategy"
-}
-
 type IndicatorData struct {
 	strategy_indicator.StrategyIndicator
 	Weight uint32               `json:"weight"`

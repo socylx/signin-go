@@ -25,8 +25,3 @@ type Membership struct {
 	RefundAmount    float32   `gorm:"column:refund_amount" json:"refund_amount"`   // 退卡退款金额
 	CreateUserID    uint32    `gorm:"column:create_user_id" json:"create_user_id"` // 创建人
 }
-
-// TableName get sql table name.获取数据库表名
-func tableName() string {
-	return "membership"
-}

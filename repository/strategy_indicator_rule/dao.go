@@ -7,7 +7,7 @@ import (
 
 func GetStrategyIndicatorRules(ctx core.StdContext, IDs []uint32) (data []*StrategyIndicatorRule, err error) {
 	db := mysql.DB.WithContext(ctx)
-	err = db.Table(tableName()).
+	err = db.Table("strategy_indicator_rule").
 		Select("strategy_indicator_rule.*").
 		Where("strategy_indicator_rule.is_del = 0 AND strategy_indicator_rule.id IN ?", IDs).
 		Find(&data).Error

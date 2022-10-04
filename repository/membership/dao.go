@@ -28,7 +28,7 @@ type MembershipData struct {
 func GetMembershipDatas(ctx core.StdContext, filter *MembershipFilter) (data []*MembershipData, err error) {
 	db := mysql.DB.WithContext(ctx)
 
-	query := db.Table(tableName()).
+	query := db.Table("membership").
 		Select("membership.id,membership.user_id,membership.belongs_studio_id,membership.amount,membership.sales_user_id").
 		Where("membership.is_del = 0")
 	if filter.CreateTimeGE != time.TimeZeroTime {

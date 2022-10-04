@@ -35,8 +35,3 @@ type Users struct {
 	Type            uint32    `gorm:"column:type" json:"type"`                           // 1-正常用户, 2-虚拟用户
 	ManagerUserID   uint32    `gorm:"column:manager_user_id" json:"manager_user_id"`     // 会员负责人，顾问
 }
-
-// TableName get sql table name.获取数据库表名
-func tableName() string {
-	return "users"
-}

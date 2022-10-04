@@ -29,19 +29,14 @@ func StaffRolePageData(ctx core.StdContext, userID uint32) (data *StaffRolePage,
 	db := mysql.DB.WithContext(ctx)
 
 	data = &StaffRolePage{}
-	err = db.Table(
-		tableName(),
-	).Select(
-		"staff.id,staff.role_id,role_page.id as role_page_id,system_page.id as system_page_id,system_page.page_key as system_page_page_key",
-	).Joins(
-		"join role_page on staff.role_id = role_page.role_id",
-	).Joins(
-		"join system_page on role_page.system_page_id = system_page.id",
-	).Where(
-		"staff.is_del = 0 AND staff.user_id = ? AND role_page.is_del = 0 AND system_page.is_del = 0", userID,
-	).Order(
-		"staff.user_id ASC",
-	).Limit(1).Find(&data).Error
+	err = db.Table("staff").
+		Select("staff.id,staff.role_id,role_page.id as role_page_id,system_page.id as system_page_id,system_page.page_key as system_page_page_key").
+		Joins("join role_page on staff.role_id = role_page.role_id").
+		Joins("join system_page on role_page.system_page_id = system_page.id").
+		Where("staff.is_del = 0 AND staff.user_id = ? AND role_page.is_del = 0 AND system_page.is_del = 0", userID).
+		Order("staff.user_id ASC").
+		Limit(1).
+		Find(&data).Error
 	return
 }
 
@@ -49,7 +44,7 @@ func StaffRolePageData(ctx core.StdContext, userID uint32) (data *StaffRolePage,
 func StudioConsultantOnlyID(ctx core.StdContext, studioID uint32) (data []*types.StudioConsultantOnlyID, err error) {
 	db := mysql.DB.WithContext(ctx)
 
-	err = db.Table(tableName()).
+	err = db.Table("staff").
 		Select("staff.id, staff.user_id as staff_user_id").
 		Joins("JOIN role_page on staff.role_id = role_page.role_id").
 		Joins("JOIN permission on staff.role_id = permission.role_id").

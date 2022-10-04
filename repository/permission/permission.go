@@ -15,8 +15,3 @@ type Permission struct {
 	IsDel         int8      `gorm:"column:is_del" json:"is_del"`                   // 是否删除
 	RoleID        int       `gorm:"column:role_id" json:"role_id"`
 }
-
-// TableName get sql table name.获取数据库表名
-func tableName() string {
-	return "permission"
-}

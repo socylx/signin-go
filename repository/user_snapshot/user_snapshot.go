@@ -19,8 +19,3 @@ type UserSnapshot struct {
 	IsDel             bool      `gorm:"column:is_del" json:"is_del"`                           // 是否删除
 	RenewMembershipID uint32    `gorm:"column:renew_membership_id" json:"renew_membership_id"` // 如果在这个节点续卡了，续的卡id
 }
-
-// TableName get sql table name.获取数据库表名
-func tableName() string {
-	return "user_snapshot"
-}

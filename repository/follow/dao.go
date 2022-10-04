@@ -12,7 +12,7 @@ import (
 func GetFollowUserIDs(ctx core.StdContext, startTime, endTime time.Time, studioID, staffUserID uint32) (followUserIDs []uint32, err error) {
 	db := mysql.DB.WithContext(ctx)
 
-	query := db.Table(tableName()).
+	query := db.Table("follow").
 		Select("follow.user_id").
 		Joins("JOIN staff on follow.opt_user_id = staff.user_id").
 		Joins("JOIN role_page on staff.role_id = role_page.role_id").
@@ -39,7 +39,7 @@ func GetUserLastFollowConsultantIDMap(ctx core.StdContext, userIDs []uint32) (ID
 	db := mysql.DB.WithContext(ctx)
 
 	followIDs := []uint32{}
-	db.Table(tableName()).
+	db.Table("follow").
 		Select("max(follow.id)").
 		Where("follow.is_del = 0 AND follow.for_type = 1 AND follow.follow_type = 2 AND follow.user_id IN ?", userIDs).
 		Group("follow.user_id").
@@ -50,7 +50,7 @@ func GetUserLastFollowConsultantIDMap(ctx core.StdContext, userIDs []uint32) (ID
 			UserID    uint32
 			OptUserID uint32
 		}{}
-		db.Table(tableName()).
+		db.Table("follow").
 			Select("follow.user_id, follow.opt_user_id").
 			Where("follow.id IN ?", followIDs).
 			Find(&follows)

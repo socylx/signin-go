@@ -13,7 +13,7 @@ type StrategyIndicatorData struct {
 
 func List(ctx core.StdContext) (data []*StrategyIndicatorData, err error) {
 	db := mysql.DB.WithContext(ctx)
-	err = db.Table(tableName()).
+	err = db.Table("strategy_indicator").
 		Preload("StrategyIndicatorRules", "strategy_indicator_rule.is_del = 0").
 		Where("strategy_indicator.is_del = 0").
 		Find(&data).Error

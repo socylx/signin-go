@@ -16,8 +16,3 @@ type Staff struct {
 	Type       uint32    `gorm:"column:type" json:"type"`               // 账号类型，1公司账号，2私人账号
 	WxQrCode   string    `gorm:"column:wx_qr_code" json:"wx_qr_code"`   // 二维码链接
 }
-
-// TableName get sql table name.获取数据库表名
-func tableName() string {
-	return "staff"
-}

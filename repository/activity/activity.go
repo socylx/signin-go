@@ -41,8 +41,3 @@ type Activity struct {
 	TranslationDesc     string    `gorm:"column:translation_desc" json:"translation_desc"` // 课堂翻译
 	ShowTranslationDesc bool      `gorm:"column:show_translation_desc" json:"show_translation_desc"`
 }
-
-// TableName get sql table name.获取数据库表名
-func tableName() string {
-	return "activity"
-}

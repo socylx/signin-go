@@ -9,11 +9,9 @@ func Detail(ctx core.StdContext, userID uint32) (user *Users, err error) {
 	db := mysql.DB.WithContext(ctx)
 
 	user = &Users{}
-	err = db.Table(
-		tableName(),
-	).Where(
-		"users.is_del = 0 AND users.id = ?", userID,
-	).First(user).Error
+	err = db.Table("users").
+		Where("users.is_del = 0 AND users.id = ?", userID).
+		First(user).Error
 	return
 }
 
@@ -26,11 +24,7 @@ type Filter struct {
 func List(ctx core.StdContext, filter *Filter) (users []*Users, err error) {
 	db := mysql.DB.WithContext(ctx)
 
-	sql := db.Table(
-		tableName(),
-	).Where(
-		"users.is_del = 0",
-	)
+	sql := db.Table("users").Where("users.is_del = 0")
 	if filter.ID > 0 {
 		sql = sql.Where("users.id = ?", filter.ID)
 	}
@@ -48,10 +42,8 @@ func List(ctx core.StdContext, filter *Filter) (users []*Users, err error) {
 
 func Update(ctx core.StdContext, filter *Filter, user Users) (err error) {
 	db := mysql.DB.WithContext(ctx)
-	err = db.Table(
-		tableName(),
-	).Where(
-		"users.is_del = 0 AND users.id = ?", filter.ID,
-	).Updates(user).Error
+	err = db.Table("users").
+		Where("users.is_del = 0 AND users.id = ?", filter.ID).
+		Updates(user).Error
 	return
 }

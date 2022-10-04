@@ -12,7 +12,7 @@ func PermissionApplyStudioIDs(ctx core.StdContext, userID uint32) (applyStudioID
 	db := mysql.DB.WithContext(ctx)
 
 	applyStudioIDs = []uint32{}
-	err = db.Table(tableName()).
+	err = db.Table("permission").
 		Select("permission.apply_studio_id").
 		Where("permission.is_del = 0 AND permission.role_id = ?", userID).
 		Find(&applyStudioIDs).Error

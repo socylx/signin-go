@@ -24,8 +24,3 @@ type Follow struct {
 	FollowWeight   uint32    `gorm:"column:follow_weight" json:"follow_weight"` // 跟进权重 100=低 200=中 300=高 400=超级高 0=默认排最低
 	FollowTag      uint32    `gorm:"column:follow_tag" json:"follow_tag"`       // 1: 客服跟进标记
 }
-
-// TableName get sql table name.获取数据库表名
-func tableName() string {
-	return "follow"
-}

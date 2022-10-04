@@ -12,10 +12,7 @@ func Detail(ctx core.StdContext, activityID uint32) (activity *Activity, err err
 	db := mysql.DB.WithContext(ctx)
 
 	activity = &Activity{}
-	err = db.Table(
-		tableName(),
-	).Where(
-		"activity.is_del = 0 AND activity.id = ?", activityID,
-	).First(activity).Error
+	err = db.Table("activity").
+		Where("activity.is_del = 0 AND activity.id = ?", activityID).First(activity).Error
 	return
 }
