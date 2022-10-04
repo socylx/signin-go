@@ -1,6 +1,8 @@
 package strategy
 
 import (
+	"signin-go/repository/strategy_indicator"
+	"signin-go/repository/strategy_indicator_rule"
 	"time"
 )
 
@@ -22,4 +24,15 @@ type Strategy struct {
 // TableName get sql table name.获取数据库表名
 func tableName() string {
 	return "strategy"
+}
+
+type IndicatorData struct {
+	strategy_indicator.StrategyIndicator
+	Weight uint32               `json:"weight"`
+	Rules  []*IndicatorRuleData `json:"rules"`
+}
+
+type IndicatorRuleData struct {
+	strategy_indicator_rule.StrategyIndicatorRule
+	Score uint32 `json:"score"`
 }
