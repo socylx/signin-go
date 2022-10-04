@@ -11,13 +11,13 @@ import (
 
 /*
  */
-func GetConsultantRenewRate(ctx core.StdContext, startTime, endTime time.Time, studioID, staffUserID uint32) (rate int, err error) {
+func GetConsultantRenewRate(ctx core.StdContext, startTime, endTime time.Time, studioID, staffUserID uint32) (rate int) {
 	if studioID <= 0 {
 		return
 	}
 
 	redisKey := redisRepo.GetConsultantRenewRateRedisKey(startTime, endTime, studioID, staffUserID)
-	rate, err = redisRepo.GetConsultantRenewRate(ctx, redisKey)
+	rate, err := redisRepo.GetConsultantRenewRate(ctx, redisKey)
 	if err == nil {
 		return
 	}
@@ -28,7 +28,7 @@ func GetConsultantRenewRate(ctx core.StdContext, startTime, endTime time.Time, s
 		userIDs = append(userIDs, userSnapshotData.UserID)
 	}
 
-	lastUserSnapshotIDs, err := user_snapshot.GetLastUserSnapshotIDs(
+	lastUserSnapshotIDs, _ := user_snapshot.GetLastUserSnapshotIDs(
 		ctx,
 		&user_snapshot.LastUserSnapshotIDsFilter{
 			Time:           startTime,
@@ -39,7 +39,7 @@ func GetConsultantRenewRate(ctx core.StdContext, startTime, endTime time.Time, s
 
 	var earlyUserSnapshotDatas []*user_snapshot.UserSnapshotData
 	if len(lastUserSnapshotIDs) > 0 {
-		earlyUserSnapshotDatas, err = user_snapshot.GetUserSnapshotData(ctx, &user_snapshot.UserSnapshotFilter{IncludeIDs: lastUserSnapshotIDs})
+		earlyUserSnapshotDatas, _ = user_snapshot.GetUserSnapshotData(ctx, &user_snapshot.UserSnapshotFilter{IncludeIDs: lastUserSnapshotIDs})
 	}
 	for _, earlyUserSnapshotData := range earlyUserSnapshotDatas {
 		userIDs = append(userIDs, earlyUserSnapshotData.UserID)

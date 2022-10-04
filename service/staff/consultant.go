@@ -56,13 +56,11 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 						followUserIDs = append(followUserIDs, followUserID)
 					}
 
-					lastweekRenewRate, _ := user_snapshot.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, UserID)
-					nearly30RenewRate, _ := user_snapshot.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, UserID)
 					appendDatas(&types.ConsultantRenewData{
 						UserID:            UserID,
 						TargetValue:       renewTargeValue[weekKey],
-						LastweekRenewRate: lastweekRenewRate,
-						Nearly30RenewRate: nearly30RenewRate,
+						LastweekRenewRate: user_snapshot.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, UserID),
+						Nearly30RenewRate: user_snapshot.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, UserID),
 						RenewAmount:       float64(membership.GetConsultantRenewAmount(ctx, thisWeekStartDate, thisWeekEndDate, studioID, UserID)) / 100,
 						FollowUserIDs:     followUserIDs,
 					})
@@ -78,13 +76,11 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 		followUserIDs = append(followUserIDs, followUserID)
 	}
 
-	lastweekRenewRate, _ := user_snapshot.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, staffUserID)
-	nearly30RenewRate, _ := user_snapshot.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, staffUserID)
 	result = &types.AccessToRenewResponse{
 		StudioID:          studioID,
 		StaffUserID:       staffUserID,
-		LastweekRenewRate: lastweekRenewRate,
-		Nearly30RenewRate: nearly30RenewRate,
+		LastweekRenewRate: user_snapshot.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, staffUserID),
+		Nearly30RenewRate: user_snapshot.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, staffUserID),
 		RenewAmount:       float64(membership.GetConsultantRenewAmount(ctx, thisWeekStartDate, thisWeekEndDate, studioID, staffUserID)) / 100,
 		FollowUserIDs:     followUserIDs,
 	}
