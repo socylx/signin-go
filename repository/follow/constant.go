@@ -1,7 +1,7 @@
 package follow
 
-type FollowType uint
-type ForType uint
+type FollowType uint //跟进类型
+type ForType uint    //跟进目标
 
 const (
 	BeforeSold        FollowType = 1 //售前(转介绍，新人)

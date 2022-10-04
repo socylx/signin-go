@@ -7,6 +7,15 @@ import (
 	"signin-go/repository/system_page"
 )
 
+/*
+员工对应的数据
+
+	员工ID
+	角色ID
+	-
+	-
+	-
+*/
 type StaffRolePage struct {
 	ID                uint32
 	RoleID            uint32

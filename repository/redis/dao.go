@@ -10,6 +10,9 @@ import (
 	"time"
 )
 
+/*
+从redis中获取设置过的续卡目标值
+*/
 func GetRenewTargeValue(ctx core.StdContext, redisKey string) (data RenewTargeValue, err error) {
 	data = RenewTargeValue{}
 
@@ -22,6 +25,9 @@ func GetRenewTargeValue(ctx core.StdContext, redisKey string) (data RenewTargeVa
 	return
 }
 
+/*
+设置续卡目标值到redis
+*/
 func SetRenewTargeValue(ctx core.StdContext, redisKey string, redisData RenewTargeValue) {
 	dataByte, err := utils.Json.Marshal(redisData)
 	if err == nil {
@@ -29,6 +35,12 @@ func SetRenewTargeValue(ctx core.StdContext, redisKey string, redisData RenewTar
 	}
 }
 
+/*
+从redis中获取Uint64Slices数组
+
+	List/Set/SortSet
+	暂只支持Set
+*/
 func GetUint64Slice(ctx core.StdContext, redisKey string, redisType RedisType) (data []string, err error) {
 	switch redisType {
 	case List:

@@ -5,6 +5,9 @@ import (
 	"signin-go/internal/core"
 )
 
+/*
+获取某一课程的详情
+*/
 func Detail(ctx core.StdContext, activityID uint32) (activity *Activity, err error) {
 	db := mysql.DB.WithContext(ctx)
 

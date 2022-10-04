@@ -18,6 +18,9 @@ type sesssion struct {
 	UnionID      string `json:"union_id"`     //唯一id
 }
 
+/*
+向Context写入当前请求人的 ID/页面权限/门店权限 数据
+*/
 func SetSessionUserInfo(c core.Context) {
 	sessionUserInfo := proposal.SessionUserInfo{
 		UserID:           0,

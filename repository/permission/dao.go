@@ -5,6 +5,9 @@ import (
 	"signin-go/internal/core"
 )
 
+/*
+获取某位员工有权限的门店IDs
+*/
 func PermissionApplyStudioIDs(ctx core.StdContext, userID uint32) (applyStudioIDs []uint32, err error) {
 	db := mysql.DB.WithContext(ctx)
 

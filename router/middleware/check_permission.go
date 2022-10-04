@@ -5,6 +5,9 @@ import (
 	"signin-go/internal/core"
 )
 
+/*
+检查是否有某个角色的权限
+*/
 func CheckPermission(key string) core.HandlerFunc {
 	return func(c core.Context) {
 		sessionUserInfo := c.SessionUserInfo()
@@ -18,6 +21,9 @@ func CheckPermission(key string) core.HandlerFunc {
 	}
 }
 
+/*
+检查是否有任意一个角色的权限
+*/
 func CheckPermissions(keys ...string) core.HandlerFunc {
 	return func(c core.Context) {
 		sessionUserInfo := c.SessionUserInfo()

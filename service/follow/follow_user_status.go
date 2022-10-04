@@ -11,6 +11,9 @@ import (
 	"sync"
 )
 
+/*
+获取某段时间内某个门店有续卡跟进的用户ID
+*/
 func GetConsultantFollowUserStatus(ctx core.StdContext, startTime, endTime time.Time, studioID, staffUserID uint32) (followUserStatus types.FollowUserStatus, err error) {
 	followUserStatus = types.FollowUserStatus{}
 

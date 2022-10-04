@@ -3,6 +3,7 @@ package types
 /*
 课程顾问
 
+	员工对应的UserID
 	续卡目标值
 	上周续卡率
 	近三十天续卡率
@@ -19,7 +20,7 @@ type ConsultantRenewData struct {
 }
 
 /*
-员工ID
+店长或顾问的ID
 
 	StaffID
 	StaffUserID

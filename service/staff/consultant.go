@@ -12,6 +12,11 @@ import (
 	"sync"
 )
 
+/*
+获取门店的续卡相关的数据
+
+	返回值为 /user_snapshot/accesstorenew 的 response
+*/
 func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (result *types.AccessToRenewResponse, err error) {
 	result = &types.AccessToRenewResponse{
 		StudioID:    studioID,

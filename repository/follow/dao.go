@@ -6,6 +6,9 @@ import (
 	"signin-go/internal/core"
 )
 
+/*
+获取某个门店某一时间内续卡跟进过的学员UserIDs
+*/
 func GetFollowUserIDs(ctx core.StdContext, startTime, endTime time.Time, studioID, staffUserID uint32) (followUserIDs []uint32, err error) {
 	db := mysql.DB.WithContext(ctx)
 

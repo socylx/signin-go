@@ -1,5 +1,8 @@
 package system_page
 
+/*
+admin页面角色
+*/
 type SystemPageData struct {
 	ID      uint32
 	PageKey string
