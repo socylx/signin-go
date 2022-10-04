@@ -16,21 +16,22 @@ func Init() {
 	log.Println("global.logger.Init Start...")
 
 	var err error
-	Logger, err = NewJSONLogger(
+	Logger, err = NewLogger(
 		WithDisableConsole(),
 		WithField("domain", "signin-go"),
 		WithTimeLayout(time.CSTLayout),
 		WithFileP(config.Server.ServerLogFile),
+		WithJSONEncoder(),
 	)
 	if err != nil {
 		log.Fatalf("global.logger.Init.Logger Error: %v", err)
 	}
 
-	GORMLogger, err = NewJSONLogger(
+	GORMLogger, err = NewLogger(
 		WithDisableConsole(),
-		WithField("domain", "mysql"),
 		WithTimeLayout(time.CSTLayout),
 		WithFileP(config.Server.SQLLogFile),
+		WithNORMALEncoder(),
 	)
 	if err != nil {
 		log.Fatalf("global.logger.Init.GORMLogger Error: %v", err)

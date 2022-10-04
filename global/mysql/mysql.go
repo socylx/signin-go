@@ -33,8 +33,8 @@ func Init() {
 				loggerConfig{
 					SlowThreshold:             200 * time.Millisecond, // 慢 SQL 阈值
 					LogLevel:                  logger.Info,            // 日志级别
-					IgnoreRecordNotFoundError: true,                   // 忽略ErrRecordNotFound（记录未找到）错误
-					Colorful:                  false,                  // 禁用彩色打印
+					IgnoreRecordNotFoundError: false,                  // 忽略ErrRecordNotFound（记录未找到）错误
+					Colorful:                  true,                   // 启用彩色打印
 				},
 			),
 			QueryFields: true,

@@ -16,7 +16,12 @@ const (
 
 	// DefaultTimeLayout the default time layout;
 	DefaultTimeLayout = time.RFC3339
+
+	JSON   EncoderType = "JSON"
+	NORMAL EncoderType = "NORMAL"
 )
+
+type EncoderType string
 
 // Option custom setup config
 type Option func(*option)
@@ -27,6 +32,7 @@ type option struct {
 	file           io.Writer
 	timeLayout     string
 	disableConsole bool
+	encoderType    EncoderType
 }
 
 // WithDebugLevel only greater than 'level' will output
@@ -95,8 +101,20 @@ func WithDisableConsole() Option {
 	}
 }
 
+func WithJSONEncoder() Option {
+	return func(opt *option) {
+		opt.encoderType = JSON
+	}
+}
+
+func WithNORMALEncoder() Option {
+	return func(opt *option) {
+		opt.encoderType = NORMAL
+	}
+}
+
 // NewJSONLogger return a json-encoder zap logger,
-func NewJSONLogger(opts ...Option) (*zap.Logger, error) {
+func NewLogger(opts ...Option) (*zap.Logger, error) {
 	opt := &option{level: DefaultLevel, fields: make(map[string]string)}
 	for _, f := range opts {
 		f(opt)
@@ -124,7 +142,15 @@ func NewJSONLogger(opts ...Option) (*zap.Logger, error) {
 		EncodeCaller:   zapcore.ShortCallerEncoder, // 全路径编码器
 	}
 
-	jsonEncoder := zapcore.NewJSONEncoder(encoderConfig)
+	var encoder zapcore.Encoder
+	switch opt.encoderType {
+	case JSON:
+		encoder = zapcore.NewJSONEncoder(encoderConfig)
+	case NORMAL:
+		encoder = zapcore.NewConsoleEncoder(encoderConfig)
+	default:
+		encoder = zapcore.NewJSONEncoder(encoderConfig)
+	}
 
 	// lowPriority usd by info\debug\warn
 	lowPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
@@ -143,11 +169,11 @@ func NewJSONLogger(opts ...Option) (*zap.Logger, error) {
 
 	if !opt.disableConsole {
 		core = zapcore.NewTee(
-			zapcore.NewCore(jsonEncoder,
+			zapcore.NewCore(encoder,
 				zapcore.NewMultiWriteSyncer(stdout),
 				lowPriority,
 			),
-			zapcore.NewCore(jsonEncoder,
+			zapcore.NewCore(encoder,
 				zapcore.NewMultiWriteSyncer(stderr),
 				highPriority,
 			),
@@ -156,7 +182,7 @@ func NewJSONLogger(opts ...Option) (*zap.Logger, error) {
 
 	if opt.file != nil {
 		core = zapcore.NewTee(core,
-			zapcore.NewCore(jsonEncoder,
+			zapcore.NewCore(encoder,
 				zapcore.AddSync(opt.file),
 				zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 					return lvl >= opt.level
