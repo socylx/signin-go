@@ -6,6 +6,7 @@ import (
 	"signin-go/global/time"
 	"signin-go/internal/core"
 	"signin-go/service/follow"
+	"signin-go/service/user_snapshot"
 
 	"signin-go/repository/redis"
 	"signin-go/repository/staff"
@@ -54,8 +55,8 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 						followUserIDs = append(followUserIDs, followUserID)
 					}
 
-					lastweekRenewRate, _ := follow.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, UserID)
-					nearly30RenewRate, _ := follow.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, UserID)
+					lastweekRenewRate, _ := user_snapshot.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, UserID)
+					nearly30RenewRate, _ := user_snapshot.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, UserID)
 					appendDatas(&types.ConsultantRenewData{
 						UserID:            UserID,
 						TargetValue:       renewTargeValue[weekKey],
@@ -75,8 +76,8 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 		followUserIDs = append(followUserIDs, followUserID)
 	}
 
-	lastweekRenewRate, _ := follow.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, staffUserID)
-	nearly30RenewRate, _ := follow.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, staffUserID)
+	lastweekRenewRate, _ := user_snapshot.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, staffUserID)
+	nearly30RenewRate, _ := user_snapshot.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, staffUserID)
 	result = &types.AccessToRenewResponse{
 		StudioID:          studioID,
 		StaffUserID:       staffUserID,
