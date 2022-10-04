@@ -1,4 +1,4 @@
-package todo
+package membership
 
 import (
 	"time"
@@ -27,6 +27,6 @@ type Membership struct {
 }
 
 // TableName get sql table name.获取数据库表名
-func (m *Membership) TableName() string {
+func tableName() string {
 	return "membership"
 }

@@ -6,6 +6,7 @@ import (
 	"signin-go/global/time"
 	"signin-go/internal/core"
 	"signin-go/service/follow"
+	"signin-go/service/membership"
 	"signin-go/service/user_snapshot"
 
 	"signin-go/repository/redis"
@@ -62,6 +63,7 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 						TargetValue:       renewTargeValue[weekKey],
 						LastweekRenewRate: lastweekRenewRate,
 						Nearly30RenewRate: nearly30RenewRate,
+						RenewAmount:       float64(membership.GetConsultantRenewAmount(ctx, thisWeekStartDate, thisWeekEndDate, studioID, UserID)) / 100,
 						FollowUserIDs:     followUserIDs,
 					})
 					wg.Done()
@@ -83,6 +85,7 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 		StaffUserID:       staffUserID,
 		LastweekRenewRate: lastweekRenewRate,
 		Nearly30RenewRate: nearly30RenewRate,
+		RenewAmount:       float64(membership.GetConsultantRenewAmount(ctx, thisWeekStartDate, thisWeekEndDate, studioID, staffUserID)) / 100,
 		FollowUserIDs:     followUserIDs,
 	}
 	wg.Wait()
