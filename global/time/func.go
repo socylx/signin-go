@@ -24,8 +24,8 @@ func CSTLayoutString(t Time, layout Format) string {
 }
 
 // ParseCSTInLocation 格式化时间
-func ParseCSTInLocation(date string) (time.Time, error) {
-	return time.ParseInLocation(CSTLayout, date, cst)
+func ParseCSTInLocation(date string, layout Format) (Time, error) {
+	return time.ParseInLocation(layout, date, cst)
 }
 
 // CSTLayoutStringToUnix 返回 unix 时间戳

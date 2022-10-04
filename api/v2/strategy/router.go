@@ -6,5 +6,6 @@ func Router(routerGroup core.RouterGroup) {
 	routerGroup.POST("/add", add)
 	routerGroup.POST("/delete", delete)
 	routerGroup.POST("/detail", detail)
+	routerGroup.POST("/list", list)
 	routerGroup.POST("/indicator/rule/list", indicatorRuleList)
 }
