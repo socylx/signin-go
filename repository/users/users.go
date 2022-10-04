@@ -1,8 +1,6 @@
 package users
 
-import (
-	"time"
-)
+import "time"
 
 // Users 用户信息表
 type Users struct {
