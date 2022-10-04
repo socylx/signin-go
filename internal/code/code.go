@@ -42,6 +42,10 @@ const (
 	UsersUpdateError             = 20104
 	UsersModifyPersonalInfoError = 20105
 	UsersDetailError             = 20106
+
+	StrategyQueryError = 20201
+
+	StrategyIndicatorQueryError = 20301
 )
 
 func Text(code int) string {
