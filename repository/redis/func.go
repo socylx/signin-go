@@ -29,7 +29,19 @@ func GetConsultantFollowUserIDsRedisKey(startTime, endTime time.Time, studioID, 
 */
 func GetConsultantRenewRateRedisKey(startTime, endTime time.Time, studioID, staffUserID uint32) string {
 	return fmt.Sprintf(
-		"%s_%s_%v_%v",
+		"ConsultantRenewRate_%s_%s_%v_%v",
+		time.CSTLayoutString(startTime, time.YYYYMMDD),
+		time.CSTLayoutString(endTime, time.YYYYMMDD),
+		studioID, staffUserID,
+	)
+}
+
+/*
+获取某一门店/某个顾问的某段时间内续卡金额的RedisKey
+*/
+func GetConsultantRenewAmountRedisKey(startTime, endTime time.Time, studioID, staffUserID uint32) string {
+	return fmt.Sprintf(
+		"ConsultantRenewAmount_%s_%s_%v_%v",
 		time.CSTLayoutString(startTime, time.YYYYMMDD),
 		time.CSTLayoutString(endTime, time.YYYYMMDD),
 		studioID, staffUserID,
