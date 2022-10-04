@@ -14,7 +14,7 @@ import (
 */
 func GetConsultantRenewAmount(ctx core.StdContext, startTime, endTime time.Time, studioID, staffUserID uint32) (amount uint64) {
 	redisKey := redisRepo.GetConsultantRenewAmountRedisKey(startTime, endTime, studioID, staffUserID)
-	amount, err := redisRepo.GetConsultantRenewAmount(ctx, redisKey)
+	amount, err := redisRepo.GetUint64(ctx, redisKey)
 	if err == nil {
 		return
 	}

@@ -37,26 +37,26 @@ func SetRenewTargeValue(ctx core.StdContext, redisKey string, redisData RenewTar
 }
 
 /*
-获取续卡率
+从redis获取 int 类型的值
 */
-func GetConsultantRenewRate(ctx core.StdContext, redisKey string) (rate int, err error) {
+func GetInt(ctx core.StdContext, redisKey string) (data int, err error) {
 	redisData, err := redis.Redis.Get(ctx, redisKey).Result()
 	if err != nil {
 		return
 	}
-	rate, err = strconv.Atoi(redisData)
+	data, err = strconv.Atoi(redisData)
 	return
 }
 
 /*
-获取续卡金额
+从redis获取 uint64 类型的值
 */
-func GetConsultantRenewAmount(ctx core.StdContext, redisKey string) (amount uint64, err error) {
+func GetUint64(ctx core.StdContext, redisKey string) (data uint64, err error) {
 	redisData, err := redis.Redis.Get(ctx, redisKey).Result()
 	if err != nil {
 		return
 	}
-	amount, err = strconv.ParseUint(redisData, 10, 64)
+	data, err = strconv.ParseUint(redisData, 10, 64)
 	return
 }
 

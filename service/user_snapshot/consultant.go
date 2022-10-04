@@ -17,7 +17,7 @@ func GetConsultantRenewRate(ctx core.StdContext, startTime, endTime time.Time, s
 	}
 
 	redisKey := redisRepo.GetConsultantRenewRateRedisKey(startTime, endTime, studioID, staffUserID)
-	rate, err := redisRepo.GetConsultantRenewRate(ctx, redisKey)
+	rate, err := redisRepo.GetInt(ctx, redisKey)
 	if err == nil {
 		return
 	}
