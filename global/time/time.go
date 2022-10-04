@@ -9,10 +9,10 @@ type Duration = time.Duration
 type Time = time.Time
 
 var (
-	cst              *time.Location
-	DateTimeZeroTime Time                       = time.Time{}
-	Now              func() Time                = time.Now
-	Since            func(t Time) time.Duration = time.Since
+	cst          *time.Location
+	TimeZeroTime Time                       = time.Time{}
+	Now          func() Time                = time.Now
+	Since        func(t Time) time.Duration = time.Since
 )
 
 const (
@@ -26,5 +26,5 @@ const (
 	CSTLayout Format = "2006-01-02 15:04:05" // CSTLayout China Standard Time Layout
 	YYYYMMDD  Format = "2006-01-02"
 
-	DateTimeZeroString string = "0000-00-00 00:00:00"
+	TimeZeroString string = "0000-00-00 00:00:00"
 )

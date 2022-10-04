@@ -27,3 +27,37 @@ func GetFollowUserIDs(ctx core.StdContext, startTime, endTime time.Time, studioI
 
 	return
 }
+
+type UserConsultantIDMap map[uint32]uint32
+
+/*
+获取学员最后一次续卡跟进对应的员工ID
+*/
+func GetUserLastFollowConsultantIDMap(ctx core.StdContext, userIDs []uint32) (IDMap UserConsultantIDMap, err error) {
+	IDMap = UserConsultantIDMap{}
+
+	db := mysql.DB.WithContext(ctx)
+
+	followIDs := []uint32{}
+	db.Table(tableName()).
+		Select("max(follow.id)").
+		Where("follow.is_del = 0 AND follow.for_type = 1 AND follow.follow_type = 2 AND follow.user_id IN ?", userIDs).
+		Group("follow.user_id").
+		Find(&followIDs)
+
+	if len(followIDs) > 0 {
+		follows := []*struct {
+			UserID    uint32
+			OptUserID uint32
+		}{}
+		db.Table(tableName()).
+			Select("follow.user_id, follow.opt_user_id").
+			Where("follow.id IN ?", followIDs).
+			Find(&follows)
+		for _, follow := range follows {
+			IDMap[follow.UserID] = follow.OptUserID
+		}
+	}
+
+	return
+}

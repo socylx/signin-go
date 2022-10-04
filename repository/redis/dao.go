@@ -6,6 +6,7 @@ import (
 	"signin-go/global/utils"
 	"signin-go/internal/core"
 	"signin-go/internal/errors"
+	"strconv"
 
 	"time"
 )
@@ -33,6 +34,17 @@ func SetRenewTargeValue(ctx core.StdContext, redisKey string, redisData RenewTar
 	if err == nil {
 		redis.Redis.Set(ctx, redisKey, string(dataByte), 1*365*24*time.Hour)
 	}
+}
+
+/*
+ */
+func GetConsultantRenewRate(ctx core.StdContext, redisKey string) (rate int, err error) {
+	redisData, err := redis.Redis.Get(ctx, redisKey).Result()
+	if err != nil {
+		return
+	}
+	rate, err = strconv.Atoi(redisData)
+	return
 }
 
 /*

@@ -18,20 +18,15 @@ import (
 	返回值为 /user_snapshot/accesstorenew 的 response
 */
 func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (result *types.AccessToRenewResponse, err error) {
-	result = &types.AccessToRenewResponse{
-		StudioID:    studioID,
-		StaffUserID: staffUserID,
-	}
-
 	today := time.TodayDate()
 	year, week := today.ISOWeek()
 	weekKey := fmt.Sprintf("%v_%v", year, week)
 	thisWeekStartDate := today.AddDate(0, 0, -int(today.Weekday()-1))
 	thisWeekEndDate := thisWeekStartDate.AddDate(0, 0, 7)
-	// lastWeekStart := thisWeekStartDate.AddDate(0, 0, -7)
-	// lastWeekEnd := thisWeekStartDate
-	// nearly30StartDate := today.AddDate(0, 0, -30)
-	// nearly30EndDate := today.AddDate(0, 0, 1)
+	lastWeekStart := thisWeekStartDate.AddDate(0, 0, -7)
+	lastWeekEnd := thisWeekStartDate
+	nearly30StartDate := today.AddDate(0, 0, -30)
+	nearly30EndDate := today.AddDate(0, 0, 1)
 
 	var wg sync.WaitGroup
 	consultantRenewData := []*types.ConsultantRenewData{}
@@ -59,10 +54,14 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 						followUserIDs = append(followUserIDs, followUserID)
 					}
 
+					lastweekRenewRate, _ := follow.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, UserID)
+					nearly30RenewRate, _ := follow.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, UserID)
 					appendDatas(&types.ConsultantRenewData{
-						UserID:        UserID,
-						TargetValue:   renewTargeValue[weekKey],
-						FollowUserIDs: followUserIDs,
+						UserID:            UserID,
+						TargetValue:       renewTargeValue[weekKey],
+						LastweekRenewRate: lastweekRenewRate,
+						Nearly30RenewRate: nearly30RenewRate,
+						FollowUserIDs:     followUserIDs,
 					})
 					wg.Done()
 				}(idsStudioConsultant.UserID)
@@ -76,7 +75,15 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 		followUserIDs = append(followUserIDs, followUserID)
 	}
 
-	result.FollowUserIDs = followUserIDs
+	lastweekRenewRate, _ := follow.GetConsultantRenewRate(ctx, lastWeekStart, lastWeekEnd, studioID, staffUserID)
+	nearly30RenewRate, _ := follow.GetConsultantRenewRate(ctx, nearly30StartDate, nearly30EndDate, studioID, staffUserID)
+	result = &types.AccessToRenewResponse{
+		StudioID:          studioID,
+		StaffUserID:       staffUserID,
+		LastweekRenewRate: lastweekRenewRate,
+		Nearly30RenewRate: nearly30RenewRate,
+		FollowUserIDs:     followUserIDs,
+	}
 	wg.Wait()
 	result.ConsultantTargets = consultantRenewData
 	return

@@ -1,4 +1,4 @@
-package todo
+package user_snapshot
 
 import (
 	"time"
@@ -21,6 +21,6 @@ type UserSnapshot struct {
 }
 
 // TableName get sql table name.获取数据库表名
-func (m *UserSnapshot) TableName() string {
+func tableName() string {
 	return "user_snapshot"
 }
