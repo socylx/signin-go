@@ -1,6 +1,7 @@
 package v2
 
 import (
+	"signin-go/api/v2/strategy"
 	"signin-go/api/v2/strategy_indicator"
 	"signin-go/api/v2/user_snapshot"
 	"signin-go/internal/core"
@@ -9,6 +10,9 @@ import (
 )
 
 func Router(routerGroup core.RouterGroup) {
+	strategy.Router(
+		routerGroup.Group("/strategy", middleware.CheckPermission(permission.Admin)),
+	)
 	strategy_indicator.Router(
 		routerGroup.Group("/strategy_indicator", middleware.CheckPermission(permission.Admin)),
 	)

@@ -43,7 +43,8 @@ const (
 	UsersModifyPersonalInfoError = 20105
 	UsersDetailError             = 20106
 
-	StrategyQueryError = 20201
+	StrategyCreateError = 20201
+	StrategyQueryError  = 20202
 
 	StrategyIndicatorQueryError = 20301
 )

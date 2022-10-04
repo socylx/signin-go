@@ -30,5 +30,8 @@ var text = map[int]string{
 	UsersModifyPersonalInfoError: "修改个人信息失败",
 	UsersDetailError:             "获取个人信息失败",
 
+	StrategyCreateError: "创建策略失败",
+	StrategyQueryError:  "查询策略失败",
+
 	StrategyIndicatorQueryError: "获取策略指标失败",
 }

@@ -1,4 +1,4 @@
-package todo
+package studio_strategy_map
 
 import (
 	"time"
@@ -15,6 +15,6 @@ type StudioStrategyMap struct {
 }
 
 // TableName get sql table name.获取数据库表名
-func (m *StudioStrategyMap) TableName() string {
+func tableName() string {
 	return "studio_strategy_map"
 }
