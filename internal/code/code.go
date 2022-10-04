@@ -45,6 +45,7 @@ const (
 
 	StrategyCreateError = 20201
 	StrategyQueryError  = 20202
+	StrategyDeleteError = 20203
 
 	StrategyIndicatorQueryError = 20301
 )
