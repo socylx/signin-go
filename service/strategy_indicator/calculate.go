@@ -162,6 +162,35 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	"coupon_remain": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		var remains float32
+		todayDate := time.TodayDate()
+		for _, couponAlloc := range userData.CouponAllocData.CouponAllocs {
+			deadline := couponAlloc.Deadline
+			if deadline != time.TimeZeroTime || deadline.Before(todayDate) {
+				continue
+			}
+			if couponAlloc.Coupon.Type == coupon.CashType && couponAlloc.Coupon.AmountType == coupon.NumberAmountType {
+				remains += couponAlloc.Remains
+			}
+		}
+		var remainsFloat64 float64 = float64(remains)
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.ParseFloat(strategyIndicatorRule.Min, 64)
+			max, err2 := strconv.ParseFloat(strategyIndicatorRule.Max, 64)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= remainsFloat64 && (remainsFloat64 < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
 }
 
 /*
