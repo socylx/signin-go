@@ -47,3 +47,10 @@ func GetConsultantRenewAmountRedisKey(startTime, endTime time.Time, studioID, st
 		studioID, staffUserID,
 	)
 }
+
+func GetStrategyRecommendIDsRedisKey(studioID, strategyType uint32) string {
+	return fmt.Sprintf(
+		"StrategyRecommendIDs_%v_%v",
+		studioID, strategyType,
+	)
+}

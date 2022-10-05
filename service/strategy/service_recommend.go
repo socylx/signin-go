@@ -6,6 +6,7 @@ import (
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	"signin-go/repository/membership"
+	redisRepo "signin-go/repository/redis"
 	"signin-go/repository/strategy"
 	strategyRepo "signin-go/repository/strategy"
 	studioRepo "signin-go/repository/studio"
@@ -13,13 +14,10 @@ import (
 	"signin-go/service/strategy_indicator"
 	studioServ "signin-go/service/studio"
 	"signin-go/service/users"
-	"strconv"
 	"sync"
 
 	"github.com/go-redis/redis/v8"
 )
-
-const strategyRecommendIDs string = "StrategyRecommendIDs"
 
 func GenerateOfLaxin(ctx core.StdContext) core.BusinessError {
 	studioIDs, err := studioRepo.GetStudioIDs(ctx)
@@ -103,7 +101,7 @@ func GenerateOfLaxin(ctx core.StdContext) core.BusinessError {
 					}
 					totalScore += score.Score
 				}
-				redisKey := fmt.Sprintf("%s_%s_%s", strategyRecommendIDs, strconv.FormatUint(uint64(belongStudioID), 10), strconv.FormatUint(uint64(strategyType), 10))
+				redisKey := redisRepo.GetStrategyRecommendIDsRedisKey(belongStudioID, strategyType)
 				redisGlob.Redis.ZAdd(
 					ctx,
 					redisKey,
@@ -213,12 +211,7 @@ func GenerateOfRenew(ctx core.StdContext) core.BusinessError {
 					totalScore += score.Score
 				}
 
-				redisKey := fmt.Sprintf(
-					"%s_%s_%s",
-					strategyRecommendIDs,
-					strconv.FormatUint(uint64(belongStudioID), 10),
-					strconv.FormatUint(uint64(strategyType), 10),
-				)
+				redisKey := redisRepo.GetStrategyRecommendIDsRedisKey(belongStudioID, strategyType)
 				redisGlob.Redis.ZAdd(
 					ctx,
 					redisKey,
