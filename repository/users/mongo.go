@@ -7,6 +7,8 @@ import (
 	"signin-go/repository/follow"
 	"signin-go/repository/judge_user"
 	"signin-go/repository/membership"
+	"signin-go/repository/order"
+	"signin-go/repository/order_item"
 	"signin-go/repository/signin"
 )
 
@@ -22,6 +24,7 @@ type Data struct {
 	PageEventData    *PageEventData                `bson:"page_event_data"`
 	ShowVideoCount   int64                         `bson:"show_video_count"`
 	AllSigninSpend   float64                       `bson:"all_signin_spend"`
+	Orders           []*Order                      `bson:"orders"`
 }
 
 type UserBeforeMember struct {
@@ -59,4 +62,9 @@ type PageEventData struct {
 type AccessLocation struct {
 	Longitude string `bson:"longitude" json:"longitude"`
 	Latitude  string `bson:"latitude" json:"latitude"`
+}
+
+type Order struct {
+	order.OrderData
+	OrderItems []*order_item.OrderItemData `bson:"order_items" json:"order_items"`
 }

@@ -1,4 +1,4 @@
-package todo
+package order
 
 import (
 	"time"
@@ -42,7 +42,7 @@ type Order struct {
 	SalesStudioID     uint32    `gorm:"column:sales_studio_id" json:"sales_studio_id"`         // 售卡门店
 }
 
-// TableName get sql table name.获取数据库表名
-func (m *Order) TableName() string {
-	return "order"
+type OrderData struct {
+	ID     uint32 `bson:"id" json:"id"`
+	Status int16  `bson:"status" json:"status"`
 }

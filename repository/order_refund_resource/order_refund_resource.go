@@ -1,4 +1,4 @@
-package todo
+package order_refund_resource
 
 import (
 	"time"
@@ -13,9 +13,4 @@ type OrderRefundResource struct {
 	CreateTime    time.Time `gorm:"column:create_time" json:"create_time"`
 	UpdateTime    time.Time `gorm:"column:update_time" json:"update_time"`
 	IsDel         bool      `gorm:"column:is_del" json:"is_del"`
-}
-
-// TableName get sql table name.获取数据库表名
-func (m *OrderRefundResource) TableName() string {
-	return "order_refund_resource"
 }

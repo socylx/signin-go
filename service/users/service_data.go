@@ -10,6 +10,8 @@ import (
 	"signin-go/repository/follow"
 	"signin-go/repository/judge_user"
 	"signin-go/repository/membership"
+	"signin-go/repository/order"
+	"signin-go/repository/order_item"
 	pageAccessRepo "signin-go/repository/page_access"
 	"signin-go/repository/page_event"
 	signinRepo "signin-go/repository/signin"
@@ -40,6 +42,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		pageEventData    *users.PageEventData
 		showVideoCount   int64
 		allSigninSpend   float64
+		orders           []*users.Order
 	)
 
 	if dataID.UserID > 0 {
@@ -60,15 +63,15 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 	var wg sync.WaitGroup
 
 	if user.ID > 0 {
-		wg.Add(6)
+		wg.Add(10)
 		go func() {
+			defer wg.Done()
 			memberships, _ = membership.GetMembershipDatas(ctx, &membership.MembershipFilter{
 				UserID: uint32(user.ID),
 			})
-			wg.Done()
 		}()
-
 		go func() {
+			defer wg.Done()
 			couponAllocs, _ := coupon_alloc.GetCouponAllocs(
 				ctx,
 				&coupon_alloc.Filter{
@@ -108,10 +111,9 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 				CouponAllocs:            couponAllocDatas,
 				LastNewUserCouponSignin: signinData,
 			}
-			wg.Done()
 		}()
-
 		go func() {
+			defer wg.Done()
 			todayDate := time.TodayDate()
 			signins, _ = signinRepo.GetSigninDatas(
 				ctx, &signinRepo.Filter{
@@ -119,10 +121,9 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 					ActivityStartTimeGE: todayDate.AddDate(0, 0, -90),
 					ActivityStartTimeLT: todayDate.AddDate(0, 0, 7),
 				})
-			wg.Done()
 		}()
-
 		go func() {
+			defer wg.Done()
 			fissionMap, _ = fission_map.GetFissionMapData(
 				ctx, &fission_map.Filter{
 					ShareUserID: uint32(user.ID),
@@ -130,7 +131,6 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 					StatusIn:    fission_map.STATUS_AFTER_ACCEPT,
 				},
 			)
-			wg.Done()
 		}()
 		go func() {
 			defer wg.Done()
@@ -146,7 +146,6 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 			}
 			pageAccessData, _ = pageAccessServ.GetPageAccessData(ctx, uint32(user.ID), belongsStudioID)
 		}()
-
 		go func() {
 			defer wg.Done()
 			lastPageEvent, _ := page_event.GetLastPageEvent(ctx, &page_event.Filter{
@@ -166,51 +165,22 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 			showVideoCount = show_video.GetShowVideoCount(ctx, uint32(user.ID))
 		}()
 		go func() {
+			defer wg.Done()
 			allSigninSpend = signinServ.GetAllSigninSpend(ctx, uint32(user.ID))
 		}()
+		go func() {
+			defer wg.Done()
+			orderDatas, _ := order.GetOrderDatas(ctx, uint32(user.ID))
+			for _, orderData := range orderDatas {
+				orderItems, _ := order_item.GetOrderIemDatas(ctx, orderData.ID)
+				order := &users.Order{}
+				order.ID = orderData.ID
+				order.Status = orderData.Status
+				order.OrderItems = orderItems
+				orders = append(orders, order)
+			}
+		}()
 	}
-
-	// run.Async(ctx, func() {
-	// 	userData.Store("signins", s.signins(userID))
-	// 	wg.Done()
-	// })
-	// run.Async(ctx, func() {
-	// 	userData.Store("fission_map", s.fissionMaps(userID))
-	// 	wg.Done()
-	// })
-	// run.Async(ctx, func() {
-	// 	userData.Store("judge_user_data", s.judgeUserData(userID))
-	// 	wg.Done()
-	// })
-	// run.Async(ctx, func() {
-	// 	userData.Store("page_access_data", s.pageAccessData(userID, bs.ID))
-	// 	wg.Done()
-	// })
-	// run.Async(ctx, func() {
-	// 	userData.Store("page_event_data", s.pageEventData(userID))
-	// 	wg.Done()
-	// })
-	// run.Async(ctx, func() {
-	// 	userData.Store("show_video_count", s.showVideoCount(userID))
-	// 	wg.Done()
-	// })
-	// run.Async(ctx, func() {
-	// 	userData.Store("all_signin_spend", s.allSigninSpend(userID))
-	// 	wg.Done()
-	// })
-	// run.Async(ctx, func() {
-	// 	userData.Store("orders", s.orders(userID))
-	// 	wg.Done()
-	// })
-
-	// wg.Wait()
-	// data = map[string]interface{}{}
-	// userData.Range(func(k, v interface{}) bool {
-	// 	if k != "user_id" && k != "user_before_member_id" {
-	// 		data[k.(string)] = v
-	// 	}
-	// 	return true
-	// })
 
 	data = &users.Data{
 		UserBeforeMember: &users.UserBeforeMember{
@@ -236,6 +206,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		PageEventData:   pageEventData,
 		ShowVideoCount:  showVideoCount,
 		AllSigninSpend:  allSigninSpend,
+		Orders:          orders,
 	}
 	return
 }
