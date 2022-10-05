@@ -10,6 +10,14 @@ type DeleteFileter struct {
 	ID uint32
 }
 
+func Update(ctx core.StdContext, ID uint32, updateData map[string]interface{}) (err error) {
+	db := mysql.DB.WithContext(ctx)
+	err = db.Table("strategy").
+		Where("strategy.is_del = 0 AND strategy.id = ?", ID).
+		Updates(updateData).Error
+	return
+}
+
 func Delete(ctx core.StdContext, filter *DeleteFileter) (err error) {
 	if filter.ID <= 0 {
 		return

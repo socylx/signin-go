@@ -44,9 +44,11 @@ const (
 	UsersDetailError             = 20106
 	UsersDataError               = 20107
 
-	StrategyCreateError = 20201
-	StrategyQueryError  = 20202
-	StrategyDeleteError = 20203
+	StrategyCreateError    = 20201
+	StrategyQueryError     = 20202
+	StrategyDeleteError    = 20203
+	StrategyUpdateError    = 20204
+	SetStrategyStatusError = 20205
 
 	StrategyIndicatorQueryError = 20301
 

@@ -34,6 +34,7 @@ var text = map[int]string{
 	StrategyCreateError: "创建策略失败",
 	StrategyQueryError:  "查询策略失败",
 	StrategyDeleteError: "删除策略失败",
+	StrategyUpdateError: "修改失败",
 
 	StrategyIndicatorQueryError: "获取策略指标失败",
 
