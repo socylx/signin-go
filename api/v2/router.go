@@ -10,8 +10,11 @@ import (
 )
 
 func Router(routerGroup core.RouterGroup) {
-	strategy.Router(
+	strategy.CheckPermissionRouter(
 		routerGroup.Group("/strategy", middleware.CheckPermission(permission.Admin)),
+	)
+	strategy.UnCheckPermissionRouter(
+		routerGroup.Group("/strategy"),
 	)
 	strategy_indicator.Router(
 		routerGroup.Group("/strategy_indicator", middleware.CheckPermission(permission.Admin)),

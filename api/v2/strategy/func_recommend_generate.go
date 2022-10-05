@@ -1,6 +1,7 @@
 package strategy
 
 import (
+	"log"
 	"signin-go/global/config"
 	"signin-go/internal/code"
 	"signin-go/internal/core"
@@ -8,8 +9,6 @@ import (
 	studioRepo "signin-go/repository/studio"
 	"signin-go/service/strategy"
 )
-
-var strategyRecommendIDs string = "StrategyRecommendIDs"
 
 type recommendGenerateRequest struct {
 	Token string `form:"token" binding:"required"`
@@ -43,96 +42,7 @@ func recommendGenerateOfLaxin(c core.Context) {
 		c.AbortWithError(generr)
 		return
 	}
-
-	// var wg sync.WaitGroup
-	// var lastUserBeforeMemberID int64
-	// for {
-	// 	if lastUserBeforeMemberID > maxUserBeforeMemberID {
-	// 		logger.Info("recommendGenerateOfLaxin Break...")
-	// 		break
-	// 	}
-	// 	logger.Infof("recommendGenerateOfLaxin.lastUserBeforeMemberID: %v", lastUserBeforeMemberID)
-
-	// 	userBeforeMemberIDs := []int64{}
-	// 	h.mysql.Table(
-	// 		"user_before_member",
-	// 	).Select(
-	// 		"user_before_member.id",
-	// 	).Where(
-	// 		"user_before_member.id > ?",
-	// 		lastUserBeforeMemberID,
-	// 	).Limit(1000).Find(&userBeforeMemberIDs)
-
-	// 	if len(userBeforeMemberIDs) > 0 {
-	// 		wg.Add(1)
-	// 		go func(userBeforeMemberIDs []int64) {
-	// 			for _, userBeforeMemberID := range userBeforeMemberIDs {
-	// 				userData, err := h.userService.Data(c.RequestContext(), &user.DataFilter{
-	// 					UserID:             0,
-	// 					UserBeforeMemberID: uint32(userBeforeMemberID),
-	// 				})
-	// 				if err != nil {
-	// 					continue
-	// 				}
-	// 				userDataUserID := userData["user"].(map[string]interface{})["id"].(int)
-	// 				userDataUserBeforeMemberID := userData["user_before_member"].(map[string]interface{})["id"].(uint32)
-	// 				if userDataUserBeforeMemberID <= 0 {
-	// 					continue
-	// 				}
-
-	// 				belongStudioID := userData["belong_studio_id"].(uint32)
-	// 				if belongStudioID <= 0 {
-	// 					continue
-	// 				}
-
-	// 				strategyType := h.matchUserStrategyType(c, userData)
-	// 				studioStrategyID := studioStrategyTypeMap[belongStudioID][strategyType]
-	// 				if studioStrategyID <= 0 {
-	// 					continue
-	// 				}
-
-	// 				strategyIndicatorsData, ok := strategyIndicatorsDataMap[studioStrategyID]
-	// 				if !ok {
-	// 					continue
-	// 				}
-
-	// 				var totalScore float64
-	// 				for _, strategyIndicator := range strategyIndicatorsData.StrategyIndicators {
-	// 					score := strategyIndicatorCalculateFunc(&strategyIndicator, userData)
-	// 					if score == nil || score.ID <= 0 {
-	// 						continue
-	// 					}
-	// 					totalScore += score.Score
-	// 				}
-
-	// 				redisKey := fmt.Sprintf(
-	// 					"%s_%s_%s",
-	// 					strategyRecommendIDs,
-	// 					strconv.FormatUint(uint64(belongStudioID), 10),
-	// 					strconv.FormatUint(uint64(strategyType), 10),
-	// 				)
-
-	// 				h.redis.ZAdd(
-	// 					context.TODO(),
-	// 					redisKey,
-	// 					&redis.Z{
-	// 						Score:  totalScore,
-	// 						Member: fmt.Sprintf("%v_%v", userDataUserID, userDataUserBeforeMemberID),
-	// 					},
-	// 				)
-	// 				zcard := h.redis.ZCard(context.TODO(), redisKey).Val()
-	// 				if zcard > 1000 {
-	// 					h.redis.ZRemRangeByRank(context.TODO(), redisKey, 0, zcard-1000)
-	// 				}
-	// 			}
-	// 			wg.Done()
-	// 		}(userBeforeMemberIDs)
-	// 	}
-
-	// 	lastUserBeforeMemberID += 1000
-	// }
-	// wg.Wait()
-	// log.Println("recommendGenerateOfLaxin success...")
+	log.Println("recommendGenerateOfLaxin success...")
 	c.Payload("success")
 }
 

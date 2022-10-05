@@ -1,6 +1,8 @@
 package strategy
 
 import (
+	"fmt"
+	redisGlob "signin-go/global/redis"
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	strategyRepo "signin-go/repository/strategy"
@@ -9,8 +11,13 @@ import (
 	"signin-go/service/strategy_indicator"
 	studioServ "signin-go/service/studio"
 	"signin-go/service/users"
+	"strconv"
 	"sync"
+
+	"github.com/go-redis/redis/v8"
 )
+
+const strategyRecommendIDs string = "StrategyRecommendIDs"
 
 func GenerateOfLaxin(ctx core.StdContext) core.BusinessError {
 	studioIDs, err := studioRepo.GetStudioIDs(ctx)
@@ -61,7 +68,7 @@ func GenerateOfLaxin(ctx core.StdContext) core.BusinessError {
 				if err != nil {
 					continue
 				}
-				// userID := userData.User.ID
+				userID := userData.User.ID
 				userBeforeMemberID := userData.UserBeforeMember.ID
 				if userBeforeMemberID <= 0 {
 					continue
@@ -94,30 +101,23 @@ func GenerateOfLaxin(ctx core.StdContext) core.BusinessError {
 					}
 					totalScore += score.Score
 				}
-
-				// redisKey := fmt.Sprintf(
-				// 	"%s_%s_%s",
-				// 	strategyRecommendIDs,
-				// 	strconv.FormatUint(uint64(belongStudioID), 10),
-				// 	strconv.FormatUint(uint64(strategyType), 10),
-				// )
-
-				// h.redis.ZAdd(
-				// 	context.TODO(),
-				// 	redisKey,
-				// 	&redis.Z{
-				// 		Score:  totalScore,
-				// 		Member: fmt.Sprintf("%v_%v", userDataUserID, userDataUserBeforeMemberID),
-				// 	},
-				// )
-				// zcard := h.redis.ZCard(context.TODO(), redisKey).Val()
-				// if zcard > 1000 {
-				// 	h.redis.ZRemRangeByRank(context.TODO(), redisKey, 0, zcard-1000)
-				// }
+				redisKey := fmt.Sprintf("%s_%s_%s", strategyRecommendIDs, strconv.FormatUint(uint64(belongStudioID), 10), strconv.FormatUint(uint64(strategyType), 10))
+				redisGlob.Redis.ZAdd(
+					ctx,
+					redisKey,
+					&redis.Z{
+						Score:  totalScore,
+						Member: fmt.Sprintf("%v_%v", userID, userBeforeMemberID),
+					},
+				)
+				zcard, err := redisGlob.Redis.ZCard(ctx, redisKey).Result()
+				if err == nil && zcard > 1000 {
+					redisGlob.Redis.ZRemRangeByRank(ctx, redisKey, 0, zcard-1000)
+				}
 			}
 			wg.Done()
 		}(userBeforeMemberIDs)
-
+		lastUserBeforeMemberID += 1000
 	}
 	wg.Wait()
 
