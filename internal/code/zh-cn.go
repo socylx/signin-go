@@ -29,6 +29,7 @@ var text = map[int]string{
 	UsersUpdateError:             "更新用户失败",
 	UsersModifyPersonalInfoError: "修改个人信息失败",
 	UsersDetailError:             "获取个人信息失败",
+	UsersDataError:               "获取学员数据失败",
 
 	StrategyCreateError: "创建策略失败",
 	StrategyQueryError:  "查询策略失败",

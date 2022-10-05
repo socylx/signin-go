@@ -12,6 +12,7 @@ func CheckPermissionRouter(routerGroup core.RouterGroup) {
 	routerGroup.POST("/list", list)
 	routerGroup.POST("/indicator/rule/list", indicatorRuleList)
 	routerGroup.POST("/recommend", recommend)
+	routerGroup.POST("/score", score)
 
 }
 
