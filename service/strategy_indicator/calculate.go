@@ -6,6 +6,7 @@ import (
 	"signin-go/internal/errors"
 	"signin-go/repository/coupon"
 	"signin-go/repository/course_level"
+	orderRepo "signin-go/repository/order"
 	"signin-go/repository/strategy"
 	"signin-go/repository/users"
 	"strconv"
@@ -386,6 +387,36 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 				continue
 			}
 			if min <= allSigninSpend && (allSigninSpend < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
+	"total_membership_amount": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		var amount float64
+		for _, order := range userData.Orders {
+			orderStatus := order.Status
+			if !(orderStatus == orderRepo.STATUS_WAIT_SEND || orderStatus == orderRepo.STATUS_WAIT_RECEIVE || orderStatus == orderRepo.STATUS_COMPLETE) {
+				continue
+			}
+			for _, orderItem := range order.OrderItems {
+				if orderItem.Type != 1 {
+					continue
+				}
+				amount += float64(orderItem.Price)
+			}
+		}
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.ParseFloat(strategyIndicatorRule.Min, 64)
+			max, err2 := strconv.ParseFloat(strategyIndicatorRule.Max, 64)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= amount && (amount < max || (min > 0 && max <= 0)) {
 				score = &users.Score{}
 				score.ID = strategyIndicatorRule.ID
 				score.Name = strategyIndicatorRule.Name
