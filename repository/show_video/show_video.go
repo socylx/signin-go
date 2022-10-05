@@ -1,4 +1,4 @@
-package todo
+package show_video
 
 import (
 	"time"
@@ -23,9 +23,4 @@ type ShowVideo struct {
 	ShowVideo    bool      `gorm:"column:show_video" json:"show_video"` // 是否显示视频，1已经转码完
 	ShootTime    time.Time `gorm:"column:shoot_time" json:"shoot_time"` // 视频拍摄时间
 	ShowMode     uint32    `gorm:"column:show_mode" json:"show_mode"`   // 显示方式，1小程序列表展示，2列表不展示（只展示详情页）
-}
-
-// TableName get sql table name.获取数据库表名
-func (m *ShowVideo) TableName() string {
-	return "show_video"
 }

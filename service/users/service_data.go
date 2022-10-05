@@ -16,6 +16,7 @@ import (
 	"signin-go/repository/user_before_member"
 	"signin-go/repository/users"
 	pageAccessServ "signin-go/service/page_access"
+	"signin-go/service/show_video"
 	"sync"
 )
 
@@ -36,6 +37,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		judgeUserData    []*judge_user.JudgeUserData
 		pageAccessData   *users.PageAccessData
 		pageEventData    *users.PageEventData
+		showVideoCount   int64
 	)
 
 	if dataID.UserID > 0 {
@@ -157,6 +159,10 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 				},
 			}
 		}()
+		go func() {
+			defer wg.Done()
+			showVideoCount = show_video.GetShowVideoCount(ctx, uint32(user.ID))
+		}()
 	}
 
 	// run.Async(ctx, func() {
@@ -223,6 +229,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		JudgeUserData:   judgeUserData,
 		PageAccessData:  pageAccessData,
 		PageEventData:   pageEventData,
+		ShowVideoCount:  showVideoCount,
 	}
 	return
 }

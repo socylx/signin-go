@@ -20,6 +20,7 @@ type Data struct {
 	JudgeUserData    []*judge_user.JudgeUserData   `bson:"judge_user_data"`
 	PageAccessData   *PageAccessData               `bson:"page_access_data"`
 	PageEventData    *PageEventData                `bson:"page_event_data"`
+	ShowVideoCount   int64                         `bson:"show_video_count"`
 }
 
 type UserBeforeMember struct {

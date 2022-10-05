@@ -7,3 +7,5 @@ const (
 	CancelStatus    SigninType = 2 //取消签到、预约
 	SubscribeStatus SigninType = 3 //课程预约
 )
+
+var StatusOnList = [2]SigninType{SigninStatus, SubscribeStatus}

@@ -1,4 +1,4 @@
-package todo
+package show_video_user
 
 import (
 	"time"
@@ -13,9 +13,4 @@ type ShowVideoUser struct {
 	IsDel       bool      `gorm:"column:is_del" json:"is_del"`
 	UpdateTime  time.Time `gorm:"column:update_time" json:"update_time"`
 	CreateTime  time.Time `gorm:"column:create_time" json:"create_time"`
-}
-
-// TableName get sql table name.获取数据库表名
-func (m *ShowVideoUser) TableName() string {
-	return "show_video_user"
 }
