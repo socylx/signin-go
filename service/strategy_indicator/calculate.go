@@ -554,6 +554,49 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	"follow_time": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		var couponAllocCreateTime time.Time
+
+		for _, couponAlloc := range userData.CouponAllocData.CouponAllocs {
+			if couponAlloc.Coupon.IsNewUser {
+				couponAllocCreateTime = couponAlloc.CreateTime
+			}
+		}
+		if couponAllocCreateTime == time.TimeZeroTime {
+			return nil, noCalculateScoreError
+		}
+		couponAllocCreateTime = time.DateZero(couponAllocCreateTime)
+
+		var day int
+		var haveFollow bool
+		for _, follow := range userData.UserBeforeMember.Follows {
+			followCreateDate := time.DateZero(follow.CreateTime)
+			if followCreateDate.After(couponAllocCreateTime) || followCreateDate.Equal(couponAllocCreateTime) {
+				day = int(followCreateDate.Sub(couponAllocCreateTime).Hours() / 24)
+				haveFollow = true
+				break
+			}
+		}
+		if !haveFollow {
+			return nil, noCalculateScoreError
+		}
+
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.Atoi(strategyIndicatorRule.Min)
+			max, err2 := strconv.Atoi(strategyIndicatorRule.Max)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= day && (day < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
 }
 
 /*
