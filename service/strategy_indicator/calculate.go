@@ -377,6 +377,24 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	"all_signin_spend": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		allSigninSpend := userData.AllSigninSpend
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.ParseFloat(strategyIndicatorRule.Min, 64)
+			max, err2 := strconv.ParseFloat(strategyIndicatorRule.Max, 64)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= allSigninSpend && (allSigninSpend < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
 }
 
 /*
