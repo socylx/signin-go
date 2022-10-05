@@ -62,3 +62,25 @@ func GetMembershipDatas(ctx core.StdContext, filter *MembershipFilter) (data []*
 	err = query.Find(&data).Error
 	return
 }
+
+func GetMaxMembershipID(ctx core.StdContext) (count int64, err error) {
+	db := mysql.DB.WithContext(ctx)
+	err = db.Table("membership").
+		Select("membership.id").Count(&count).Error
+	return
+}
+
+type Filter struct {
+	IDGT int64
+	Size int
+}
+
+func GetUserBeforeMemberIDs(ctx core.StdContext, filter *Filter) (ids []int64, err error) {
+	db := mysql.DB.WithContext(ctx)
+	err = db.Table("membership").
+		Select("membership.user_id").
+		Where("membership.id > ?", filter.IDGT).
+		Limit(filter.Size).
+		Find(&ids).Error
+	return
+}
