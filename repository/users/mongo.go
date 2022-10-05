@@ -18,6 +18,7 @@ type Data struct {
 	Signins          []*signin.SigninData          `bson:"signins"`
 	FissionMap       []*fission_map.FissionMapData `bson:"fission_map"`
 	JudgeUserData    []*judge_user.JudgeUserData   `bson:"judge_user_data"`
+	PageAccessData   *PageAccessData               `bson:"page_access_data"`
 }
 
 type UserBeforeMember struct {
@@ -39,4 +40,11 @@ type User struct {
 type CouponAllocData struct {
 	CouponAllocs            []*coupon_alloc.CouponAllocData `bson:"coupon_allocs"`
 	LastNewUserCouponSignin *signin.SigninData              `bson:"last_new_user_coupon_signin"`
+}
+
+type PageAccessData struct {
+	PageAccessCount                  uint64    `bson:"page_access_count" json:"page_access_count"`
+	LastPageAccessTime               time.Time `bson:"last_page_access_time" json:"last_page_access_time"`
+	CurrentStudioAccessActivityCount uint64    `bson:"current_studio_access_activity_count" json:"current_studio_access_activity_count"`
+	AccessBuyCardCount               uint64    `bson:"access_buy_card_count" json:"access_buy_card_count"`
 }

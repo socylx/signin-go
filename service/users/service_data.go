@@ -13,6 +13,7 @@ import (
 	"signin-go/repository/signin"
 	"signin-go/repository/user_before_member"
 	"signin-go/repository/users"
+	"signin-go/service/page_access"
 	"sync"
 )
 
@@ -31,6 +32,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		signins          []*signin.SigninData
 		fissionMap       []*fission_map.FissionMapData
 		judgeUserData    []*judge_user.JudgeUserData
+		pageAccessData   *users.PageAccessData
 	)
 
 	if dataID.UserID > 0 {
@@ -51,7 +53,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 	var wg sync.WaitGroup
 
 	if user.ID > 0 {
-		wg.Add(5)
+		wg.Add(6)
 		go func() {
 			memberships, _ = membership.GetMembershipDatas(ctx, &membership.MembershipFilter{
 				UserID: uint32(user.ID),
@@ -127,6 +129,15 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 			judgeUserData, _ = judge_user.GetJudgeUserDatas(ctx, uint32(user.ID))
 			wg.Done()
 		}()
+		go func() {
+			var belongsStudioID uint32
+			if user.BelongsStudioID > 0 {
+				belongsStudioID = user.BelongsStudioID
+			} else if userBeforeMember.BelongStudioID > 0 {
+				belongsStudioID = userBeforeMember.BelongStudioID
+			}
+			pageAccessData, _ = page_access.GetPageAccessData(ctx, uint32(user.ID), belongsStudioID)
+		}()
 	}
 
 	// run.Async(ctx, func() {
@@ -191,6 +202,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		Signins:         signins,
 		FissionMap:      fissionMap,
 		JudgeUserData:   judgeUserData,
+		PageAccessData:  pageAccessData,
 	}
 	return
 }
