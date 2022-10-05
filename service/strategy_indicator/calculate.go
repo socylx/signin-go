@@ -680,6 +680,25 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	"access_buy_card": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		accessBuyCardCount := userData.PageAccessData.AccessBuyCardCount
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.ParseUint(strategyIndicatorRule.Min, 10, 64)
+			max, err2 := strconv.ParseUint(strategyIndicatorRule.Max, 10, 64)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= accessBuyCardCount && (accessBuyCardCount < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
+	// ---------------------------------------------------------------
 }
 
 /*
