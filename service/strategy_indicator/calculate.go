@@ -297,6 +297,37 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	"nearly_90_xiaoban": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		var (
+			courseMap = map[uint32]bool{}
+			todayDate = time.TodayDate()
+			startDate = todayDate.AddDate(0, 0, -90)
+			endDate   = todayDate.AddDate(0, 0, 1)
+		)
+
+		for _, signin := range userData.Signins {
+			activityStartTime := signin.ActivityStartTime
+			if signin.CourseLevelID == course_level.XiaoBan && activityStartTime.After(startDate) && activityStartTime.Before(endDate) {
+				courseMap[signin.CourseID] = true
+			}
+		}
+		count := len(courseMap)
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.Atoi(strategyIndicatorRule.Min)
+			max, err2 := strconv.Atoi(strategyIndicatorRule.Max)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= count && (count < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
 }
 
 /*
