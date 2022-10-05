@@ -483,6 +483,34 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	// --------------------------------------------------------------
+	"coupon_days": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		var couponAllocCreateTime time.Time
+		for _, couponAlloc := range userData.CouponAllocData.CouponAllocs {
+			if couponAlloc.Coupon.IsNewUser {
+				couponAllocCreateTime = couponAlloc.CreateTime
+			}
+		}
+		if couponAllocCreateTime != time.TimeZeroTime {
+			todayDate := time.TodayDate()
+			day := int(todayDate.Sub(time.DateZero(couponAllocCreateTime)).Hours() / 24)
+			for _, strategyIndicatorRule := range strategyIndicatorRules {
+				min, err1 := strconv.Atoi(strategyIndicatorRule.Min)
+				max, err2 := strconv.Atoi(strategyIndicatorRule.Max)
+				if err1 != nil || err2 != nil {
+					continue
+				}
+				if min <= day && (day < max || (min > 0 && max <= 0)) {
+					score = &users.Score{}
+					score.ID = strategyIndicatorRule.ID
+					score.Name = strategyIndicatorRule.Name
+					score.Score = float64(strategyIndicatorRule.Score)
+					return
+				}
+			}
+		}
+		return nil, noCalculateScoreError
+	},
 }
 
 /*
