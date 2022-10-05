@@ -23,4 +23,5 @@ func CheckPermissionRouter(routerGroup core.RouterGroup) {
 func UnCheckPermissionRouter(routerGroup core.RouterGroup) {
 	routerGroup.POST("/recommend/generatelaxin", recommendGenerateOfLaxin)
 	routerGroup.POST("/recommend/generaterenew", recommendGenerateOfRenew)
+	routerGroup.POST("/types", Types)
 }
