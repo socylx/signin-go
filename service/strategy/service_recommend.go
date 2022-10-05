@@ -6,6 +6,7 @@ import (
 	strategyRepo "signin-go/repository/strategy"
 	studioRepo "signin-go/repository/studio"
 	"signin-go/repository/user_before_member"
+	"signin-go/service/strategy_indicator"
 	studioServ "signin-go/service/studio"
 	"signin-go/service/users"
 	"sync"
@@ -80,19 +81,19 @@ func GenerateOfLaxin(ctx core.StdContext) core.BusinessError {
 					continue
 				}
 
-				// strategyIndicatorsData, ok := strategyIndicatorsDataMap[studioStrategyID]
-				// if !ok {
-				// 	continue
-				// }
+				strategyIndicatorsData, ok := strategyIndicatorsDataMap[studioStrategyID]
+				if !ok {
+					continue
+				}
 
-				// var totalScore float64
-				// for _, strategyIndicator := range strategyIndicatorsData.StrategyIndicators {
-				// 	score := strategyIndicatorCalculateFunc(&strategyIndicator, userData)
-				// 	if score == nil || score.ID <= 0 {
-				// 		continue
-				// 	}
-				// 	totalScore += score.Score
-				// }
+				var totalScore float64
+				for _, strategyIndicator := range strategyIndicatorsData.StrategyIndicators {
+					score, err := strategy_indicator.StrategyIndicatorCalculate(strategyIndicator, userData)
+					if err != nil {
+						continue
+					}
+					totalScore += score.Score
+				}
 
 				// redisKey := fmt.Sprintf(
 				// 	"%s_%s_%s",
