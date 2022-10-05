@@ -10,10 +10,12 @@ import (
 	"signin-go/repository/follow"
 	"signin-go/repository/judge_user"
 	"signin-go/repository/membership"
+	pageAccessRepo "signin-go/repository/page_access"
+	"signin-go/repository/page_event"
 	"signin-go/repository/signin"
 	"signin-go/repository/user_before_member"
 	"signin-go/repository/users"
-	"signin-go/service/page_access"
+	pageAccessServ "signin-go/service/page_access"
 	"sync"
 )
 
@@ -33,6 +35,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		fissionMap       []*fission_map.FissionMapData
 		judgeUserData    []*judge_user.JudgeUserData
 		pageAccessData   *users.PageAccessData
+		pageEventData    *users.PageEventData
 	)
 
 	if dataID.UserID > 0 {
@@ -126,17 +129,33 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 			wg.Done()
 		}()
 		go func() {
+			defer wg.Done()
 			judgeUserData, _ = judge_user.GetJudgeUserDatas(ctx, uint32(user.ID))
-			wg.Done()
 		}()
 		go func() {
+			defer wg.Done()
 			var belongsStudioID uint32
 			if user.BelongsStudioID > 0 {
 				belongsStudioID = user.BelongsStudioID
 			} else if userBeforeMember.BelongStudioID > 0 {
 				belongsStudioID = userBeforeMember.BelongStudioID
 			}
-			pageAccessData, _ = page_access.GetPageAccessData(ctx, uint32(user.ID), belongsStudioID)
+			pageAccessData, _ = pageAccessServ.GetPageAccessData(ctx, uint32(user.ID), belongsStudioID)
+		}()
+
+		go func() {
+			defer wg.Done()
+			lastPageEvent, _ := page_event.GetLastPageEvent(ctx, &page_event.Filter{
+				UserID:   uint32(user.ID),
+				Type:     pageAccessRepo.MiniProgram,
+				EventKey: page_event.Location,
+			})
+			pageEventData = &users.PageEventData{
+				AccessLocation: &users.AccessLocation{
+					Longitude: lastPageEvent.Data1,
+					Latitude:  lastPageEvent.Data2,
+				},
+			}
 		}()
 	}
 
@@ -203,6 +222,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		FissionMap:      fissionMap,
 		JudgeUserData:   judgeUserData,
 		PageAccessData:  pageAccessData,
+		PageEventData:   pageEventData,
 	}
 	return
 }

@@ -19,6 +19,7 @@ type Data struct {
 	FissionMap       []*fission_map.FissionMapData `bson:"fission_map"`
 	JudgeUserData    []*judge_user.JudgeUserData   `bson:"judge_user_data"`
 	PageAccessData   *PageAccessData               `bson:"page_access_data"`
+	PageEventData    *PageEventData                `bson:"page_event_data"`
 }
 
 type UserBeforeMember struct {
@@ -47,4 +48,13 @@ type PageAccessData struct {
 	LastPageAccessTime               time.Time `bson:"last_page_access_time" json:"last_page_access_time"`
 	CurrentStudioAccessActivityCount uint64    `bson:"current_studio_access_activity_count" json:"current_studio_access_activity_count"`
 	AccessBuyCardCount               uint64    `bson:"access_buy_card_count" json:"access_buy_card_count"`
+}
+
+type PageEventData struct {
+	AccessLocation *AccessLocation `bson:"access_location" json:"access_location"`
+}
+
+type AccessLocation struct {
+	Longitude string `bson:"longitude" json:"longitude"`
+	Latitude  string `bson:"latitude" json:"latitude"`
 }
