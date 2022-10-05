@@ -17,6 +17,7 @@ func CheckPermissionRouter(routerGroup core.RouterGroup) {
 	routerGroup.POST("/set/status", setStatus)
 	routerGroup.POST("/set/studio", setStudio)
 	routerGroup.POST("/studio/list", studioList)
+	routerGroup.POST("/update", update)
 
 }
 

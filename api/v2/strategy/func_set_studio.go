@@ -1,8 +1,8 @@
 package strategy
 
 import (
-	"encoding/json"
 	"signin-go/global/mysql"
+	"signin-go/global/utils"
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	"signin-go/internal/validation"
@@ -33,7 +33,7 @@ func setStudio(c core.Context) {
 
 	var studioIDs []uint32
 	if request.StudioIDs != "" {
-		if err := json.Unmarshal([]byte(request.StudioIDs), &studioIDs); err != nil {
+		if err := utils.Json.Unmarshal([]byte(request.StudioIDs), &studioIDs); err != nil {
 			c.AbortWithError(core.Error(code.ParamBindError, "门店参数不规范").WithError(err))
 			return
 		}

@@ -13,3 +13,11 @@ func GetStrategyIndicatorRuleMaps(ctx core.StdContext, strategyID uint32) (data 
 		Find(&data).Error
 	return
 }
+
+func Delete(ctx core.StdContext, strategyID uint32) (err error) {
+	db := mysql.DB.WithContext(ctx)
+	err = db.Table("strategy_indicator_rule_map").
+		Where("strategy_indicator_rule_map.is_del = 0 AND strategy_indicator_rule_map.strategy_id = ?", strategyID).
+		Update("strategy_indicator_rule_map.is_del", 1).Error
+	return
+}
