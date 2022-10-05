@@ -50,6 +50,36 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	"pin_class": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		var (
+			spend     float32
+			todayDate = time.TodayDate()
+			startDate = todayDate.AddDate(0, 0, -30)
+			endDate   = todayDate.AddDate(0, 0, 1)
+		)
+		for _, signin := range userData.Signins {
+			activityStartTime := signin.ActivityStartTime
+			if activityStartTime.After(startDate) && activityStartTime.Before(endDate) {
+				spend += signin.SigninSpend
+			}
+		}
+		var spendFloat64 float64 = float64(spend)
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.ParseFloat(strategyIndicatorRule.Min, 64)
+			max, err2 := strconv.ParseFloat(strategyIndicatorRule.Max, 64)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= spendFloat64 && (spendFloat64 < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
 }
 
 /*
