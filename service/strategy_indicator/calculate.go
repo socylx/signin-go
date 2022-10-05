@@ -6,6 +6,7 @@ import (
 	"signin-go/global/utils"
 	"signin-go/internal/errors"
 	"signin-go/repository/coupon"
+	"signin-go/repository/coupon_alloc"
 	"signin-go/repository/course_level"
 	orderRepo "signin-go/repository/order"
 	"signin-go/repository/source"
@@ -588,6 +589,34 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 				continue
 			}
 			if min <= day && (day < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
+	// --------------------------------------------------------------
+	"coupon_get_type": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		var couponAllocGetType uint32
+		for _, couponAlloc := range userData.CouponAllocData.CouponAllocs {
+			if couponAlloc.Coupon.IsNewUser {
+				couponAllocGetType = couponAlloc.GetType
+			}
+		}
+		if couponAllocGetType <= 0 {
+			return nil, noCalculateScoreError
+		}
+		var couponAllocGetTypeString string
+		if couponAllocGetType == coupon_alloc.GET_TYPE_LAXIN {
+			couponAllocGetTypeString = "free"
+		} else {
+			couponAllocGetTypeString = "pay"
+		}
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			if couponAllocGetTypeString == strategyIndicatorRule.Min {
 				score = &users.Score{}
 				score.ID = strategyIndicatorRule.ID
 				score.Name = strategyIndicatorRule.Name
