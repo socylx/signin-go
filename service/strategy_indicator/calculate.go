@@ -7,6 +7,7 @@ import (
 	"signin-go/repository/coupon"
 	"signin-go/repository/course_level"
 	orderRepo "signin-go/repository/order"
+	"signin-go/repository/source"
 	"signin-go/repository/strategy"
 	"signin-go/repository/users"
 	"strconv"
@@ -439,6 +440,19 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 			}
 			if min <= day && (day < max || (min > 0 && max <= 0)) {
 				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
+	"clues_source": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		sourceType := source.SourceType[userData.UserBeforeMember.SourceID]
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			score = &users.Score{}
+			if sourceType == strategyIndicatorRule.Min {
 				score.ID = strategyIndicatorRule.ID
 				score.Name = strategyIndicatorRule.Name
 				score.Score = float64(strategyIndicatorRule.Score)
