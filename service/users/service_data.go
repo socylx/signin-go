@@ -49,7 +49,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 	var wg sync.WaitGroup
 
 	if user.ID > 0 {
-		wg.Add(3)
+		wg.Add(4)
 		go func() {
 			memberships, _ = membership.GetMembershipDatas(ctx, &membership.MembershipFilter{
 				UserID: uint32(user.ID),
@@ -119,6 +119,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 					StatusIn:    fission_map.STATUS_AFTER_ACCEPT,
 				},
 			)
+			wg.Done()
 		}()
 	}
 
