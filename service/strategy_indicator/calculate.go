@@ -5,6 +5,7 @@ import (
 	"signin-go/global/time"
 	"signin-go/internal/errors"
 	"signin-go/repository/coupon"
+	"signin-go/repository/course_level"
 	"signin-go/repository/strategy"
 	"signin-go/repository/users"
 	"strconv"
@@ -262,6 +263,36 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 					score.Score = float64(strategyIndicatorRule.Score)
 					return
 				}
+			}
+		}
+		return nil, noCalculateScoreError
+	},
+	"nearly_90_master": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		var (
+			count     int
+			todayDate = time.TodayDate()
+			startDate = todayDate.AddDate(0, 0, -90)
+			endDate   = todayDate.AddDate(0, 0, 1)
+		)
+
+		for _, signin := range userData.Signins {
+			activityStartTime := signin.ActivityStartTime
+			if signin.CourseLevelID == course_level.Master && activityStartTime.After(startDate) && activityStartTime.Before(endDate) {
+				count += 1
+			}
+		}
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.Atoi(strategyIndicatorRule.Min)
+			max, err2 := strconv.Atoi(strategyIndicatorRule.Max)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= count && (count < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
 			}
 		}
 		return nil, noCalculateScoreError
