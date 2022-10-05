@@ -21,6 +21,7 @@ type Data struct {
 	PageAccessData   *PageAccessData               `bson:"page_access_data"`
 	PageEventData    *PageEventData                `bson:"page_event_data"`
 	ShowVideoCount   int64                         `bson:"show_video_count"`
+	AllSigninSpend   float64                       `bson:"all_signin_spend"`
 }
 
 type UserBeforeMember struct {

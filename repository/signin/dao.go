@@ -47,3 +47,12 @@ func GetSigninDatas(ctx core.StdContext, filter *Filter) (data []*SigninData, er
 	err = query.Find(&data).Error
 	return
 }
+
+func GetAllSigninSpend(ctx core.StdContext, userID uint32) (spend float64, err error) {
+	db := mysql.DB.WithContext(ctx)
+	err = db.Table("signin").
+		Select("IFNULL(sum(signin.spend), 0)").
+		Where("signin.is_del = 0 AND signin.is_back = 0 AND signin.type IN (1,3) AND signin.user_id = ?", userID).
+		Scan(&spend).Error
+	return
+}

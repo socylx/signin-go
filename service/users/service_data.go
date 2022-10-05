@@ -12,11 +12,12 @@ import (
 	"signin-go/repository/membership"
 	pageAccessRepo "signin-go/repository/page_access"
 	"signin-go/repository/page_event"
-	"signin-go/repository/signin"
+	signinRepo "signin-go/repository/signin"
 	"signin-go/repository/user_before_member"
 	"signin-go/repository/users"
 	pageAccessServ "signin-go/service/page_access"
 	"signin-go/service/show_video"
+	signinServ "signin-go/service/signin"
 	"sync"
 )
 
@@ -32,12 +33,13 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		follows          []*follow.Follow
 		memberships      []*membership.MembershipData
 		couponAllocData  *users.CouponAllocData
-		signins          []*signin.SigninData
+		signins          []*signinRepo.SigninData
 		fissionMap       []*fission_map.FissionMapData
 		judgeUserData    []*judge_user.JudgeUserData
 		pageAccessData   *users.PageAccessData
 		pageEventData    *users.PageEventData
 		showVideoCount   int64
+		allSigninSpend   float64
 	)
 
 	if dataID.UserID > 0 {
@@ -98,9 +100,9 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 					couponAllocID = couponAlloc.ID
 				}
 			}
-			var signinData *signin.SigninData
+			var signinData *signinRepo.SigninData
 			if couponAllocID > 0 {
-				signinData, _ = signin.GetSigninDataByCouponAllocID(ctx, couponAllocID)
+				signinData, _ = signinRepo.GetSigninDataByCouponAllocID(ctx, couponAllocID)
 			}
 			couponAllocData = &users.CouponAllocData{
 				CouponAllocs:            couponAllocDatas,
@@ -111,8 +113,8 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 
 		go func() {
 			todayDate := time.TodayDate()
-			signins, _ = signin.GetSigninDatas(
-				ctx, &signin.Filter{
+			signins, _ = signinRepo.GetSigninDatas(
+				ctx, &signinRepo.Filter{
 					UserID:              uint32(user.ID),
 					ActivityStartTimeGE: todayDate.AddDate(0, 0, -90),
 					ActivityStartTimeLT: todayDate.AddDate(0, 0, 7),
@@ -162,6 +164,9 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		go func() {
 			defer wg.Done()
 			showVideoCount = show_video.GetShowVideoCount(ctx, uint32(user.ID))
+		}()
+		go func() {
+			allSigninSpend = signinServ.GetAllSigninSpend(ctx, uint32(user.ID))
 		}()
 	}
 
@@ -230,6 +235,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		PageAccessData:  pageAccessData,
 		PageEventData:   pageEventData,
 		ShowVideoCount:  showVideoCount,
+		AllSigninSpend:  allSigninSpend,
 	}
 	return
 }
