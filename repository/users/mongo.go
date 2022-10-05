@@ -13,6 +13,7 @@ type Data struct {
 	User             *User                        `bson:"user"`
 	Memberships      []*membership.MembershipData `bson:"memberships"`
 	CouponAllocData  *CouponAllocData             `bson:"coupon_alloc_data"`
+	Signins          []*signin.SigninData
 }
 
 type UserBeforeMember struct {

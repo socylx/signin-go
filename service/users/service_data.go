@@ -1,6 +1,7 @@
 package users
 
 import (
+	"signin-go/global/time"
 	"signin-go/internal/core"
 	"signin-go/internal/errors"
 	"signin-go/repository/coupon"
@@ -25,6 +26,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		follows          []*follow.Follow
 		memberships      []*membership.MembershipData
 		couponAllocData  *users.CouponAllocData
+		signins          []*signin.SigninData
 	)
 
 	if dataID.UserID > 0 {
@@ -45,7 +47,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 	var wg sync.WaitGroup
 
 	if user.ID > 0 {
-		wg.Add(2)
+		wg.Add(3)
 		go func() {
 			memberships, _ = membership.GetMembershipDatas(ctx, &membership.MembershipFilter{
 				UserID: uint32(user.ID),
@@ -93,6 +95,17 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 				CouponAllocs:            couponAllocDatas,
 				LastNewUserCouponSignin: signinData,
 			}
+			wg.Done()
+		}()
+
+		go func() {
+			todayDate := time.TodayDate()
+			signins, err = signin.GetSigninDatas(
+				ctx, &signin.Filter{
+					UserID:              uint32(user.ID),
+					ActivityStartTimeGE: todayDate.AddDate(0, 0, -90),
+					ActivityStartTimeLT: todayDate.AddDate(0, 0, 7),
+				})
 			wg.Done()
 		}()
 	}
@@ -156,6 +169,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		},
 		Memberships:     memberships,
 		CouponAllocData: couponAllocData,
+		Signins:         signins,
 	}
 	return
 }
