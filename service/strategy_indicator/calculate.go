@@ -29,7 +29,7 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 				continue
 			}
 			if couponAlloc.Coupon.Type == coupon.CashType && couponAlloc.Coupon.AmountType == coupon.NumberAmountType {
-				remains += couponAlloc.Remain
+				remains += couponAlloc.Remains
 			}
 		}
 		var remainsFloat64 float64 = float64(remains)
@@ -107,6 +107,52 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 				continue
 			}
 			if min <= fissionMapCount && (fissionMapCount < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
+	"renew_discount": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		var (
+			discount  int
+			remains   float32
+			todayDate = time.TodayDate()
+		)
+		for _, membership := range userData.Memberships {
+			remains += membership.Remains
+		}
+		for _, couponAlloc := range userData.CouponAllocData.CouponAllocs {
+			deadline := couponAlloc.Deadline
+			if deadline != time.TimeZeroTime || deadline.Before(todayDate) {
+				continue
+			}
+			couponID := couponAlloc.Coupon.ID
+			if couponID == 11 || couponID == 165 {
+				discount += int(couponAlloc.Remains)
+				continue
+			}
+			if couponAlloc.Coupon.Type == coupon.CashType && couponAlloc.Coupon.AmountType == coupon.NumberAmountType {
+				remains += couponAlloc.Remains
+			}
+		}
+		if remains >= 10 {
+			if remains < 20 {
+				discount += 500
+			} else {
+				discount += 1000
+			}
+		}
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.Atoi(strategyIndicatorRule.Min)
+			max, err2 := strconv.Atoi(strategyIndicatorRule.Max)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= discount && discount <= max {
 				score = &users.Score{}
 				score.ID = strategyIndicatorRule.ID
 				score.Name = strategyIndicatorRule.Name

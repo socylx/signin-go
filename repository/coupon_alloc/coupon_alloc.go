@@ -27,7 +27,7 @@ type CouponAllocData struct {
 	ID         uint32    `bson:"id"`
 	CreateTime time.Time `bson:"create_time"`
 	Deadline   time.Time `bson:"deadline"`
-	Remain     float32   `bson:"remain"`
+	Remains    float32   `bson:"remains"`
 	GetType    uint32    `bson:"get_type"`
 	Coupon     *Coupon   `bson:"coupon"`
 }

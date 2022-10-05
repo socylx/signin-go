@@ -88,7 +88,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 						ID:         couponAlloc.ID,
 						CreateTime: couponAlloc.CreateTime,
 						Deadline:   couponAlloc.Deadline,
-						Remain:     couponAlloc.Remain,
+						Remains:    couponAlloc.Remain,
 						GetType:    couponAlloc.GetType,
 						Coupon: &coupon_alloc.Coupon{
 							ID:         coupon.ID,
