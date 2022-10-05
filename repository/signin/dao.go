@@ -9,7 +9,7 @@ func GetSigninDataByCouponAllocID(ctx core.StdContext, couponAllocID uint32) (da
 	db := mysql.DB.WithContext(ctx)
 	data = &SigninData{}
 	err = db.Table("signin").
-		Select("signin.id, signin.user_id as signin_user_id, activity.start_time as activity_start_time, course.course_level_id as course_level_id").
+		Select("signin.id, signin.user_id as signin_user_id,activity.id as activity_id,activity.start_time as activity_start_time,course.id as course_id, course.course_level_id as course_level_id").
 		Joins("JOIN coupon_alloc_log on signin.id = coupon_alloc_log.for_id").
 		Joins("JOIN activity on signin.activity_id = activity.id").
 		Joins("JOIN course on activity.course_id = course.id").

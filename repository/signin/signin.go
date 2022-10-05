@@ -31,7 +31,10 @@ type Signin struct {
 
 type SigninData struct {
 	ID                uint32    `bson:"signin_id" json:"signin_id"`
+	SigninSpend       float32   `bson:"signin_spend" json:"signin_spend"`
 	SigninUserID      uint32    `bson:"signin_user_id" json:"signin_user_id"` // 约课人id
+	ActivityID        uint32    `bson:"activity_id" json:"activity_id"`
 	ActivityStartTime time.Time `bson:"activity_start_time" json:"activity_start_time"`
+	CourseID          uint32    `bson:"course_id" json:"course_id"`
 	CourseLevelID     uint32    `bson:"course_level_id" json:"course_level_id"`
 }
