@@ -3,17 +3,19 @@ package users
 import (
 	"signin-go/global/time"
 	"signin-go/repository/coupon_alloc"
+	"signin-go/repository/fission_map"
 	"signin-go/repository/follow"
 	"signin-go/repository/membership"
 	"signin-go/repository/signin"
 )
 
 type Data struct {
-	UserBeforeMember *UserBeforeMember            `bson:"user_before_member"`
-	User             *User                        `bson:"user"`
-	Memberships      []*membership.MembershipData `bson:"memberships"`
-	CouponAllocData  *CouponAllocData             `bson:"coupon_alloc_data"`
-	Signins          []*signin.SigninData
+	UserBeforeMember *UserBeforeMember             `bson:"user_before_member"`
+	User             *User                         `bson:"user"`
+	Memberships      []*membership.MembershipData  `bson:"memberships"`
+	CouponAllocData  *CouponAllocData              `bson:"coupon_alloc_data"`
+	Signins          []*signin.SigninData          `bson:"signins"`
+	FissionMap       []*fission_map.FissionMapData `bson:"fission_map"`
 }
 
 type UserBeforeMember struct {

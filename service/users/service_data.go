@@ -6,6 +6,7 @@ import (
 	"signin-go/internal/errors"
 	"signin-go/repository/coupon"
 	"signin-go/repository/coupon_alloc"
+	"signin-go/repository/fission_map"
 	"signin-go/repository/follow"
 	"signin-go/repository/membership"
 	"signin-go/repository/signin"
@@ -27,6 +28,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		memberships      []*membership.MembershipData
 		couponAllocData  *users.CouponAllocData
 		signins          []*signin.SigninData
+		fissionMap       []*fission_map.FissionMapData
 	)
 
 	if dataID.UserID > 0 {
@@ -100,13 +102,23 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 
 		go func() {
 			todayDate := time.TodayDate()
-			signins, err = signin.GetSigninDatas(
+			signins, _ = signin.GetSigninDatas(
 				ctx, &signin.Filter{
 					UserID:              uint32(user.ID),
 					ActivityStartTimeGE: todayDate.AddDate(0, 0, -90),
 					ActivityStartTimeLT: todayDate.AddDate(0, 0, 7),
 				})
 			wg.Done()
+		}()
+
+		go func() {
+			fissionMap, _ = fission_map.GetFissionMapData(
+				ctx, &fission_map.Filter{
+					ShareUserID: uint32(user.ID),
+					Type:        fission_map.Member,
+					StatusIn:    fission_map.STATUS_AFTER_ACCEPT,
+				},
+			)
 		}()
 	}
 
@@ -170,6 +182,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		Memberships:     memberships,
 		CouponAllocData: couponAllocData,
 		Signins:         signins,
+		FissionMap:      fissionMap,
 	}
 	return
 }

@@ -1,4 +1,4 @@
-package todo
+package fission_map
 
 import (
 	"time"
@@ -18,7 +18,6 @@ type FissionMap struct {
 	Mark          uint32    `gorm:"column:mark" json:"mark"`                   // 1-正常, 2-申请回复奖励
 }
 
-// TableName get sql table name.获取数据库表名
-func (m *FissionMap) TableName() string {
-	return "fission_map"
+type FissionMapData struct {
+	ID uint32 ` bson:"id" json:"id"`
 }
