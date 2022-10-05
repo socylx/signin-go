@@ -655,6 +655,31 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	"try_activity_type": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		lastNewUserCouponSignin := userData.CouponAllocData.LastNewUserCouponSignin
+		if lastNewUserCouponSignin.ID <= 0 {
+			return nil, noCalculateScoreError
+		}
+
+		var activityType string
+		if lastNewUserCouponSignin.CourseLevelID == course_level.TiYan {
+			activityType = "vip_xiaoban"
+		} else if lastNewUserCouponSignin.CourseLevelID == course_level.ChangGui {
+			activityType = "changgui"
+		} else {
+			return nil, noCalculateScoreError
+		}
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			if activityType == strategyIndicatorRule.Min {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
 }
 
 /*
