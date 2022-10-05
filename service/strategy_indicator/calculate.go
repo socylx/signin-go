@@ -191,6 +191,24 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	"join_judge_count": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		judgeUserCount := len(userData.JudgeUserData)
+		for _, strategyIndicatorRule := range strategyIndicatorRules {
+			min, err1 := strconv.Atoi(strategyIndicatorRule.Min)
+			max, err2 := strconv.Atoi(strategyIndicatorRule.Max)
+			if err1 != nil || err2 != nil {
+				continue
+			}
+			if min <= judgeUserCount && (judgeUserCount < max || (min > 0 && max <= 0)) {
+				score = &users.Score{}
+				score.ID = strategyIndicatorRule.ID
+				score.Name = strategyIndicatorRule.Name
+				score.Score = float64(strategyIndicatorRule.Score)
+				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
 }
 
 /*
