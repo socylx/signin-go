@@ -6,6 +6,7 @@ import (
 	"signin-go/global/time"
 	"signin-go/internal/core"
 	"signin-go/repository/strategy"
+	"signin-go/repository/users"
 )
 
 const strategyKeyBaseString = "30ec877eaf21e960b504398cc7f48efc"
@@ -16,37 +17,35 @@ func GenerateStrategyKey() string {
 	return sumStr
 }
 
-// func MatchUserStrategyType(ctx core.StdContext, userData map[string]interface{}) (strategyType uint32) {
-// 	memberships := userData["memberships"].([]map[string]interface{})
-// 	if len(memberships) > 0 {
-// 		strategyType = strategy.StrategyType.Xuka
-// 	} else {
-// 		couponAllocs := userData["coupon_alloc_data"].(*user.CouponAllocData).CouponAllocs
-
-// 		var couponAllocID uint32
-// 		for _, couponAlloc := range couponAllocs {
-// 			if couponAlloc["is_new_user"].(bool) {
-// 				couponAllocID = couponAlloc["id"].(uint32)
-// 			}
-// 		}
-// 		if couponAllocID > 0 {
-// 			signin, _ := h.signinService.DetailByCouponAllocID(c, couponAllocID)
-
-// 			if signin.ID <= 0 {
-// 				strategyType = strategy.StrategyType.LaXinSubscribe
-// 			} else {
-// 				if signin.ActivityStartTime.Before(time.Now()) {
-// 					strategyType = strategy.StrategyType.LaXinTry
-// 				} else {
-// 					strategyType = strategy.StrategyType.LaXinMembership
-// 				}
-// 			}
-// 		} else {
-// 			strategyType = strategy.StrategyType.LaXinCoupon
-// 		}
-// 	}
-// 	return
-// }
+func MatchUserStrategyType(ctx core.StdContext, userData *users.Data) (strategyType strategy.StrategyType) {
+	memberships := userData.Memberships
+	if len(memberships) > 0 {
+		strategyType = strategy.Xuka
+	} else {
+		couponAllocs := userData.CouponAllocData.CouponAllocs
+		var couponAllocID uint32
+		for _, couponAlloc := range couponAllocs {
+			if couponAlloc.Coupon.IsNewUser {
+				couponAllocID = couponAlloc.ID
+			}
+		}
+		if couponAllocID > 0 {
+			signin := userData.CouponAllocData.LastNewUserCouponSignin
+			if signin.ID <= 0 {
+				strategyType = strategy.LaXinSubscribe
+			} else {
+				if signin.ActivityStartTime.Before(time.Now()) {
+					strategyType = strategy.LaXinTry
+				} else {
+					strategyType = strategy.LaXinMembership
+				}
+			}
+		} else {
+			strategyType = strategy.LaXinCoupon
+		}
+	}
+	return
+}
 
 func Data(ctx core.StdContext, strategyID uint32) (data *strategy.StrategyDocument, err error) {
 	s, err := strategy.Detail(ctx, strategyID)
