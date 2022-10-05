@@ -1,4 +1,4 @@
-package todo
+package judge_user_log
 
 import (
 	"time"
@@ -15,9 +15,4 @@ type JudgeUserLog struct {
 	CreateTime  time.Time `gorm:"column:create_time" json:"create_time"`
 	UpdateTime  time.Time `gorm:"column:update_time" json:"update_time"`
 	IsDel       bool      `gorm:"column:is_del" json:"is_del"`
-}
-
-// TableName get sql table name.获取数据库表名
-func (m *JudgeUserLog) TableName() string {
-	return "judge_user_log"
 }

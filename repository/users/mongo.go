@@ -5,6 +5,7 @@ import (
 	"signin-go/repository/coupon_alloc"
 	"signin-go/repository/fission_map"
 	"signin-go/repository/follow"
+	"signin-go/repository/judge_user"
 	"signin-go/repository/membership"
 	"signin-go/repository/signin"
 )
@@ -16,6 +17,7 @@ type Data struct {
 	CouponAllocData  *CouponAllocData              `bson:"coupon_alloc_data"`
 	Signins          []*signin.SigninData          `bson:"signins"`
 	FissionMap       []*fission_map.FissionMapData `bson:"fission_map"`
+	JudgeUserData    []*judge_user.JudgeUserData   `bson:"judge_user_data"`
 }
 
 type UserBeforeMember struct {

@@ -8,6 +8,7 @@ import (
 	"signin-go/repository/coupon_alloc"
 	"signin-go/repository/fission_map"
 	"signin-go/repository/follow"
+	"signin-go/repository/judge_user"
 	"signin-go/repository/membership"
 	"signin-go/repository/signin"
 	"signin-go/repository/user_before_member"
@@ -29,6 +30,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		couponAllocData  *users.CouponAllocData
 		signins          []*signin.SigninData
 		fissionMap       []*fission_map.FissionMapData
+		judgeUserData    []*judge_user.JudgeUserData
 	)
 
 	if dataID.UserID > 0 {
@@ -49,7 +51,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 	var wg sync.WaitGroup
 
 	if user.ID > 0 {
-		wg.Add(4)
+		wg.Add(5)
 		go func() {
 			memberships, _ = membership.GetMembershipDatas(ctx, &membership.MembershipFilter{
 				UserID: uint32(user.ID),
@@ -121,6 +123,10 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 			)
 			wg.Done()
 		}()
+		go func() {
+			judgeUserData, _ = judge_user.GetJudgeUserDatas(ctx, uint32(user.ID))
+			wg.Done()
+		}()
 	}
 
 	// run.Async(ctx, func() {
@@ -184,6 +190,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		CouponAllocData: couponAllocData,
 		Signins:         signins,
 		FissionMap:      fissionMap,
+		JudgeUserData:   judgeUserData,
 	}
 	return
 }

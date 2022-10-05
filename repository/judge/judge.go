@@ -1,4 +1,4 @@
-package todo
+package judge
 
 import (
 	"time"
@@ -22,9 +22,4 @@ type Judge struct {
 	EndTime           time.Time `gorm:"column:end_time" json:"end_time"`
 	CheckAwardContent string    `gorm:"column:check_award_content" json:"check_award_content"` // 查看奖励说明
 	CheckAwardURL     string    `gorm:"column:check_award_url" json:"check_award_url"`         // 查看奖励图文
-}
-
-// TableName get sql table name.获取数据库表名
-func (m *Judge) TableName() string {
-	return "judge"
 }

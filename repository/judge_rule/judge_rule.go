@@ -1,4 +1,4 @@
-package todo
+package judge_rule
 
 import (
 	"time"
@@ -15,9 +15,4 @@ type JudgeRule struct {
 	UpdateTime time.Time `gorm:"column:update_time" json:"update_time"`
 	IsDel      bool      `gorm:"column:is_del" json:"is_del"`
 	ErrMsg     string    `gorm:"column:err_msg" json:"err_msg"` // 不满足时，展示给用户的文案
-}
-
-// TableName get sql table name.获取数据库表名
-func (m *JudgeRule) TableName() string {
-	return "judge_rule"
 }

@@ -1,4 +1,4 @@
-package todo
+package judge_award_result
 
 import (
 	"time"
@@ -18,9 +18,4 @@ type JudgeAwardResult struct {
 	IsDel        bool      `gorm:"column:is_del" json:"is_del"`
 	Type         uint32    `gorm:"column:type" json:"type"`
 	AwardValue   uint32    `gorm:"column:award_value" json:"award_value"`
-}
-
-// TableName get sql table name.获取数据库表名
-func (m *JudgeAwardResult) TableName() string {
-	return "judge_award_result"
 }

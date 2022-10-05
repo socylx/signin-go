@@ -1,4 +1,4 @@
-package todo
+package judge_user
 
 import (
 	"time"
@@ -25,7 +25,6 @@ type JudgeUser struct {
 	AwardTime         time.Time `gorm:"column:award_time" json:"award_time"`     // 发放奖励成功时间
 }
 
-// TableName get sql table name.获取数据库表名
-func (m *JudgeUser) TableName() string {
-	return "judge_user"
+type JudgeUserData struct {
+	ID uint32 `bson:"id" json:"id"`
 }
