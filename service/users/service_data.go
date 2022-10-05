@@ -46,14 +46,14 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 
 	if user.ID > 0 {
 		wg.Add(2)
-		go func(ctx core.StdContext) {
+		go func() {
 			memberships, _ = membership.GetMembershipDatas(ctx, &membership.MembershipFilter{
 				UserID: uint32(user.ID),
 			})
 			wg.Done()
-		}(ctx)
+		}()
 
-		go func(c core.StdContext) {
+		go func() {
 			couponAllocs, _ := coupon_alloc.GetCouponAllocs(
 				ctx,
 				&coupon_alloc.Filter{
@@ -94,7 +94,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 				LastNewUserCouponSignin: signinData,
 			}
 			wg.Done()
-		}(ctx)
+		}()
 	}
 
 	// run.Async(ctx, func() {
