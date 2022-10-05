@@ -59,3 +59,7 @@ func TodayDate() time.Time {
 	d := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, cst)
 	return d
 }
+
+func DateZero(t time.Time) time.Time {
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, cst)
+}

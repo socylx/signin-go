@@ -227,6 +227,45 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		}
 		return nil, noCalculateScoreError
 	},
+	"nearly_studio": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		signins := userData.Signins
+		if len(signins) > 0 {
+			var days int
+
+			todayDate := time.TodayDate()
+			endDate := todayDate.AddDate(0, 0, 7)
+
+			for index, signin := range signins {
+				activityStartDate := time.DateZero(signin.ActivityStartTime)
+				if activityStartDate.Before(todayDate) || activityStartDate.After(endDate) {
+					continue
+				}
+				day := int(activityStartDate.Sub(todayDate).Hours() / 24)
+				if index == 0 {
+					days = day
+				} else {
+					if day < days {
+						days = day
+					}
+				}
+			}
+			for _, strategyIndicatorRule := range strategyIndicatorRules {
+				min, err1 := strconv.Atoi(strategyIndicatorRule.Min)
+				max, err2 := strconv.Atoi(strategyIndicatorRule.Max)
+				if err1 != nil || err2 != nil {
+					continue
+				}
+				if min <= days && (days < max || (min > 0 && max <= 0)) {
+					score = &users.Score{}
+					score.ID = strategyIndicatorRule.ID
+					score.Name = strategyIndicatorRule.Name
+					score.Score = float64(strategyIndicatorRule.Score)
+					return
+				}
+			}
+		}
+		return nil, noCalculateScoreError
+	},
 }
 
 /*
