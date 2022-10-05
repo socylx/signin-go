@@ -2,14 +2,17 @@ package users
 
 import (
 	"signin-go/global/time"
+	"signin-go/repository/coupon_alloc"
 	"signin-go/repository/follow"
 	"signin-go/repository/membership"
+	"signin-go/repository/signin"
 )
 
 type Data struct {
 	UserBeforeMember *UserBeforeMember            `bson:"user_before_member"`
 	User             *User                        `bson:"user"`
 	Memberships      []*membership.MembershipData `bson:"memberships"`
+	CouponAllocData  *CouponAllocData             `bson:"coupon_alloc_data"`
 }
 
 type UserBeforeMember struct {
@@ -26,4 +29,9 @@ type User struct {
 	ID              uint32 `bson:"id"`
 	BelongsStudioID uint32 `bson:"belongs_studio_id"`
 	ManagerUserID   uint32 `bson:"manager_user_id"`
+}
+
+type CouponAllocData struct {
+	CouponAllocs            []*coupon_alloc.CouponAllocData `bson:"coupon_allocs"`
+	LastNewUserCouponSignin *signin.SigninData              `bson:"last_new_user_coupon_signin"`
 }

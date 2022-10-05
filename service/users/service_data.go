@@ -3,8 +3,11 @@ package users
 import (
 	"signin-go/internal/core"
 	"signin-go/internal/errors"
+	"signin-go/repository/coupon"
+	"signin-go/repository/coupon_alloc"
 	"signin-go/repository/follow"
 	"signin-go/repository/membership"
+	"signin-go/repository/signin"
 	"signin-go/repository/user_before_member"
 	"signin-go/repository/users"
 	"sync"
@@ -21,6 +24,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		userBeforeMember *user_before_member.UserBeforeMember
 		follows          []*follow.Follow
 		memberships      []*membership.MembershipData
+		couponAllocData  *users.CouponAllocData
 	)
 
 	if dataID.UserID > 0 {
@@ -41,12 +45,54 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 	var wg sync.WaitGroup
 
 	if user.ID > 0 {
-		wg.Add(1)
+		wg.Add(2)
 		go func(ctx core.StdContext) {
 			memberships, _ = membership.GetMembershipDatas(ctx, &membership.MembershipFilter{
 				UserID: uint32(user.ID),
 			})
-			// userData.Store("coupon_alloc_data", s.couponAllocData(userID))
+			wg.Done()
+		}(ctx)
+
+		go func(c core.StdContext) {
+			couponAllocs, _ := coupon_alloc.GetCouponAllocs(
+				ctx,
+				&coupon_alloc.Filter{
+					Status: []coupon_alloc.CouponAllocStatus{coupon_alloc.Init, coupon_alloc.Used},
+					UserID: uint32(user.ID),
+				},
+			)
+			var couponAllocID uint32
+			couponAllocDatas := make([]*coupon_alloc.CouponAllocData, 0, len(couponAllocs))
+			for _, couponAlloc := range couponAllocs {
+				coupon, _ := coupon.Detail(ctx, couponAlloc.CouponID)
+				couponAllocDatas = append(
+					couponAllocDatas, &coupon_alloc.CouponAllocData{
+						ID:         couponAlloc.ID,
+						CreateTime: couponAlloc.CreateTime,
+						Deadline:   couponAlloc.Deadline,
+						Remain:     couponAlloc.Remain,
+						GetType:    couponAlloc.GetType,
+						Coupon: &coupon_alloc.Coupon{
+							ID:         coupon.ID,
+							Type:       coupon.Type,
+							AmountType: coupon.Type,
+							IsNewUser:  coupon.IsNewUser,
+							IsDel:      coupon.IsDel,
+						},
+					},
+				)
+				if coupon.IsNewUser {
+					couponAllocID = couponAlloc.ID
+				}
+			}
+			var signinData *signin.SigninData
+			if couponAllocID > 0 {
+				signinData, _ = signin.GetSigninDataByCouponAllocID(ctx, couponAllocID)
+			}
+			couponAllocData = &users.CouponAllocData{
+				CouponAllocs:            couponAllocDatas,
+				LastNewUserCouponSignin: signinData,
+			}
 			wg.Done()
 		}(ctx)
 	}
@@ -108,7 +154,8 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 			BelongsStudioID: user.BelongsStudioID,
 			ManagerUserID:   user.ManagerUserID,
 		},
-		Memberships: memberships,
+		Memberships:     memberships,
+		CouponAllocData: couponAllocData,
 	}
 	return
 }

@@ -1,4 +1,4 @@
-package todo
+package signin
 
 import (
 	"time"
@@ -29,7 +29,9 @@ type Signin struct {
 	ActivityGroupUserRecordID uint32    `gorm:"column:activity_group_user_record_id" json:"activity_group_user_record_id"`
 }
 
-// TableName get sql table name.获取数据库表名
-func (m *Signin) TableName() string {
-	return "signin"
+type SigninData struct {
+	ID                uint32    `bson:"signin_id" json:"signin_id"`
+	SigninUserID      uint32    `bson:"signin_user_id" json:"signin_user_id"` // 约课人id
+	ActivityStartTime time.Time `bson:"activity_start_time" json:"activity_start_time"`
+	CourseLevelID     uint32    `bson:"course_level_id" json:"course_level_id"`
 }
