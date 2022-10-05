@@ -1,16 +1,24 @@
 package users
 
-import "signin-go/global/time"
+/*
+快照时在mongo中的结构
+*/
+
+import (
+	"signin-go/global/time"
+)
+
+const StrategyIndicatorScoreName = "StrategyIndicatorScore" //mongoCollectionName
 
 type StrategyIndicatorScore struct {
-	DocumentID         interface{}            `bson:"_id,omitempty" json:"_id"`
-	UserID             uint32                 `bson:"user_id" json:"user_id"`
-	UserBeforeMemberID uint32                 `bson:"user_before_member_id" json:"user_before_member_id"`
-	Time               time.Time              `bson:"time" json:"time"`
-	Type               uint32                 `bson:"type" json:"type"`
-	StrategyKey        string                 `bson:"strategy_key" json:"strategy_key"`
-	Data               map[string]interface{} `bson:"data" json:"data"`
-	Scores             []*Score               `bson:"scores" json:"scores"`
+	DocumentID         interface{} `bson:"_id,omitempty" json:"_id"`
+	UserID             uint32      `bson:"user_id" json:"user_id"`
+	UserBeforeMemberID uint32      `bson:"user_before_member_id" json:"user_before_member_id"`
+	Time               time.Time   `bson:"time" json:"time"`
+	Type               uint32      `bson:"type" json:"type"`
+	StrategyKey        string      `bson:"strategy_key" json:"strategy_key"`
+	Data               *Data       `bson:"data" json:"data"`
+	Scores             []*Score    `bson:"scores" json:"scores"`
 }
 
 type Score struct {

@@ -4,8 +4,7 @@ import (
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	"signin-go/internal/validation"
-	"signin-go/repository/strategy"
-
+	strategyRepo "signin-go/repository/strategy"
 	usersRepo "signin-go/repository/users"
 	"sync"
 
@@ -84,7 +83,7 @@ func score(c core.Context) {
 	userID := userData.User.ID
 	userBeforeMemberID := userData.UserBeforeMember.ID
 
-	strategiesData, err := strategy.List(c.RequestContext(), &strategy.ListFilter{
+	strategiesData, err := strategyRepo.List(c.RequestContext(), &strategyRepo.ListFilter{
 		IncludeIds: []uint32{studioStrategyID},
 		Status:     1,
 		Type:       strategyType,

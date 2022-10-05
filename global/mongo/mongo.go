@@ -13,7 +13,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-var Mongo *mongo.Client
+var MongoClient *mongo.Client
+var Mongo *mongo.Database
 
 func Init() {
 	log.Println("global.mongo.Init Start...")
@@ -30,21 +31,22 @@ func Init() {
 	defer cancel()
 
 	var err error
-	Mongo, err = mongo.Connect(ctx, options.Client().ApplyURI(dsn))
+	MongoClient, err = mongo.Connect(ctx, options.Client().ApplyURI(dsn))
 	if err != nil {
 		log.Fatalf("global.mongo.Init.Connect() Error: %v", errors.Wrap(err, fmt.Sprintf("[DB connection failed] Database name: %s", config.Mysql.Database)))
 	}
 
-	err = Mongo.Ping(ctx, readpref.Primary())
+	err = MongoClient.Ping(ctx, readpref.Primary())
 	if err != nil {
 		log.Fatalf("global.mongo.Init.Ping() Error: %v", err)
 	}
+	Mongo = MongoClient.Database(config.Mongo.Database)
 }
 
 func Close() {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	err := Mongo.Disconnect(ctx)
+	err := MongoClient.Disconnect(ctx)
 	if err != nil {
 		log.Printf("global.mongo.Close Error: %v", err)
 	}
