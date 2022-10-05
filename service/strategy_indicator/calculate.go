@@ -3,6 +3,7 @@ package strategy_indicator
 import (
 	"fmt"
 	"signin-go/global/time"
+	"signin-go/global/utils"
 	"signin-go/internal/errors"
 	"signin-go/repository/coupon"
 	"signin-go/repository/course_level"
@@ -525,6 +526,30 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 				score.Name = strategyIndicatorRule.Name
 				score.Score = float64(strategyIndicatorRule.Score)
 				return
+			}
+		}
+		return nil, noCalculateScoreError
+	},
+	"geolocation": func(userData *users.Data, strategyIndicatorRules []*strategy.StrategyIndicatorRule) (score *users.Score, err error) {
+		accessLocation := userData.PageEventData.AccessLocation
+		longitude, err1 := strconv.ParseFloat(accessLocation.Longitude, 64)
+		latitude, err2 := strconv.ParseFloat(accessLocation.Latitude, 64)
+		if err1 == nil && err2 == nil {
+			distance := utils.Distance(longitude, latitude, utils.TianAnMen.Longitude, utils.TianAnMen.Latitude)
+			var geolocation string
+			if distance <= utils.BeiJindRadius {
+				geolocation = "in"
+			} else {
+				geolocation = "notin"
+			}
+			for _, strategyIndicatorRule := range strategyIndicatorRules {
+				if geolocation == strategyIndicatorRule.Min {
+					score = &users.Score{}
+					score.ID = strategyIndicatorRule.ID
+					score.Name = strategyIndicatorRule.Name
+					score.Score = float64(strategyIndicatorRule.Score)
+					return
+				}
 			}
 		}
 		return nil, noCalculateScoreError
