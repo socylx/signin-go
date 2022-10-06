@@ -2,6 +2,7 @@ package strategy_indicator
 
 import (
 	"fmt"
+	"log"
 	"signin-go/global/time"
 	"signin-go/global/utils"
 	"signin-go/internal/errors"
@@ -28,6 +29,8 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		for _, membership := range userData.Memberships {
 			remains += membership.Remains
 		}
+
+		log.Println("userData.CouponAllocData.CouponAllocs: ", userData.CouponAllocData.CouponAllocs)
 		for _, couponAlloc := range userData.CouponAllocData.CouponAllocs {
 			deadline := couponAlloc.Deadline
 			if deadline != time.TimeZeroTime || deadline.Before(todayDate) {
