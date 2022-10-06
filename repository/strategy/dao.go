@@ -55,11 +55,11 @@ type ListFilter struct {
 }
 
 type listResult struct {
-	Data  *[]*Strategy `json:"data"`
-	Count *int64       `json:"count"`
+	Data  []*Strategy `json:"data"`
+	Count int64       `json:"count"`
 }
 
-func List(ctx core.StdContext, filter *ListFilter) (result *listResult, err error) {
+func List(ctx core.StdContext, filter *ListFilter) (result listResult, err error) {
 	db := mysql.DB.WithContext(ctx)
 
 	query := db.Table("strategy").Where("strategy.is_del = 0")
@@ -85,7 +85,7 @@ func List(ctx core.StdContext, filter *ListFilter) (result *listResult, err erro
 	if filter.Type > 0 {
 		query = query.Where("strategy.type = ?", filter.Type)
 	}
-	query.Count(result.Count)
+	query.Count(&result.Count)
 	err = query.Order("strategy.id DESC").
 		Limit(filter.Size).
 		Offset(filter.Page*filter.Size - filter.Size).
