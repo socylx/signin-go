@@ -1,6 +1,7 @@
 package users
 
 import (
+	"log"
 	"signin-go/global/time"
 	"signin-go/internal/core"
 	"signin-go/internal/errors"
@@ -108,6 +109,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 			if couponAllocID > 0 {
 				signinData, _ = signinRepo.GetSigninDataByCouponAllocID(ctx, couponAllocID)
 			}
+			log.Println("couponAllocDatas: ", user.ID, " couponAllocDatas: ", couponAllocDatas)
 			couponAllocData = &users.CouponAllocData{
 				CouponAllocs:            couponAllocDatas,
 				LastNewUserCouponSignin: signinData,
