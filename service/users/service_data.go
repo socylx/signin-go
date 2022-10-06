@@ -186,6 +186,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 			}
 		}()
 	}
+	wg.Wait()
 
 	log.Println("couponAllocData4: ", couponAllocData)
 	log.Println("couponAllocData5: ", couponAllocData.CouponAllocs)
