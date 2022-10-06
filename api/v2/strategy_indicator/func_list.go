@@ -4,7 +4,13 @@ import (
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	"signin-go/repository/strategy_indicator"
+	"signin-go/repository/strategy_indicator_rule"
 )
+
+type strategyIndicatorData struct {
+	strategy_indicator.StrategyIndicator
+	StrategyIndicatorRules []*strategy_indicator_rule.StrategyIndicatorRule `json:"rules"`
+}
 
 func list(c core.Context) {
 	strategyIndicators, err := strategy_indicator.List(c.RequestContext())
@@ -15,5 +21,16 @@ func list(c core.Context) {
 		)
 		return
 	}
-	c.Payload(strategyIndicators)
+	strategyIndicatorDatas := make([]*strategyIndicatorData, 0, len(strategyIndicators))
+	for _, strategyIndicator := range strategyIndicators {
+		strategyIndicatorRules, _ := strategy_indicator_rule.GetStrategyIndicatorRules(c.RequestContext(), []uint32{strategyIndicator.ID})
+
+		strategyIndicatorData := &strategyIndicatorData{}
+		strategyIndicatorData.ID = strategyIndicator.ID
+		strategyIndicatorData.Name = strategyIndicator.Name
+		strategyIndicatorData.StrategyIndicatorRules = strategyIndicatorRules
+
+		strategyIndicatorDatas = append(strategyIndicatorDatas, strategyIndicatorData)
+	}
+	c.Payload(&strategyIndicatorDatas)
 }
