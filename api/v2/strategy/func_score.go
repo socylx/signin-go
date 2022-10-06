@@ -42,6 +42,7 @@ func score(c core.Context) {
 		return
 	}
 
+	log.Println("request.ID: ", request.UserID, request.UserBeforeMemberID)
 	userData, err := usersServ.Data(c.RequestContext(), &usersServ.DataID{
 		UserID:             request.UserID,
 		UserBeforeMemberID: request.UserBeforeMemberID,
