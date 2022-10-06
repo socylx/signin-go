@@ -63,24 +63,24 @@ func setStudio(c core.Context) {
 			return
 		}
 
-		var sutidoStrategyMaps = []*studio_strategy_map.StudioStrategyMap{}
+		var studioStrategyMaps = []*studio_strategy_map.StudioStrategyMap{}
 		for _, studioID := range studioIDs {
 			if strategyDetail.Status && studioStrategyTypeIDMap[studioID][strategyDetail.Type] > 0 && studioStrategyTypeIDMap[studioID][strategyDetail.Type] != strategyDetail.ID {
 				log.Println("studioID: ", studioID, " continue")
 				continue
 			}
 			log.Println("studioID: ", studioID, " no continue")
-			sutidoStrategyMaps = append(
-				sutidoStrategyMaps,
+			studioStrategyMaps = append(
+				studioStrategyMaps,
 				&studio_strategy_map.StudioStrategyMap{
 					StudioID:   studioID,
 					StrategyID: request.ID,
 				},
 			)
 		}
-		if len(sutidoStrategyMaps) > 0 {
+		if len(studioStrategyMaps) > 0 {
 			log.Println("Create: ")
-			mysql.DB.WithContext(c.RequestContext()).Create(&sutidoStrategyMaps)
+			mysql.DB.WithContext(c.RequestContext()).Create(&studioStrategyMaps)
 		}
 	}
 	c.Payload("success")

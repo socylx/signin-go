@@ -86,17 +86,17 @@ func add(c core.Context) {
 	}
 	db.Create(&strategyIndicatorRuleMaps)
 
-	var sutidoStrategyMaps = []*studio_strategy_map.StudioStrategyMap{}
+	var studioStrategyMaps = []*studio_strategy_map.StudioStrategyMap{}
 	for _, studioID := range studioIDs {
-		sutidoStrategyMaps = append(
-			sutidoStrategyMaps,
+		studioStrategyMaps = append(
+			studioStrategyMaps,
 			&studio_strategy_map.StudioStrategyMap{
 				StudioID:   studioID,
 				StrategyID: s.ID,
 			},
 		)
 	}
-	db.Create(&sutidoStrategyMaps)
+	db.Create(&studioStrategyMaps)
 
 	c.Payload("success")
 }

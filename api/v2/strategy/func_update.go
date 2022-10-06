@@ -101,18 +101,18 @@ func update(c core.Context) {
 		mysql.DB.Create(&strategyIndicatorRuleMaps)
 	}
 
-	var sutidoStrategyMaps = []*studio_strategy_map.StudioStrategyMap{}
+	var studioStrategyMaps = []*studio_strategy_map.StudioStrategyMap{}
 	for _, studioID := range studioIDs {
-		sutidoStrategyMaps = append(
-			sutidoStrategyMaps,
+		studioStrategyMaps = append(
+			studioStrategyMaps,
 			&studio_strategy_map.StudioStrategyMap{
 				StudioID:   studioID,
 				StrategyID: request.ID,
 			},
 		)
 	}
-	if len(sutidoStrategyMaps) > 0 {
-		mysql.DB.Create(&sutidoStrategyMaps)
+	if len(studioStrategyMaps) > 0 {
+		mysql.DB.Create(&studioStrategyMaps)
 	}
 	c.Payload("success")
 }
