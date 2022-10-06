@@ -1,7 +1,6 @@
 package strategy
 
 import (
-	"signin-go/repository/strategy_indicator"
 	"signin-go/repository/strategy_indicator_rule"
 	"time"
 )
@@ -22,9 +21,14 @@ type Strategy struct {
 }
 
 type IndicatorData struct {
-	strategy_indicator.StrategyIndicator
-	Weight uint32               `json:"weight"`
-	Rules  []*IndicatorRuleData `json:"rules"`
+	ID         uint32               `bson:"id" json:"id"`
+	Key        string               `bson:"key" json:"key"`
+	Name       string               `bson:"name" json:"name"`
+	CreateTime time.Time            `bson:"create_time" json:"create_time"`
+	UpdateTime time.Time            `bson:"update_time" json:"update_time"`
+	IsDel      bool                 `bson:"is_del" json:"is_del"`
+	Weight     uint32               `bson:"weight" json:"weight"`
+	Rules      []*IndicatorRuleData `bson:"rules" json:"rules"`
 }
 
 type IndicatorRuleData struct {

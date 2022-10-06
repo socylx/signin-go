@@ -13,7 +13,7 @@ type strategyIndicatorData struct {
 }
 
 func list(c core.Context) {
-	strategyIndicators, err := strategy_indicator.List(c.RequestContext())
+	strategyIndicators, err := strategy_indicator.List(c.RequestContext(), []uint32{})
 	if err != nil {
 		c.AbortWithError(core.Error(
 			code.StrategyIndicatorQueryError,

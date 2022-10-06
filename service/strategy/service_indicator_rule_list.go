@@ -3,10 +3,11 @@ package strategy
 import (
 	"signin-go/internal/core"
 	"signin-go/repository/strategy"
+	"signin-go/repository/strategy_indicator"
 	"signin-go/repository/strategy_indicator_rule_map"
 )
 
-func IndicatorDataList(ctx core.StdContext, strategyID uint32) (strategyIndicatorDatas []*strategy.IndicatorData, err error) {
+func IndicatorDataList(ctx core.StdContext, strategyID uint32) (datas []*strategy.IndicatorData, err error) {
 	strategyIndicatorRuleIDs := []uint32{}
 	scoreMap := map[uint32]uint32{}
 	ruleWeightMap := map[uint32]uint32{}
@@ -30,10 +31,16 @@ func IndicatorDataList(ctx core.StdContext, strategyID uint32) (strategyIndicato
 		weightMap[strategyIndicatorRuleData.StrategyIndicatorID] = ruleWeightMap[strategyIndicatorRuleData.ID]
 	}
 
-	strategyIndicatorDatas, err = strategy.GetStrategyIndicatorDatas(ctx, strategyIndicatorIDs)
-	for _, strategyIndicatorData := range strategyIndicatorDatas {
-		strategyIndicatorData.Weight = weightMap[strategyIndicatorData.ID]
-		strategyIndicatorData.Rules = strategyIndicatorRuleDatasMap[strategyIndicatorData.ID]
+	strategyIndicators, _ := strategy_indicator.List(ctx, strategyIndicatorIDs)
+	for _, strategyIndicator := range strategyIndicators {
+		data := &strategy.IndicatorData{
+			ID:     strategyIndicator.ID,
+			Key:    strategyIndicator.Key,
+			Name:   strategyIndicator.Name,
+			Weight: weightMap[strategyIndicator.ID],
+			Rules:  strategyIndicatorRuleDatasMap[strategyIndicator.ID],
+		}
+		datas = append(datas, data)
 	}
 	return
 }
