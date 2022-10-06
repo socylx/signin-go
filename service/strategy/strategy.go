@@ -22,6 +22,10 @@ func MatchUserStrategyType(ctx core.StdContext, userData *users.Data) (strategyT
 	if len(memberships) > 0 {
 		strategyType = strategy.Xuka
 	} else {
+		if userData.User.ID <= 0 {
+			strategyType = strategy.LaXinCoupon
+			return
+		}
 		couponAllocs := userData.CouponAllocData.CouponAllocs
 		var couponAllocID uint32
 		for _, couponAlloc := range couponAllocs {
