@@ -30,7 +30,7 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 			remains += membership.Remains
 		}
 
-		log.Println("userData.CouponAllocData.CouponAllocs: ", userData.CouponAllocData.CouponAllocs)
+		log.Println("userData.CouponAllocData: ", userData.CouponAllocData)
 		for _, couponAlloc := range userData.CouponAllocData.CouponAllocs {
 			deadline := couponAlloc.Deadline
 			if deadline != time.TimeZeroTime || deadline.Before(todayDate) {
