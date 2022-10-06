@@ -61,6 +61,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 	if user.ID <= 0 && userBeforeMember.ID <= 0 {
 		return nil, errors.New("无用户/线索")
 	}
+	log.Println("couponAllocData1: ", couponAllocData)
 
 	var wg sync.WaitGroup
 
@@ -109,11 +110,12 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 			if couponAllocID > 0 {
 				signinData, _ = signinRepo.GetSigninDataByCouponAllocID(ctx, couponAllocID)
 			}
-			log.Println("couponAllocDatas: ", user.ID, " couponAllocDatas: ", couponAllocDatas)
 			couponAllocData = &users.CouponAllocData{
 				CouponAllocs:            couponAllocDatas,
 				LastNewUserCouponSignin: signinData,
 			}
+			log.Println("couponAllocData2: ", couponAllocData)
+			log.Println("couponAllocData3: ", couponAllocData.CouponAllocs)
 		}()
 		go func() {
 			defer wg.Done()
@@ -185,6 +187,8 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		}()
 	}
 
+	log.Println("couponAllocData4: ", couponAllocData)
+	log.Println("couponAllocData5: ", couponAllocData.CouponAllocs)
 	data = &users.Data{
 		UserBeforeMember: &users.UserBeforeMember{
 			ID:             userBeforeMember.ID,
