@@ -69,7 +69,7 @@ func SetSessionUserInfo(c core.Context) {
 		sessionUserInfo.SystemPage[userStaffRolePageData.SystemPagePageKey] = true
 	}
 
-	permissionApplyStudioIDs, err := permission.PermissionApplyStudioIDs(c.RequestContext(), redisData.UserID)
+	permissionApplyStudioIDs, err := permission.PermissionApplyStudioIDs(c.RequestContext(), userStaffRolePageData.RoleID)
 	if err != nil || len(permissionApplyStudioIDs) <= 0 {
 		return
 	}
