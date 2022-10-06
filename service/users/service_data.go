@@ -1,7 +1,6 @@
 package users
 
 import (
-	"log"
 	"signin-go/global/time"
 	"signin-go/internal/core"
 	"signin-go/internal/errors"
@@ -61,8 +60,6 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 	if user.ID <= 0 && userBeforeMember.ID <= 0 {
 		return nil, errors.New("无用户/线索")
 	}
-	log.Println("couponAllocData1: ", couponAllocData)
-
 	var wg sync.WaitGroup
 
 	if user.ID > 0 {
@@ -114,8 +111,6 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 				CouponAllocs:            couponAllocDatas,
 				LastNewUserCouponSignin: signinData,
 			}
-			log.Println("couponAllocData2: ", couponAllocData)
-			log.Println("couponAllocData3: ", couponAllocData.CouponAllocs)
 		}()
 		go func() {
 			defer wg.Done()
@@ -188,8 +183,6 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 	}
 	wg.Wait()
 
-	log.Println("couponAllocData4: ", couponAllocData)
-	log.Println("couponAllocData5: ", couponAllocData.CouponAllocs)
 	data = &users.Data{
 		UserBeforeMember: &users.UserBeforeMember{
 			ID:             userBeforeMember.ID,

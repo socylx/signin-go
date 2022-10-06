@@ -2,7 +2,6 @@ package strategy_indicator
 
 import (
 	"fmt"
-	"log"
 	"signin-go/global/time"
 	"signin-go/global/utils"
 	"signin-go/internal/errors"
@@ -29,8 +28,6 @@ var strategyIndicatorCalculateFunc = map[string]CalculateFunc{
 		for _, membership := range userData.Memberships {
 			remains += membership.Remains
 		}
-
-		log.Println("userData.CouponAllocData: ", userData)
 		for _, couponAlloc := range userData.CouponAllocData.CouponAllocs {
 			deadline := couponAlloc.Deadline
 			if deadline != time.TimeZeroTime || deadline.Before(todayDate) {
@@ -712,9 +709,6 @@ func StrategyIndicatorCalculate(strategyIndicator *strategy.StrategyIndicator, u
 	if calculateFunc == nil {
 		return nil, errors.New(fmt.Sprintf("无【%s】指标计算逻辑", strategyIndicator.Key))
 	}
-
-	log.Println("couponAllocData8: ", userData.CouponAllocData)
-	log.Println("couponAllocData9: ", userData.CouponAllocData.CouponAllocs)
 	score, err = calculateFunc(userData, strategyIndicator.StrategyIndicatorRules)
 	if err != nil {
 		return

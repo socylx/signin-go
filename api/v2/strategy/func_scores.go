@@ -1,7 +1,6 @@
 package strategy
 
 import (
-	"log"
 	"signin-go/global/mongo"
 	"signin-go/global/time"
 	"signin-go/internal/code"
@@ -48,8 +47,6 @@ func scores(c core.Context) {
 		)
 		return
 	}
-	log.Println("couponAllocData6: ", userData.CouponAllocData)
-	log.Println("couponAllocData7: ", userData.CouponAllocData.CouponAllocs)
 
 	var belongStudioID uint32
 	if userData.User.BelongsStudioID > 0 {
