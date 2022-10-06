@@ -1,6 +1,7 @@
 package strategy
 
 import (
+	"log"
 	"signin-go/global/mysql"
 	"signin-go/global/utils"
 	"signin-go/internal/code"
@@ -50,6 +51,8 @@ func setStudio(c core.Context) {
 		"strategy.key": strategyServ.GenerateStrategyKey(),
 	})
 
+	log.Println("studioIDs: ", studioIDs)
+
 	if len(studioIDs) > 0 {
 		studioStrategyTypeIDMap, err := studioServ.GetStudioStrategyTypeIDMap(c.RequestContext(), studioIDs)
 		if err != nil {
@@ -63,6 +66,7 @@ func setStudio(c core.Context) {
 		var sutidoStrategyMaps = []*studio_strategy_map.StudioStrategyMap{}
 		for _, studioID := range studioIDs {
 			if strategyDetail.Status && studioStrategyTypeIDMap[studioID][strategyDetail.Type] > 0 && studioStrategyTypeIDMap[studioID][strategyDetail.Type] != strategyDetail.ID {
+				log.Println("studioID: ", studioID, " continue")
 				continue
 			}
 			sutidoStrategyMaps = append(
