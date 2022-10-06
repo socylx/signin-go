@@ -103,7 +103,7 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 					couponAllocID = couponAlloc.ID
 				}
 			}
-			var signinData *signinRepo.SigninData
+			var signinData *signinRepo.SigninData = &signinRepo.SigninData{}
 			if couponAllocID > 0 {
 				signinData, _ = signinRepo.GetSigninDataByCouponAllocID(ctx, couponAllocID)
 			}
