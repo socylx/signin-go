@@ -69,6 +69,7 @@ func setStudio(c core.Context) {
 				log.Println("studioID: ", studioID, " continue")
 				continue
 			}
+			log.Println("studioID: ", studioID, " no continue")
 			sutidoStrategyMaps = append(
 				sutidoStrategyMaps,
 				&studio_strategy_map.StudioStrategyMap{
@@ -78,6 +79,7 @@ func setStudio(c core.Context) {
 			)
 		}
 		if len(sutidoStrategyMaps) > 0 {
+			log.Println("Create: ")
 			mysql.DB.Create(&sutidoStrategyMaps)
 		}
 	}
