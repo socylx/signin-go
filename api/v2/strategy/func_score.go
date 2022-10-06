@@ -1,7 +1,6 @@
 package strategy
 
 import (
-	"log"
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	"signin-go/internal/validation"
@@ -41,14 +40,11 @@ func score(c core.Context) {
 		c.AbortWithError(core.Error(code.ParamBindError, "无id参数"))
 		return
 	}
-
-	log.Println("request.ID: ", request.UserID, request.UserBeforeMemberID)
 	userData, err := usersServ.Data(c.RequestContext(), &usersServ.DataID{
 		UserID:             request.UserID,
 		UserBeforeMemberID: request.UserBeforeMemberID,
 	})
 	if err != nil {
-		log.Println("err: ", err)
 		c.AbortWithError(core.Error(
 			code.UsersDataError,
 			code.Text(code.UsersDataError)).WithError(err),
