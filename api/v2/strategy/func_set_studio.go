@@ -2,7 +2,6 @@ package strategy
 
 import (
 	"log"
-	"signin-go/global/mysql"
 	"signin-go/global/utils"
 	"signin-go/internal/code"
 	"signin-go/internal/core"
@@ -80,7 +79,14 @@ func setStudio(c core.Context) {
 		}
 		if len(studioStrategyMaps) > 0 {
 			log.Println("Create: ")
-			mysql.DB.WithContext(c.RequestContext()).Create(&studioStrategyMaps)
+			err := studio_strategy_map.Creates(c.RequestContext(), studioStrategyMaps)
+			if err != nil {
+				c.AbortWithError(core.Error(
+					code.StudioStrategyMapCreateError,
+					code.Text(code.StudioStrategyMapCreateError)).WithError(err),
+				)
+				return
+			}
 		}
 	}
 	c.Payload("success")

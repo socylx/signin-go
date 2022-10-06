@@ -52,7 +52,8 @@ const (
 
 	StrategyIndicatorQueryError = 20301
 
-	StudioQueryError = 20401
+	StudioQueryError             = 20401
+	StudioStrategyMapCreateError = 20402
 
 	UserBeforeMemberQueryError = 20501
 )

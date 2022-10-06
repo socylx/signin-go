@@ -42,3 +42,9 @@ func Delete(ctx core.StdContext, strategyID uint32) (err error) {
 		Update("studio_strategy_map.is_del", 1).Error
 	return
 }
+
+func Creates(ctx core.StdContext, data []*StudioStrategyMap) (err error) {
+	db := mysql.DB.WithContext(ctx)
+	err = db.Table("studio_strategy_map").Create(&data).Error
+	return
+}

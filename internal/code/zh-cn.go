@@ -38,7 +38,8 @@ var text = map[int]string{
 
 	StrategyIndicatorQueryError: "获取策略指标失败",
 
-	StudioQueryError: "查询门店失败",
+	StudioQueryError:             "查询门店失败",
+	StudioStrategyMapCreateError: "应用门店失败",
 
 	UserBeforeMemberQueryError: "查询线索失败",
 }
