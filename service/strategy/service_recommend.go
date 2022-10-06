@@ -48,7 +48,7 @@ func GenerateOfLaxin(ctx core.StdContext) core.BusinessError {
 	var wg sync.WaitGroup
 	var lastUserBeforeMemberID int64
 	for {
-		if lastUserBeforeMemberID > maxUserBeforeMemberID {
+		if lastUserBeforeMemberID > maxUserBeforeMemberID || lastUserBeforeMemberID >= 1000 {
 			break
 		}
 		userBeforeMemberIDs, err := user_before_member.GetUserBeforeMemberIDs(ctx, &user_before_member.Filter{IDGT: lastUserBeforeMemberID})
@@ -152,7 +152,7 @@ func GenerateOfRenew(ctx core.StdContext) core.BusinessError {
 	var wg sync.WaitGroup
 	var lastMembershipID int64
 	for {
-		if lastMembershipID > maxMembershipID {
+		if lastMembershipID > maxMembershipID || lastMembershipID >= 1000 {
 			break
 		}
 		membershipUserIDs, err := membership.GetUserBeforeMemberIDs(ctx, &membership.Filter{IDGT: lastMembershipID})
