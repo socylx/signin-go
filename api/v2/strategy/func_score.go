@@ -1,6 +1,7 @@
 package strategy
 
 import (
+	"log"
 	"signin-go/internal/code"
 	"signin-go/internal/core"
 	"signin-go/internal/validation"
@@ -46,6 +47,7 @@ func score(c core.Context) {
 		UserBeforeMemberID: request.UserBeforeMemberID,
 	})
 	if err != nil {
+		log.Println("err: ", err)
 		c.AbortWithError(core.Error(
 			code.UsersDataError,
 			code.Text(code.UsersDataError)).WithError(err),
