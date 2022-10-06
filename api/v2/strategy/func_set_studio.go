@@ -1,7 +1,7 @@
 package strategy
 
 import (
-	"log"
+	"signin-go/global/time"
 	"signin-go/global/utils"
 	"signin-go/internal/code"
 	"signin-go/internal/core"
@@ -50,8 +50,6 @@ func setStudio(c core.Context) {
 		"strategy.key": strategyServ.GenerateStrategyKey(),
 	})
 
-	log.Println("studioIDs: ", studioIDs)
-
 	if len(studioIDs) > 0 {
 		studioStrategyTypeIDMap, err := studioServ.GetStudioStrategyTypeIDMap(c.RequestContext(), studioIDs)
 		if err != nil {
@@ -65,20 +63,19 @@ func setStudio(c core.Context) {
 		var studioStrategyMaps = []*studio_strategy_map.StudioStrategyMap{}
 		for _, studioID := range studioIDs {
 			if strategyDetail.Status && studioStrategyTypeIDMap[studioID][strategyDetail.Type] > 0 && studioStrategyTypeIDMap[studioID][strategyDetail.Type] != strategyDetail.ID {
-				log.Println("studioID: ", studioID, " continue")
 				continue
 			}
-			log.Println("studioID: ", studioID, " no continue")
 			studioStrategyMaps = append(
 				studioStrategyMaps,
 				&studio_strategy_map.StudioStrategyMap{
 					StudioID:   studioID,
 					StrategyID: request.ID,
+					CreateTime: time.Now(),
+					UpdateTime: time.Now(),
 				},
 			)
 		}
 		if len(studioStrategyMaps) > 0 {
-			log.Println("Create: ")
 			err := studio_strategy_map.Creates(c.RequestContext(), studioStrategyMaps)
 			if err != nil {
 				c.AbortWithError(core.Error(

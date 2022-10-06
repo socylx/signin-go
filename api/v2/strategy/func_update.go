@@ -3,6 +3,7 @@ package strategy
 import (
 	"signin-go/global/mongo"
 	"signin-go/global/mysql"
+	"signin-go/global/time"
 	"signin-go/global/utils"
 	"signin-go/internal/code"
 	"signin-go/internal/core"
@@ -94,6 +95,8 @@ func update(c core.Context) {
 				StrategyIndicatorRuleID: sir.ID,
 				Weight:                  uint32(sir.Weight),
 				Score:                   uint32(sir.Score),
+				CreateTime:              time.Now(),
+				UpdateTime:              time.Now(),
 			},
 		)
 	}
@@ -108,6 +111,8 @@ func update(c core.Context) {
 			&studio_strategy_map.StudioStrategyMap{
 				StudioID:   studioID,
 				StrategyID: request.ID,
+				CreateTime: time.Now(),
+				UpdateTime: time.Now(),
 			},
 		)
 	}

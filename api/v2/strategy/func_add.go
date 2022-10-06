@@ -2,6 +2,7 @@ package strategy
 
 import (
 	"signin-go/global/mysql"
+	"signin-go/global/time"
 	"signin-go/global/utils"
 	"signin-go/internal/code"
 	"signin-go/internal/core"
@@ -62,6 +63,8 @@ func add(c core.Context) {
 		Type:         request.Type,
 		Key:          strategy.GenerateStrategyKey(),
 		CreateUserID: uint32(c.SessionUserInfo().UserID),
+		CreateTime:   time.Now(),
+		UpdateTime:   time.Now(),
 	}
 
 	db := mysql.DB.WithContext(c.RequestContext())
@@ -81,6 +84,8 @@ func add(c core.Context) {
 				StrategyIndicatorRuleID: sir.ID,
 				Weight:                  uint32(sir.Weight),
 				Score:                   uint32(sir.Score),
+				CreateTime:              time.Now(),
+				UpdateTime:              time.Now(),
 			},
 		)
 	}
@@ -93,6 +98,8 @@ func add(c core.Context) {
 			&studio_strategy_map.StudioStrategyMap{
 				StudioID:   studioID,
 				StrategyID: s.ID,
+				CreateTime: time.Now(),
+				UpdateTime: time.Now(),
 			},
 		)
 	}
