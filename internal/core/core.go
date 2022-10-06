@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"runtime/debug"
@@ -267,10 +268,13 @@ func New(options ...Option) Mux {
 	mux.engine.Use(func(ctx *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
+				stack := string(debug.Stack())
+				log.Println(err)
+				log.Println(stack)
 				logger.Logger.Error(
 					"signin-go panic",
 					zap.String("panic", fmt.Sprintf("%+v", err)),
-					zap.String("stack", string(debug.Stack())),
+					zap.String("stack", stack),
 				)
 				ctx.JSON(
 					http.StatusOK,
@@ -326,6 +330,8 @@ func New(options ...Option) Mux {
 			// region 发生 Panic 异常发送告警提醒
 			if err := recover(); err != nil {
 				stackInfo := string(debug.Stack())
+				log.Println(err)
+				log.Println(stackInfo)
 				logger.Logger.Error(
 					"signin-go panic",
 					zap.String("panic", fmt.Sprintf("%+v", err)),
