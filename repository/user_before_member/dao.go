@@ -29,7 +29,7 @@ func GetUserBeforeMemberIDs(ctx core.StdContext, filter *Filter) (ids []int64, e
 
 func Detail(ctx core.StdContext, ID, userID uint32) (data *UserBeforeMember, err error) {
 	data = &UserBeforeMember{}
-	if ID <= 0 || userID <= 0 {
+	if ID <= 0 && userID <= 0 {
 		return
 	}
 	db := mysql.DB.WithContext(ctx)
