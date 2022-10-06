@@ -8,7 +8,6 @@ import (
 	"signin-go/repository/membership"
 	redisRepo "signin-go/repository/redis"
 	"signin-go/repository/strategy"
-	strategyRepo "signin-go/repository/strategy"
 	studioRepo "signin-go/repository/studio"
 	"signin-go/repository/user_before_member"
 	"signin-go/service/strategy_indicator"
@@ -30,7 +29,7 @@ func GenerateOfLaxin(ctx core.StdContext) core.BusinessError {
 		return core.Error(code.StudioQueryError, "获取门店应用的某种类型的策略对应的策略ID").WithError(err)
 	}
 
-	strategyIndicatorsDataMap := map[uint32]*strategyRepo.StrategyDocument{}
+	strategyIndicatorsDataMap := map[uint32]*strategy.StrategyDocument{}
 	for _, strategyTypeID := range studioStrategyTypeIDMap {
 		for _, strategyID := range strategyTypeID {
 			strategyIndicatorsData, err := Data(ctx, strategyID)
@@ -134,7 +133,7 @@ func GenerateOfRenew(ctx core.StdContext) core.BusinessError {
 		return core.Error(code.StudioQueryError, "获取门店应用的某种类型的策略对应的策略ID").WithError(err)
 	}
 
-	strategyIndicatorsDataMap := map[uint32]*strategyRepo.StrategyDocument{}
+	strategyIndicatorsDataMap := map[uint32]*strategy.StrategyDocument{}
 	for _, strategyTypeID := range studioStrategyTypeIDMap {
 		for _, strategyID := range strategyTypeID {
 			strategyIndicatorsData, err := Data(ctx, strategyID)
