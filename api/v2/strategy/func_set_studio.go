@@ -80,7 +80,7 @@ func setStudio(c core.Context) {
 		}
 		if len(sutidoStrategyMaps) > 0 {
 			log.Println("Create: ")
-			mysql.DB.Create(&sutidoStrategyMaps)
+			mysql.DB.WithContext(c.RequestContext()).Create(&sutidoStrategyMaps)
 		}
 	}
 	c.Payload("success")
