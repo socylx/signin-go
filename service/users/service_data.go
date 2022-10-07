@@ -35,15 +35,18 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		userBeforeMember *user_before_member.UserBeforeMember
 		follows          []*follow.Follow
 		memberships      []*membership.MembershipData
-		couponAllocData  *users.CouponAllocData
-		signins          []*signinRepo.SigninData
-		fissionMap       []*fission_map.FissionMapData
-		judgeUserData    []*judge_user.JudgeUserData
-		pageAccessData   *users.PageAccessData = &users.PageAccessData{}
-		pageEventData    *users.PageEventData
-		showVideoCount   int64
-		allSigninSpend   float64
-		orders           []*users.Order
+		couponAllocData  *users.CouponAllocData = &users.CouponAllocData{
+			CouponAllocs:            []*coupon_alloc.CouponAllocData{},
+			LastNewUserCouponSignin: &signinRepo.SigninData{},
+		}
+		signins        []*signinRepo.SigninData
+		fissionMap     []*fission_map.FissionMapData
+		judgeUserData  []*judge_user.JudgeUserData
+		pageAccessData *users.PageAccessData = &users.PageAccessData{}
+		pageEventData  *users.PageEventData
+		showVideoCount int64
+		allSigninSpend float64
+		orders         []*users.Order
 	)
 
 	if dataID.UserID > 0 {
