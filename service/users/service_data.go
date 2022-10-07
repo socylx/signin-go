@@ -43,7 +43,9 @@ func Data(ctx core.StdContext, dataID *DataID) (data *users.Data, err error) {
 		fissionMap     []*fission_map.FissionMapData
 		judgeUserData  []*judge_user.JudgeUserData
 		pageAccessData *users.PageAccessData = &users.PageAccessData{}
-		pageEventData  *users.PageEventData
+		pageEventData  *users.PageEventData  = &users.PageEventData{
+			AccessLocation: &users.AccessLocation{},
+		}
 		showVideoCount int64
 		allSigninSpend float64
 		orders         []*users.Order
