@@ -56,7 +56,7 @@ func GetConsultantFollowUserStatus(ctx core.StdContext, startTime, endTime time.
 				if queryStartTime.Before(today) {
 					redis.Redis.SAdd(ctx, redisKey, followUserID)
 				}
-				syncMap.Store(followUserID, true)
+				syncMap.Store(uint64(followUserID), true)
 			}
 		}(queryStartTime, queryEndTime)
 
