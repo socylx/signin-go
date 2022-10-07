@@ -176,7 +176,7 @@ func recommend(c core.Context) {
 			}
 
 			if uID > 0 {
-				if strategyTypeXuka && followUserStatus[uint32(uID)] {
+				if strategyTypeXuka && followUserStatus[uID] {
 					return
 				}
 				if remainCond && activityCond && managerCond {
