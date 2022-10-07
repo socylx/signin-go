@@ -16,7 +16,7 @@ type ConsultantRenewData struct {
 	LastweekRenewRate int      `json:"lastweek_renew_rate"`
 	Nearly30RenewRate int      `json:"nearly_30_renew_rate"`
 	RenewAmount       float64  `json:"renew_amount"`
-	FollowUserIDs     []uint64 `json:"follow_user_ids"`
+	FollowUserIDs     []uint32 `json:"follow_user_ids"`
 }
 
 /*

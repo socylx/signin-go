@@ -51,7 +51,7 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 					renewTargeValue, _ := redis.GetRenewTargeValue(ctx, renewTargeValueRedisKey)
 
 					followUserStatus, _ := follow.GetConsultantFollowUserStatus(ctx, thisWeekStartDate, thisWeekEndDate, studioID, UserID)
-					followUserIDs := make([]uint64, 0, len(followUserStatus))
+					followUserIDs := make([]uint32, 0, len(followUserStatus))
 					for followUserID := range followUserStatus {
 						followUserIDs = append(followUserIDs, followUserID)
 					}
@@ -71,7 +71,7 @@ func GetConsultantRenewData(ctx core.StdContext, studioID, staffUserID uint32) (
 	}
 
 	followUserStatus, _ := follow.GetConsultantFollowUserStatus(ctx, thisWeekStartDate, thisWeekEndDate, studioID, staffUserID)
-	followUserIDs := make([]uint64, 0, len(followUserStatus))
+	followUserIDs := make([]uint32, 0, len(followUserStatus))
 	for followUserID := range followUserStatus {
 		followUserIDs = append(followUserIDs, followUserID)
 	}

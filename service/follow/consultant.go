@@ -69,7 +69,7 @@ func GetConsultantFollowUserStatus(ctx core.StdContext, startTime, endTime time.
 
 	syncMap.Range(func(k, v interface{}) bool {
 		if k != "user_id" && k != "user_before_member_id" {
-			followUserStatus[k.(uint64)] = v.(bool)
+			followUserStatus[k.(uint32)] = v.(bool)
 		}
 		return true
 	})
