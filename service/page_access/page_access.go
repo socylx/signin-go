@@ -30,6 +30,7 @@ func GetPageAccessData(ctx core.StdContext, userID uint32, belongStudioID uint32
 		startTime = todayDate.AddDate(0, 0, -30)
 		endTime   = todayDate.AddDate(0, 0, 1)
 	)
+	data = &users.PageAccessData{}
 
 	wg.Add(1)
 	go func() {
@@ -134,11 +135,15 @@ func GetPageAccessData(ctx core.StdContext, userID uint32, belongStudioID uint32
 		days += 1
 	}
 	wg.Wait()
-	data = &users.PageAccessData{
-		PageAccessCount:                  pageAccessCount,
-		LastPageAccessTime:               lastPageAccessTime,
-		CurrentStudioAccessActivityCount: currentStudioAccessActivityCount,
-		AccessBuyCardCount:               accessBuyCardCount,
-	}
+	data.PageAccessCount = pageAccessCount
+	data.LastPageAccessTime = lastPageAccessTime
+	data.CurrentStudioAccessActivityCount = currentStudioAccessActivityCount
+	data.AccessBuyCardCount = accessBuyCardCount
+	// data = &users.PageAccessData{
+	// 	PageAccessCount:                  pageAccessCount,
+	// 	LastPageAccessTime:               lastPageAccessTime,
+	// 	CurrentStudioAccessActivityCount: currentStudioAccessActivityCount,
+	// 	AccessBuyCardCount:               accessBuyCardCount,
+	// }
 	return
 }
