@@ -1,6 +1,7 @@
 package core
 
 import (
+	stdctx "context"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 
 	"signin-go/global/config"
 	"signin-go/global/logger"
+	"signin-go/global/mysql"
 	"signin-go/global/time"
 	"signin-go/internal/code"
 	"signin-go/internal/proposal"
@@ -302,6 +304,7 @@ func New(options ...Option) Mux {
 
 		context.init()
 		context.setLogger(logger.Logger)
+		context.setDB(mysql.DB.WithContext(stdctx.Background()))
 		context.ableRecordMetrics()
 
 		if !withoutTracePaths[ctx.Request.URL.Path] {

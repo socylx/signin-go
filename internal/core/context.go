@@ -14,6 +14,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"gorm.io/gorm"
 
 	"go.uber.org/zap"
 )
@@ -26,6 +27,7 @@ const (
 	_Alias            = "_alias_"
 	_TraceName        = "_trace_"
 	_LoggerName       = "_logger_"
+	_DBName           = "_db_"
 	_BodyName         = "_body_"
 	_PayloadName      = "_payload_"
 	_GraphPayloadName = "_graph_payload_"
@@ -89,6 +91,10 @@ type Context interface {
 	// Logger 获取 Logger 对象
 	Logger() *zap.Logger
 	setLogger(logger *zap.Logger)
+
+	// DB 获取 *gorm.DB 对象
+	DB() *gorm.DB
+	setDB(db *gorm.DB)
 
 	// Payload 正确返回
 	Payload(payload interface{})
@@ -155,6 +161,7 @@ type context struct {
 }
 
 type StdContext struct {
+	DB *gorm.DB
 	stdctx.Context
 	Trace
 	*zap.Logger
@@ -234,6 +241,18 @@ func (c *context) Logger() *zap.Logger {
 
 func (c *context) setLogger(logger *zap.Logger) {
 	c.ctx.Set(_LoggerName, logger)
+}
+
+func (c *context) DB() *gorm.DB {
+	db, ok := c.ctx.Get(_DBName)
+	if !ok {
+		return nil
+	}
+	return db.(*gorm.DB)
+}
+
+func (c *context) setDB(db *gorm.DB) {
+	c.ctx.Set(_DBName, db)
 }
 
 func (c *context) getPayload() interface{} {
@@ -389,7 +408,9 @@ func (c *context) URI() string {
 
 // RequestContext (包装 Trace + Logger) 获取请求的 context (当client关闭后，会自动canceled)
 func (c *context) RequestContext() StdContext {
+	// ctx := stdctx.Background()
 	return StdContext{
+		c.DB(),
 		// c.ctx.Request.Context(),
 		stdctx.Background(),
 		c.Trace(),

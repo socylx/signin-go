@@ -18,3 +18,5 @@ main
 log/
 dev/
 config.ini
+*-signin-go
+*.log

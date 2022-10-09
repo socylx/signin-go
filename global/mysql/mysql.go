@@ -63,7 +63,7 @@ func Init() {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	// 使用插件
-	DB.Use(&TracePlugin{})
+	// DB.Use(&TracePlugin{})
 }
 
 func Close() {

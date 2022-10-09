@@ -1,17 +1,21 @@
 package users
 
 import (
+	"errors"
 	"signin-go/global/mysql"
 	"signin-go/internal/core"
+
+	"go.uber.org/zap"
 )
 
 func Detail(ctx core.StdContext, userID uint32) (user *Users, err error) {
-	db := mysql.DB.WithContext(ctx)
-
+	// db := mysql.DB.WithContext(ctx)
 	user = &Users{}
-	err = db.Table("users").
+	err = ctx.DB.Table("users").
 		Where("users.is_del = 0 AND users.id = ?", userID).
 		First(user).Error
+	// ctx.Logger.Error("users.Detail", zap.Uint32("userID", userID))
+	ctx.Error("users.Detail", zap.Error(errors.New("userID")))
 	return
 }
 
