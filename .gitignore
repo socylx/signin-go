@@ -19,5 +19,6 @@ log/
 dev/
 config.ini
 *-gsteps-go
+*-signin-go
 *.log
 .idea/
