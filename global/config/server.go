@@ -8,6 +8,7 @@ type ServerConfig struct {
 	Port                 string
 	MaxRequestsPerSecond int
 	Token                string
+	ServerLogDir         string
 	ServerLogFile        string
 	SQLLogFile           string
 

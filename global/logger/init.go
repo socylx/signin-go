@@ -18,10 +18,9 @@ func Init() {
 	var err error
 	Logger, err = NewLogger(
 		WithDisableConsole(),
-		WithField("domain", "signin-go"),
 		WithTimeLayout(time.CSTLayout),
-		WithFileP(config.Server.ServerLogFile),
 		WithJSONEncoder(),
+		WithLevelLog(config.Server.ServerLogDir),
 	)
 	if err != nil {
 		log.Fatalf("global.logger.Init.Logger Error: %v", err)

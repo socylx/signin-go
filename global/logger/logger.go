@@ -33,6 +33,8 @@ type option struct {
 	timeLayout     string
 	disableConsole bool
 	encoderType    EncoderType
+	levelLog       bool   //分日志级别记录日志
+	levelLogDir    string //分日志级别记录日志所在的目录
 }
 
 // WithDebugLevel only greater than 'level' will output
@@ -113,6 +115,17 @@ func WithNORMALEncoder() Option {
 	}
 }
 
+func WithLevelLog(fileDir string) Option {
+	dir := filepath.Dir(fileDir)
+	if err := os.MkdirAll(dir, 0766); err != nil {
+		panic(err)
+	}
+	return func(opt *option) {
+		opt.levelLog = true
+		opt.levelLogDir = fileDir
+	}
+}
+
 // NewJSONLogger return a json-encoder zap logger,
 func NewLogger(opts ...Option) (*zap.Logger, error) {
 	opt := &option{level: DefaultLevel, fields: make(map[string]string)}
@@ -180,7 +193,61 @@ func NewLogger(opts ...Option) (*zap.Logger, error) {
 		)
 	}
 
-	if opt.file != nil {
+	if opt.levelLog {
+		debugF, err := os.OpenFile(opt.levelLogDir+"debug.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0766)
+		if err != nil {
+			panic(err)
+		}
+
+		infoF, err := os.OpenFile(opt.levelLogDir+"info.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0766)
+		if err != nil {
+			panic(err)
+		}
+
+		warnF, err := os.OpenFile(opt.levelLogDir+"warn.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0766)
+		if err != nil {
+			panic(err)
+		}
+
+		errorF, err := os.OpenFile(opt.levelLogDir+"error.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0766)
+		if err != nil {
+			panic(err)
+		}
+
+		fatalF, err := os.OpenFile(opt.levelLogDir+"fatal.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0766)
+		if err != nil {
+			panic(err)
+		}
+
+		// DEBUG
+		lvlDebug := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+			return opt.level <= zapcore.DebugLevel && lvl == zapcore.DebugLevel
+		})
+		// INFO
+		lvlInfo := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+			return opt.level <= zapcore.InfoLevel && lvl == zapcore.InfoLevel
+		})
+		// WARN
+		lvlWarn := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+			return opt.level <= zapcore.WarnLevel && lvl == zapcore.WarnLevel
+		})
+		// ERROR
+		lvlError := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+			return opt.level <= zapcore.ErrorLevel && lvl == zapcore.ErrorLevel
+		})
+		// FATAL
+		lvlFatal := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+			return opt.level <= zapcore.FatalLevel && lvl >= zapcore.FatalLevel
+		})
+		core = zapcore.NewTee(core,
+			zapcore.NewCore(encoder, zapcore.AddSync(zapcore.Lock(debugF)), lvlDebug),
+			zapcore.NewCore(encoder, zapcore.AddSync(zapcore.Lock(infoF)), lvlInfo),
+			zapcore.NewCore(encoder, zapcore.AddSync(zapcore.Lock(warnF)), lvlWarn),
+			zapcore.NewCore(encoder, zapcore.AddSync(zapcore.Lock(errorF)), lvlError),
+			zapcore.NewCore(encoder, zapcore.AddSync(zapcore.Lock(fatalF)), lvlFatal),
+		)
+
+	} else if opt.file != nil {
 		core = zapcore.NewTee(core,
 			zapcore.NewCore(encoder,
 				zapcore.AddSync(opt.file),
