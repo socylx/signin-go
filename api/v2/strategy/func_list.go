@@ -1,13 +1,13 @@
 package strategy
 
 import (
-	"signin-go/global/time"
-	"signin-go/global/utils"
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/internal/validation"
-	"signin-go/repository/strategy"
-	"signin-go/repository/studio_strategy_map"
+	"gsteps-go/global/time"
+	"gsteps-go/global/utils"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/validation"
+	"gsteps-go/repository/strategy"
+	"gsteps-go/repository/studio_strategy_map"
 )
 
 type listRequest struct {

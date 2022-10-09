@@ -1,12 +1,12 @@
 package follow
 
 import (
-	"signin-go/common/types"
-	"signin-go/global/redis"
-	"signin-go/global/time"
-	"signin-go/internal/core"
-	"signin-go/repository/follow"
-	redisRepo "signin-go/repository/redis"
+	"gsteps-go/common/types"
+	"gsteps-go/global/redis"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/follow"
+	redisRepo "gsteps-go/repository/redis"
 	"strconv"
 	"sync"
 )

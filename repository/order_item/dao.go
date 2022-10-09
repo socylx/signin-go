@@ -1,8 +1,8 @@
 package order_item
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
 )
 
 func GetOrderIemDatas(ctx core.StdContext, orderID uint32) (data []*OrderItemData, err error) {

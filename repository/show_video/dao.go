@@ -1,10 +1,10 @@
 package show_video
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
-	"signin-go/repository/show_video_user"
-	"signin-go/repository/signin"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/show_video_user"
+	"gsteps-go/repository/signin"
 )
 
 /*

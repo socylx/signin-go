@@ -1,8 +1,8 @@
 package studio
 
 import (
-	"signin-go/internal/core"
-	"signin-go/repository/studio_strategy_map"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/studio_strategy_map"
 )
 
 type StudioStrategyTypeIDMap map[uint32]map[uint32]uint32

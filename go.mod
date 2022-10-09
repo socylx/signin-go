@@ -1,4 +1,4 @@
-module signin-go
+module gsteps-go
 
 go 1.19
 

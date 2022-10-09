@@ -1,10 +1,10 @@
 package router
 
 import (
-	v1 "signin-go/api/v1"
-	v2 "signin-go/api/v2"
-	"signin-go/internal/core"
-	"signin-go/router/middleware"
+	v1 "gsteps-go/api/v1"
+	v2 "gsteps-go/api/v2"
+	"gsteps-go/internal/core"
+	"gsteps-go/router/middleware"
 )
 
 type Response struct {

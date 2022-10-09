@@ -1,8 +1,8 @@
 package studio_strategy_map
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
 )
 
 func GetStudioIDs(ctx core.StdContext, strategyID uint32) (data []uint32, err error) {

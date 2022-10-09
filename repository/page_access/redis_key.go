@@ -2,7 +2,7 @@ package page_access
 
 import (
 	"fmt"
-	"signin-go/global/time"
+	"gsteps-go/global/time"
 )
 
 func GetPageAccessCountRedisKey(t time.Time, userID uint32) string {

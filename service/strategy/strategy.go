@@ -3,10 +3,10 @@ package strategy
 import (
 	"crypto/md5"
 	"fmt"
-	"signin-go/global/time"
-	"signin-go/internal/core"
-	"signin-go/repository/strategy"
-	"signin-go/repository/users"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/strategy"
+	"gsteps-go/repository/users"
 )
 
 const strategyKeyBaseString = "30ec877eaf21e960b504398cc7f48efc"

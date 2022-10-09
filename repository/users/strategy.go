@@ -5,7 +5,7 @@ package users
 */
 
 import (
-	"signin-go/global/time"
+	"gsteps-go/global/time"
 )
 
 const StrategyIndicatorScoreName = "StrategyIndicatorScore" //mongoCollectionName

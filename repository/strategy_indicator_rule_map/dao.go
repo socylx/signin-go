@@ -1,8 +1,8 @@
 package strategy_indicator_rule_map
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
 )
 
 func GetStrategyIndicatorRuleMaps(ctx core.StdContext, strategyID uint32) (data []*StrategyIndicatorRuleMap, err error) {

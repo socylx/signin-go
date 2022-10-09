@@ -1,17 +1,17 @@
 package strategy
 
 import (
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/internal/validation"
-	strategyRepo "signin-go/repository/strategy"
-	usersRepo "signin-go/repository/users"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/validation"
+	strategyRepo "gsteps-go/repository/strategy"
+	usersRepo "gsteps-go/repository/users"
 	"sync"
 
-	strategyServ "signin-go/service/strategy"
-	"signin-go/service/strategy_indicator"
-	studioServ "signin-go/service/studio"
-	usersServ "signin-go/service/users"
+	strategyServ "gsteps-go/service/strategy"
+	"gsteps-go/service/strategy_indicator"
+	studioServ "gsteps-go/service/studio"
+	usersServ "gsteps-go/service/users"
 )
 
 type scoreRequest struct {

@@ -3,9 +3,9 @@ package redis
 import (
 	"context"
 	"fmt"
+	"gsteps-go/global/config"
+	"gsteps-go/global/time"
 	"log"
-	"signin-go/global/config"
-	"signin-go/global/time"
 
 	"github.com/go-redis/redis/v8"
 )

@@ -1,8 +1,8 @@
 package strategy_indicator
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
 )
 
 func List(ctx core.StdContext, IDs []uint32) (data []*StrategyIndicator, err error) {

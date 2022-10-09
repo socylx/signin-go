@@ -1,9 +1,9 @@
 package page_event
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
-	"signin-go/repository/page_access"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/page_access"
 )
 
 type Filter struct {

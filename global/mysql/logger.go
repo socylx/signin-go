@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	glogger "signin-go/global/logger"
+	glogger "gsteps-go/global/logger"
 	"time"
 
 	"go.uber.org/zap"

@@ -1,8 +1,8 @@
 package judge_user
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
 )
 
 func GetJudgeUserDatas(ctx core.StdContext, userID uint32) (data []*JudgeUserData, err error) {

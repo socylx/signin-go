@@ -1,8 +1,8 @@
 package user_before_member
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
 )
 
 func GetMaxUserBeforeMemberID(ctx core.StdContext) (count int64, err error) {

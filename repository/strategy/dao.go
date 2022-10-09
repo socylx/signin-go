@@ -1,9 +1,9 @@
 package strategy
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/global/time"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/core"
 )
 
 type DeleteFileter struct {

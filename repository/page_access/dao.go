@@ -1,9 +1,9 @@
 package page_access
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/global/time"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/core"
 )
 
 type Filter struct {

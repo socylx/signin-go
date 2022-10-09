@@ -1,13 +1,13 @@
 package page_access
 
 import (
+	"gsteps-go/global/redis"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/activity"
+	"gsteps-go/repository/page_access"
+	"gsteps-go/repository/users"
 	"log"
-	"signin-go/global/redis"
-	"signin-go/global/time"
-	"signin-go/internal/core"
-	"signin-go/repository/activity"
-	"signin-go/repository/page_access"
-	"signin-go/repository/users"
 
 	"strconv"
 	"strings"

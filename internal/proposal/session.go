@@ -1,7 +1,7 @@
 package proposal
 
 import (
-	"signin-go/global/utils"
+	"gsteps-go/global/utils"
 )
 
 // SessionUserInfo 当前用户会话信息

@@ -1,7 +1,7 @@
 package metrics
 
 import (
-	"signin-go/internal/proposal"
+	"gsteps-go/internal/proposal"
 )
 
 // RecordHandler 指标处理

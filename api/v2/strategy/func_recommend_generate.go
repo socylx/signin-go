@@ -1,12 +1,12 @@
 package strategy
 
 import (
+	"gsteps-go/global/config"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/validation"
+	"gsteps-go/service/strategy"
 	"log"
-	"signin-go/global/config"
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/internal/validation"
-	"signin-go/service/strategy"
 )
 
 type recommendGenerateRequest struct {

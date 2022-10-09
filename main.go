@@ -1,11 +1,11 @@
 package main
 
 import (
+	"gsteps-go/global"
+	"gsteps-go/global/config"
+	"gsteps-go/global/time"
+	"gsteps-go/router"
 	"net/http"
-	"signin-go/global"
-	"signin-go/global/config"
-	"signin-go/global/time"
-	"signin-go/router"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jpillora/overseer"

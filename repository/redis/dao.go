@@ -2,10 +2,10 @@ package redis
 
 import (
 	"fmt"
-	"signin-go/global/redis"
-	"signin-go/global/utils"
-	"signin-go/internal/core"
-	"signin-go/internal/errors"
+	"gsteps-go/global/redis"
+	"gsteps-go/global/utils"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/errors"
 	"strconv"
 
 	"time"

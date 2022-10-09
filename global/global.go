@@ -1,13 +1,13 @@
 package global
 
 import (
+	"gsteps-go/global/config"
+	"gsteps-go/global/logger"
+	"gsteps-go/global/mongo"
+	"gsteps-go/global/mysql"
+	"gsteps-go/global/redis"
+	"gsteps-go/global/time"
 	"log"
-	"signin-go/global/config"
-	"signin-go/global/logger"
-	"signin-go/global/mongo"
-	"signin-go/global/mysql"
-	"signin-go/global/redis"
-	"signin-go/global/time"
 )
 
 func Init() {

@@ -1,11 +1,11 @@
 package user_snapshot
 
 import (
-	"signin-go/global/redis"
-	"signin-go/internal/core"
-	"signin-go/repository/follow"
-	redisRepo "signin-go/repository/redis"
-	"signin-go/repository/user_snapshot"
+	"gsteps-go/global/redis"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/follow"
+	redisRepo "gsteps-go/repository/redis"
+	"gsteps-go/repository/user_snapshot"
 	"time"
 )
 

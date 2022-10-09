@@ -1,8 +1,8 @@
 package studio
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
 )
 
 func GetStudioIDs(ctx core.StdContext) (data []uint32, err error) {

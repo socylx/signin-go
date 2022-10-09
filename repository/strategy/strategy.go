@@ -1,7 +1,7 @@
 package strategy
 
 import (
-	"signin-go/repository/strategy_indicator_rule"
+	"gsteps-go/repository/strategy_indicator_rule"
 	"time"
 )
 

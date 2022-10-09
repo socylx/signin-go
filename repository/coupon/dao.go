@@ -1,8 +1,8 @@
 package coupon
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
 )
 
 func Detail(ctx core.StdContext, couponID uint32) (data *Coupon, err error) {

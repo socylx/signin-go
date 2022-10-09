@@ -1,6 +1,6 @@
 package core
 
-import "signin-go/internal/errors"
+import "gsteps-go/internal/errors"
 
 var _ BusinessError = (*businessError)(nil)
 

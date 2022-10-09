@@ -1,7 +1,7 @@
 package proposal
 
 import (
-	"signin-go/global/utils"
+	"gsteps-go/global/utils"
 	"time"
 )
 

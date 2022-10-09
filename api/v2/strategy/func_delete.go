@@ -1,10 +1,10 @@
 package strategy
 
 import (
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/internal/validation"
-	"signin-go/repository/strategy"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/validation"
+	"gsteps-go/repository/strategy"
 )
 
 type deleteRequest struct {

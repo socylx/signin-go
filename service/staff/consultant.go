@@ -2,15 +2,15 @@ package staff
 
 import (
 	"fmt"
-	"signin-go/common/types"
-	"signin-go/global/time"
-	"signin-go/internal/core"
-	"signin-go/service/follow"
-	"signin-go/service/membership"
-	"signin-go/service/user_snapshot"
+	"gsteps-go/common/types"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/core"
+	"gsteps-go/service/follow"
+	"gsteps-go/service/membership"
+	"gsteps-go/service/user_snapshot"
 
-	"signin-go/repository/redis"
-	"signin-go/repository/staff"
+	"gsteps-go/repository/redis"
+	"gsteps-go/repository/staff"
 	"sync"
 )
 

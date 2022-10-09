@@ -1,15 +1,15 @@
 package users
 
 import (
-	"signin-go/global/time"
-	"signin-go/repository/coupon_alloc"
-	"signin-go/repository/fission_map"
-	"signin-go/repository/follow"
-	"signin-go/repository/judge_user"
-	"signin-go/repository/membership"
-	"signin-go/repository/order"
-	"signin-go/repository/order_item"
-	"signin-go/repository/signin"
+	"gsteps-go/global/time"
+	"gsteps-go/repository/coupon_alloc"
+	"gsteps-go/repository/fission_map"
+	"gsteps-go/repository/follow"
+	"gsteps-go/repository/judge_user"
+	"gsteps-go/repository/membership"
+	"gsteps-go/repository/order"
+	"gsteps-go/repository/order_item"
+	"gsteps-go/repository/signin"
 )
 
 type Data struct {

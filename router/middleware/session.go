@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"encoding/base64"
-	"signin-go/global/redis"
-	"signin-go/global/utils"
-	"signin-go/internal/core"
-	"signin-go/internal/proposal"
-	"signin-go/repository/permission"
-	"signin-go/repository/staff"
+	"gsteps-go/global/redis"
+	"gsteps-go/global/utils"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/proposal"
+	"gsteps-go/repository/permission"
+	"gsteps-go/repository/staff"
 	"strings"
 )
 

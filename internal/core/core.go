@@ -1,20 +1,19 @@
 package core
 
 import (
-	stdctx "context"
 	"fmt"
 	"log"
 	"net/http"
 	"net/url"
 	"runtime/debug"
 
-	"signin-go/global/config"
-	"signin-go/global/logger"
-	"signin-go/global/mysql"
-	"signin-go/global/time"
-	"signin-go/internal/code"
-	"signin-go/internal/proposal"
-	"signin-go/internal/trace"
+	"gsteps-go/global/config"
+	"gsteps-go/global/logger"
+	"gsteps-go/global/mysql"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/proposal"
+	"gsteps-go/internal/trace"
 
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
@@ -275,7 +274,7 @@ func New(options ...Option) Mux {
 				log.Println(err)
 				log.Println(stack)
 				logger.Logger.Error(
-					"signin-go panic",
+					"gsteps-go panic",
 					zap.String("panic", fmt.Sprintf("%+v", err)),
 					zap.String("stack", stack),
 				)
@@ -304,7 +303,7 @@ func New(options ...Option) Mux {
 		defer releaseContext(context)
 
 		context.init()
-		context.setDB(mysql.DB.WithContext(stdctx.Background()))
+		context.setDB(mysql.DB.WithContext(ctx))
 		context.ableRecordMetrics()
 
 		if !withoutTracePaths[ctx.Request.URL.Path] {
@@ -337,7 +336,7 @@ func New(options ...Option) Mux {
 				log.Println(err)
 				log.Println(stackInfo)
 				logger.Logger.Error(
-					"signin-go panic",
+					"gsteps-go panic",
 					zap.String("panic", fmt.Sprintf("%+v", err)),
 					zap.String("stack", stackInfo),
 				)

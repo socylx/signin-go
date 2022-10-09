@@ -3,9 +3,9 @@ package mongo
 import (
 	"context"
 	"fmt"
+	"gsteps-go/global/config"
+	"gsteps-go/internal/errors"
 	"log"
-	"signin-go/global/config"
-	"signin-go/internal/errors"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"

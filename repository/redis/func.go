@@ -2,7 +2,7 @@ package redis
 
 import (
 	"fmt"
-	"signin-go/global/time"
+	"gsteps-go/global/time"
 )
 
 /*

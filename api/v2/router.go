@@ -1,12 +1,12 @@
 package v2
 
 import (
-	"signin-go/api/v2/strategy"
-	"signin-go/api/v2/strategy_indicator"
-	"signin-go/api/v2/user_snapshot"
-	"signin-go/internal/core"
-	"signin-go/repository/permission"
-	"signin-go/router/middleware"
+	"gsteps-go/api/v2/strategy"
+	"gsteps-go/api/v2/strategy_indicator"
+	"gsteps-go/api/v2/user_snapshot"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/permission"
+	"gsteps-go/router/middleware"
 )
 
 func Router(routerGroup core.RouterGroup) {

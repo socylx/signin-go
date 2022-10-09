@@ -1,11 +1,11 @@
 package membership
 
 import (
-	"signin-go/global/redis"
-	"signin-go/internal/core"
-	"signin-go/repository/card"
-	"signin-go/repository/membership"
-	redisRepo "signin-go/repository/redis"
+	"gsteps-go/global/redis"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/card"
+	"gsteps-go/repository/membership"
+	redisRepo "gsteps-go/repository/redis"
 	"time"
 )
 

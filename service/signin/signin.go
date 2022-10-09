@@ -1,9 +1,9 @@
 package signin
 
 import (
-	"signin-go/global/redis"
-	"signin-go/internal/core"
-	"signin-go/repository/signin"
+	"gsteps-go/global/redis"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/signin"
 	"strconv"
 	"time"
 )

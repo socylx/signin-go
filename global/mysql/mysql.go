@@ -2,8 +2,8 @@ package mysql
 
 import (
 	"fmt"
+	"gsteps-go/global/config"
 	"log"
-	"signin-go/global/config"
 	"time"
 
 	"github.com/pkg/errors"

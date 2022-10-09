@@ -1,11 +1,11 @@
 package users
 
 import (
-	"signin-go/global/logger"
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/internal/validation"
-	"signin-go/repository/users"
+	"gsteps-go/global/logger"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/validation"
+	"gsteps-go/repository/users"
 
 	"go.uber.org/zap"
 )

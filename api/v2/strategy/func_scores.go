@@ -1,17 +1,17 @@
 package strategy
 
 import (
-	"signin-go/global/mongo"
-	"signin-go/global/time"
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/internal/validation"
-	strategyRepo "signin-go/repository/strategy"
-	"signin-go/repository/users"
-	strategyServ "signin-go/service/strategy"
-	"signin-go/service/strategy_indicator"
-	studioServ "signin-go/service/studio"
-	usersServ "signin-go/service/users"
+	"gsteps-go/global/mongo"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/validation"
+	strategyRepo "gsteps-go/repository/strategy"
+	"gsteps-go/repository/users"
+	strategyServ "gsteps-go/service/strategy"
+	"gsteps-go/service/strategy_indicator"
+	studioServ "gsteps-go/service/studio"
+	usersServ "gsteps-go/service/users"
 	"sync"
 
 	"go.mongodb.org/mongo-driver/bson"

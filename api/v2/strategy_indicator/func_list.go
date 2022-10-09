@@ -1,10 +1,10 @@
 package strategy_indicator
 
 import (
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/repository/strategy_indicator"
-	"signin-go/repository/strategy_indicator_rule"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/strategy_indicator"
+	"gsteps-go/repository/strategy_indicator_rule"
 )
 
 type strategyIndicatorData struct {

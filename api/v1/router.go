@@ -1,8 +1,8 @@
 package v1
 
 import (
-	"signin-go/api/v1/users"
-	"signin-go/internal/core"
+	"gsteps-go/api/v1/users"
+	"gsteps-go/internal/core"
 )
 
 func Router(routerGroup core.RouterGroup) {

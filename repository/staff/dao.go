@@ -1,10 +1,10 @@
 package staff
 
 import (
-	"signin-go/common/types"
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
-	"signin-go/repository/system_page"
+	"gsteps-go/common/types"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/system_page"
 )
 
 /*

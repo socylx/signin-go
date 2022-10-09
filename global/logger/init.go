@@ -1,9 +1,9 @@
 package logger
 
 import (
+	"gsteps-go/global/config"
+	"gsteps-go/global/time"
 	"log"
-	"signin-go/global/config"
-	"signin-go/global/time"
 
 	"go.uber.org/zap"
 )

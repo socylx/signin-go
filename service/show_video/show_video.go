@@ -1,9 +1,9 @@
 package show_video
 
 import (
-	"signin-go/global/redis"
-	"signin-go/internal/core"
-	"signin-go/repository/show_video"
+	"gsteps-go/global/redis"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/show_video"
 	"strconv"
 	"time"
 )

@@ -1,13 +1,13 @@
 package strategy
 
 import (
-	"signin-go/global/time"
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/internal/validation"
-	"signin-go/repository/strategy"
-	"signin-go/repository/studio_strategy_map"
-	"signin-go/service/studio"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/validation"
+	"gsteps-go/repository/strategy"
+	"gsteps-go/repository/studio_strategy_map"
+	"gsteps-go/service/studio"
 )
 
 type setStatusRequest struct {

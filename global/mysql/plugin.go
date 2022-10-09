@@ -1,9 +1,9 @@
 package mysql
 
 // import (
-// 	"signin-go/global/time"
-// 	"signin-go/internal/core"
-// 	"signin-go/internal/trace"
+// 	"gsteps-go/global/time"
+// 	"gsteps-go/internal/core"
+// 	"gsteps-go/internal/trace"
 
 // 	"gorm.io/gorm"
 // 	"gorm.io/gorm/utils"

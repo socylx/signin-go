@@ -3,14 +3,14 @@ package core
 import (
 	"bytes"
 	stdctx "context"
+	"gsteps-go/internal/trace"
 	"io"
 	"net/http"
 	"net/url"
-	"signin-go/internal/trace"
 	"strings"
 	"sync"
 
-	"signin-go/internal/proposal"
+	"gsteps-go/internal/proposal"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"

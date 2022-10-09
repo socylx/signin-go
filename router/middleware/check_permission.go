@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"signin-go/internal/code"
-	"signin-go/internal/core"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
 )
 
 /*

@@ -1,8 +1,8 @@
 package coupon_alloc
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
 )
 
 type Filter struct {

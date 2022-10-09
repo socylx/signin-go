@@ -1,7 +1,7 @@
 package strategy
 
 import (
-	"signin-go/internal/core"
+	"gsteps-go/internal/core"
 )
 
 func CheckPermissionRouter(routerGroup core.RouterGroup) {

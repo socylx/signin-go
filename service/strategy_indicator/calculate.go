@@ -2,16 +2,16 @@ package strategy_indicator
 
 import (
 	"fmt"
-	"signin-go/global/time"
-	"signin-go/global/utils"
-	"signin-go/internal/errors"
-	"signin-go/repository/coupon"
-	"signin-go/repository/coupon_alloc"
-	"signin-go/repository/course_level"
-	orderRepo "signin-go/repository/order"
-	"signin-go/repository/source"
-	"signin-go/repository/strategy"
-	"signin-go/repository/users"
+	"gsteps-go/global/time"
+	"gsteps-go/global/utils"
+	"gsteps-go/internal/errors"
+	"gsteps-go/repository/coupon"
+	"gsteps-go/repository/coupon_alloc"
+	"gsteps-go/repository/course_level"
+	orderRepo "gsteps-go/repository/order"
+	"gsteps-go/repository/source"
+	"gsteps-go/repository/strategy"
+	"gsteps-go/repository/users"
 	"strconv"
 )
 

@@ -1,11 +1,11 @@
 package alert
 
 import (
-	"signin-go/global/config"
-	"signin-go/global/logger"
-	"signin-go/internal/errors"
-	"signin-go/internal/mail"
-	"signin-go/internal/proposal"
+	"gsteps-go/global/config"
+	"gsteps-go/global/logger"
+	"gsteps-go/internal/errors"
+	"gsteps-go/internal/mail"
+	"gsteps-go/internal/proposal"
 
 	"go.uber.org/zap"
 )

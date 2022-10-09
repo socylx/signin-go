@@ -1,10 +1,10 @@
 package strategy
 
 import (
-	"signin-go/internal/core"
-	"signin-go/repository/strategy"
-	"signin-go/repository/strategy_indicator"
-	"signin-go/repository/strategy_indicator_rule_map"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/strategy"
+	"gsteps-go/repository/strategy_indicator"
+	"gsteps-go/repository/strategy_indicator_rule_map"
 )
 
 func IndicatorDataList(ctx core.StdContext, strategyID uint32) (datas []*strategy.IndicatorData, err error) {

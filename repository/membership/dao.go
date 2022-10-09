@@ -1,10 +1,10 @@
 package membership
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/global/time"
-	"signin-go/internal/core"
-	"signin-go/repository/card"
+	"gsteps-go/global/mysql"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/core"
+	"gsteps-go/repository/card"
 )
 
 type MembershipFilter struct {

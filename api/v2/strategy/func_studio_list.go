@@ -1,10 +1,10 @@
 package strategy
 
 import (
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/internal/validation"
-	"signin-go/repository/studio_strategy_map"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/validation"
+	"gsteps-go/repository/studio_strategy_map"
 )
 
 type studioListRequest struct {

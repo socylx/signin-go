@@ -2,12 +2,12 @@ package user_snapshot
 
 import (
 	"fmt"
-	"signin-go/global/time"
-	"signin-go/internal/code"
-	"signin-go/internal/core"
-	"signin-go/internal/validation"
-	"signin-go/repository/redis"
-	"signin-go/service/staff"
+	"gsteps-go/global/time"
+	"gsteps-go/internal/code"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/validation"
+	"gsteps-go/repository/redis"
+	"gsteps-go/service/staff"
 )
 
 type accesstorenewRequest struct {

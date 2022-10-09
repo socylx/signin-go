@@ -1,9 +1,9 @@
 package users
 
 import (
-	"signin-go/global/mysql"
-	"signin-go/internal/core"
-	"signin-go/internal/errors"
+	"gsteps-go/global/mysql"
+	"gsteps-go/internal/core"
+	"gsteps-go/internal/errors"
 
 	"go.uber.org/zap"
 )
