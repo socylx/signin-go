@@ -45,7 +45,7 @@ func StudioConsultantOnlyID(ctx core.StdContext, studioID uint32) (data []*types
 	db := mysql.DB.WithContext(ctx)
 
 	err = db.Table("staff").
-		Select("staff.id, staff.user_id as staff_user_id").
+		Select("staff.id, staff.user_id").
 		Joins("JOIN role_page on staff.role_id = role_page.role_id").
 		Joins("JOIN permission on staff.role_id = permission.role_id").
 		Where("staff.is_del = 0").
