@@ -23,6 +23,7 @@ import (
 
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	"golang.org/x/time/rate"
 )
 
@@ -303,7 +304,6 @@ func New(options ...Option) Mux {
 		defer releaseContext(context)
 
 		context.init()
-		context.setLogger(logger.Logger)
 		context.setDB(mysql.DB.WithContext(stdctx.Background()))
 		context.ableRecordMetrics()
 
@@ -314,6 +314,7 @@ func New(options ...Option) Mux {
 				context.setTrace(trace.New(""))
 			}
 		}
+		context.setLogger(logger.Logger.WithOptions(zap.Fields(zapcore.Field{Key: "traceID", Type: zapcore.StringType, String: context.Trace().ID()})))
 
 		defer func() {
 			var (
